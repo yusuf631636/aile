@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#b87b5a">
+    <title>Çetin Ailesi | Family OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { clay: '#b87b5a', deep: '#4a2c1a', sand: '#e8d5c4' },
+                    fontFamily: { serif: ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Google API Client Library -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <style>
+        * { transition: all 0.2s; }
+        body { font-family: 'Inter', sans-serif; background: #fef7f0; padding-bottom: 80px; }
+        body.dark { background: #1a1a2e; color: #e0e0e0; }
+        body.dark .bg-white, body.dark .bg-cream { background: #16213e !important; }
+        .tab-bar { background: rgba(255,252,245,0.96); backdrop-filter: blur(20px); }
+        body.dark .tab-bar { background: rgba(22,30,62,0.96); }
+        .tab-active { color: #b87b5a; border-bottom: 3px solid #b87b5a; }
+        .heart-beat { animation: heartbeat 1.4s infinite; }
+        @keyframes heartbeat { 0%,100%{transform:scale(1);}50%{transform:scale(1.1);} }
+        .toast-msg { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 8px 16px; border-radius: 30px; font-size: 12px; z-index: 200; display: none; }
+        .dashboard-card { background: white; border-radius: 24px; padding: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .dashboard-card:hover { transform: translateY(-2px); }
+        .ai-suggestion { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 1rem; margin-bottom: 1rem; }
+        body.dark .ai-suggestion { background: #2d3748; }
+        .file-upload { border: 2px dashed #b87b5a; border-radius: 16px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .file-upload:hover { background: #fef3c7; }
+        .member-selector { display: inline-block; padding: 0.5rem 1rem; margin: 0.25rem; border-radius: 40px; background: #f0e6dc; cursor: pointer; transition: all 0.2s; }
+        .member-selector.active { background: #b87b5a; color: white; }
+        .google-btn { background: #4285f4; color: white; border-radius: 40px; padding: 0.5rem 1rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: all 0.2s; }
+        .google-btn:hover { background: #3367d6; }
+    </style>
+</head>
+<body>
+
+<div id="toast" class="toast-msg"></div>
+<div class="container mx-auto px-4 py-4 max-w-4xl min-h-screen" id="appContainer"><div id="appContent"></div></div>
+
+<script>
+    // ========== GOOGLE API YAPILANDIRMASI ==========
+    // 🔴 KENDİ BİLGİLERİNİZLE DEĞİŞTİRİN 🔴
+    const GOOGLE_API_KEY = "AIzaSyC5Y8gC4s5Y8gC4s5Y8gC4s5Y8gC4s5Y8";  // API Anahtarınız
+    const GOOGLE_CLIENT_ID = "893789692669-xxxxxxxxxxxx.apps.googleusercontent.com";  // OAuth Client ID
+    const GOOGLE_PROJECT_ID = "veri-toplamlığı-458810-s8";
+    const SCOPES = "https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/photoslibrary.readonly";
+    
+    let googlePickerInitialized = false;
+    let accessToken = null;
+    let tokenClient = null;
+
+    // ========== MERKEZİ VERİ ==========
+    let appData = {
+        currentMember: "Yusuf",
+        memories: [], babyKicks: [], babyWeight: [], motherBP: [], appointments: [],
+        birthChecklist: [
+            {item:"Hastane çantası",checked:false},{item:"Bebek odası",checked:false},{item:"Oto koltuk",checked:false},
+            {item:"Bebek bezi",checked:false},{item:"Pamuklu kıyafetler",checked:false},{item:"Emzik ve biberon",checked:false}
+        ],
+        babyNamePoll: { 
+            options: ["Zeynep", "Elif", "Defne", "Asya", "Mira", "Ömer", "Ali", "Efe", "Mert", "Aras"], 
+            votes: { Zeynep:4, Elif:3, Defne:2, Asya:1, Mira:0, Ömer:5, Ali:4, Efe:2, Mert:1, Aras:0 }
+        },
+        photos: [], tasks: [], shopping: [], choresPoints: { Yusuf:25, Nilgün:30, Esila:15, Ensar:10 },
+        schoolAssignments: [], babyFeeds: [], babySleeps: [], babyPoops: [], budget: []
+    };
+
+    function saveDB() { localStorage.setItem('cetin_familyOS_v7', JSON.stringify(appData)); }
+    function loadDB() { const data = localStorage.getItem('cetin_familyOS_v7'); if(data) { const parsed = JSON.parse(data); Object.assign(appData, parsed); } }
+    function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2500); }
+    function toggleDarkMode() { document.body.classList.toggle('dark'); }
+
+    const familyMembers = ["Yusuf", "Nilgün", "Nur Esila", "Muhammed Ensar"];
+    
+    // ========== GOOGLE PICKER API ==========
+    function initGooglePicker() {
+        if (!googlePickerInitialized) {
+            gapi.load('client', initGoogleClient);
+            googlePickerInitialized = true;
+        } else {
+            showPicker();
+        }
+    }
+    
+    function initGoogleClient() {
+        gapi.client.init({
+            apiKey: GOOGLE_API_KEY,
+            discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"],
+        }).then(() => {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: GOOGLE_CLIENT_ID,
+                scope: SCOPES,
+                callback: (resp) => {
+                    if (resp.error) { showToast('Hata: ' + resp.error); return; }
+                    accessToken = resp.access_token;
+                    showPicker();
+                },
+            });
+            tokenClient.requestAccessToken();
+        }).catch(err => showToast('Google bağlantı hatası: ' + err));
+    }
+    
+    function showPicker() {
+        if (!accessToken) { showToast('Önce Google hesabınıza bağlanın'); return; }
+        const picker = new google.picker.PickerBuilder()
+            .addView(google.picker.ViewId.PHOTOS)
+            .addView(google.picker.ViewId.PHOTO_UPLOAD)
+            .addView(google.picker.ViewId.DOCS)
+            .setDeveloperKey(GOOGLE_API_KEY)
+            .setOAuthToken(accessToken)
+            .setCallback(pickerCallback)
+            .build();
+        picker.setVisible(true);
+    }
+    
+    function pickerCallback(data) {
+        if (data.action === google.picker.Action.PICKED) {
+            const file = data.docs[0];
+            showToast(`Seçildi: ${file.name}`);
+            fetch(file.url).then(res => res.blob()).then(blob => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    appData.photos.push({data: e.target.result, date: new Date().toLocaleDateString(), source: 'Google'});
+                    saveDB();
+                    renderGallery();
+                    showToast('Fotoğraf Google\'dan eklendi!');
+                };
+                reader.readAsDataURL(blob);
+            }).catch(() => showToast('Fotoğraf alınamadı, manuel yükleyin'));
+        }
+    }
+
+    // ========== ANA UYGULAMA ==========
+    function renderMainApp() {
+        document.getElementById('appContent').innerHTML = `
+            <div class="pb-20">
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                    <div class="text-xl font-serif text-clay"><i class="fas fa-heart heart-beat text-rose-500 mr-1"></i> Çetin Ailesi | Family OS</div>
+                    <div><button onclick="toggleDarkMode()" class="text-clay mr-2"><i class="fas fa-moon"></i></button><button onclick="resetAllData()" class="text-stone-400 text-sm"><i class="fas fa-trash-alt"></i></button></div>
+                </div>
+                <div class="bg-rose/30 rounded-2xl p-3 mb-4">
+                    <div class="text-sm text-stone-500 mb-2">👨‍👩‍👧‍👦 Aile Üyesi Seç</div>
+                    <div class="flex flex-wrap gap-2">${familyMembers.map(m => `<div class="member-selector ${appData.currentMember === m ? 'active' : ''}" onclick="selectMember('${m}')">${m}</div>`).join('')}</div>
+                </div>
+                <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t flex justify-around py-2 z-50">
+                    ${['Panel','Bebek','Aile','Medya','Konum','ERP'].map((t,i)=>`<button onclick="showSection('${['dashboard','baby','family','media','location','erp'][i]}')" class="tab-btn flex flex-col items-center p-2" data-tab="${['dashboard','baby','family','media','location','erp'][i]}"><i class="fas ${['fa-chart-line','fa-baby-carriage','fa-users','fa-images','fa-location-dot','fa-coins'][i]} text-xl"></i><span class="text-xs">${t}</span></button>`).join('')}
+                </div>
+                <div id="sectionContent" class="mt-2"></div>
+            </div>`;
+        showSection('dashboard');
+    }
+
+    function selectMember(member) { appData.currentMember = member; saveDB(); renderMainApp(); showToast(`${member} olarak giriş yaptınız`); }
+    function resetAllData() { if(confirm('Tüm veriler silinecek!')) { localStorage.clear(); location.reload(); } }
+    function showSection(s) {
+        document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('tab-active'));
+        document.querySelector(`.tab-btn[data-tab="${s}"]`)?.classList.add('tab-active');
+        if(s==='dashboard') renderDashboard();
+        if(s==='baby') renderBaby();
+        if(s==='family') renderFamily();
+        if(s==='media') renderMedia();
+        if(s==='location') renderLocation();
+        if(s==='erp') renderERP();
+    }
+
+    // ========== DASHBOARD ==========
+    function getPregnancy() { const start=new Date(2026,3,7), due=new Date(start); due.setDate(start.getDate()+280); const t=new Date(), d=Math.max(0,Math.floor((t-start)/86400000)); return { weeks:Math.min(40,Math.floor(d/7)), daysLeft:Math.max(0,Math.ceil((due-t)/86400000)) }; }
+    function getAnniversary() { const anni=new Date(2010,6,18); let next=new Date(new Date().getFullYear(),6,18); if(next<new Date()) next.setFullYear(next.getFullYear()+1); return Math.ceil((next-new Date())/86400000); }
+    
+    function renderDashboard() {
+        const preg=getPregnancy(); const anni=getAnniversary();
+        const pendingTasks = appData.tasks.filter(t=>!t.completed).length;
+        document.getElementById('sectionContent').innerHTML = `
+            <div class="fade-slide space-y-4">
+                <div class="ai-suggestion"><i class="fas fa-robot text-2xl mr-2"></i>🤖 <strong>AI Aile Asistanı</strong><br>⭐ Günaydın ${appData.currentMember}! ${preg.weeks}. hafta, doğuma ${preg.daysLeft} gün kaldı. Yıldönümüne ${anni} gün. ${pendingTasks} görev var.</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">${[
+                    [appData.memories.length,'images','Anı'],[preg.daysLeft,'baby-carriage','Doğuma'],[anni,'calendar-heart','Yıldönümü'],[pendingTasks,'check-circle','Görev']
+                ].map(v=>`<div class="dashboard-card text-center"><i class="fas fa-${v[1]} text-clay text-xl"></i><p class="text-2xl font-bold">${v[0]}</p><p class="text-xs">${v[2]}</p></div>`).join('')}</div>
+                <div class="dashboard-card"><h3 class="font-serif">🛒 Alışveriş Listesi</h3><div id="shoppingPreview"></div><div class="flex gap-2 mt-2"><input type="text" id="newShopItem" placeholder="Ürün ekle" class="flex-1 border rounded-full px-3 py-1 text-sm"><button onclick="addQuickShop()" class="bg-clay text-white px-3 py-1 rounded-full text-sm">Ekle</button></div></div>
+            </div>`;
+        document.getElementById('shoppingPreview').innerHTML = appData.shopping.slice(0,5).map(s=>`🛒 ${s}`).join('<br>') || 'Liste boş.';
+    }
+    function addQuickShop(){ const item=document.getElementById('newShopItem')?.value; if(item){ appData.shopping.push(item); saveDB(); renderDashboard(); showToast('Eklendi'); } }
+
+    // ========== BEBEK ==========
+    function renderBaby() {
+        const preg=getPregnancy();
+        document.getElementById('sectionContent').innerHTML = `
+            <div class="fade-slide space-y-4">
+                <div class="dashboard-card text-center"><div class="text-6xl">${preg.weeks<=12?'🍇':preg.weeks<=24?'🍎':'🍉'}</div><h2 class="text-2xl font-serif">${preg.weeks}. Hafta (${preg.daysLeft} gün)</h2><div class="w-full bg-sand/30 rounded-full h-2"><div class="bg-clay h-2 rounded-full" style="width:${preg.weeks/40*100}%"></div></div></div>
+                <div class="dashboard-card"><h3 class="font-serif">🦶 Tekme Sayacı</h3><button onclick="addKick()" class="bg-clay text-white px-4 py-2 rounded-full text-sm"><i class="fas fa-baby"></i> Tekme Hissettim</button><canvas id="kickChart" height="80" class="mt-2"></canvas></div>
+                <div class="dashboard-card"><h3 class="font-serif">🍼 Bebek Günlüğü</h3><div class="flex flex-wrap gap-2"><button onclick="addFeeding()" class="bg-clay text-white px-3 py-1 rounded-full text-sm"><i class="fas fa-baby-bottle"></i> Emzirme</button><button onclick="addSleep()" class="bg-clay text-white px-3 py-1 rounded-full text-sm"><i class="fas fa-bed"></i> Uyku</button><button onclick="addPoop()" class="bg-clay text-white px-3 py-1 rounded-full text-sm"><i class="fas fa-toilet"></i> Bezi</button></div><div id="babyLogs" class="mt-2 text-sm"></div></div>
+                <div class="dashboard-card"><h3 class="font-serif">👶 Bebek İsim Oylaması</h3><div id="pollDiv" class="grid grid-cols-5 gap-1 text-center"></div><div class="flex mt-2"><input id="newBabyName" placeholder="Yeni isim öner" class="flex-1 border rounded-full px-3 py-1 text-sm"><button onclick="addNewBabyName()" class="bg-clay text-white px-3 py-1 rounded-full text-sm ml-2">Öner</button></div></div>
+                <div class="dashboard-card"><h3 class="font-serif">🎒 Doğum Çantası</h3><div id="checklistDiv" class="grid grid-cols-2 gap-1"></div><button onclick="addChecklistItem()" class="text-clay text-sm mt-2">+ Eşya Ekle</button></div>
+            </div>`;
+        renderKickChart(); renderBabyLogs(); renderBabyNamePoll(); renderChecklist();
+    }
+    function addKick(){ appData.babyKicks.push({date:new Date().toISOString()}); saveDB(); renderBaby(); showToast('💖 Tekme hissedildi!'); }
+    function renderKickChart(){ const ctx=document.getElementById('kickChart')?.getContext('2d'); if(ctx){ const last7=Array(7).fill(0); for(let i=0;i<7;i++){ const d=new Date(); d.setDate(d.getDate()-i); last7[6-i]=appData.babyKicks.filter(k=>new Date(k.date).toDateString()===d.toDateString()).length; } new Chart(ctx,{type:'bar',data:{labels:['-6','-5','-4','-3','-2','-1','Bugün'],datasets:[{label:'Tekme',data:last7,backgroundColor:'#b87b5a'}]}}); } }
+    function addFeeding(){ appData.babyFeeds.push({time:new Date().toLocaleTimeString()}); saveDB(); renderBabyLogs(); showToast('🍼 Emzirme kaydedildi'); }
+    function addSleep(){ appData.babySleeps.push({time:new Date().toLocaleTimeString()}); saveDB(); renderBabyLogs(); showToast('😴 Uyku kaydedildi'); }
+    function addPoop(){ appData.babyPoops.push({time:new Date().toLocaleTimeString()}); saveDB(); renderBabyLogs(); showToast('🧷 Bez değişimi kaydedildi'); }
+    function renderBabyLogs(){ const c=document.getElementById('babyLogs'); if(c) c.innerHTML=`🍼 Son: ${appData.babyFeeds.slice(-1)[0]?.time||'-'} | 😴 Son: ${appData.babySleeps.slice(-1)[0]?.time||'-'}`; }
+    function renderBabyNamePoll(){ const c=document.getElementById('pollDiv'); if(c) c.innerHTML=Object.entries(appData.babyNamePoll.votes).slice(0,10).map(([n,v])=>`<div class="bg-sand/20 rounded p-1"><div class="text-sm">${n}</div><div class="text-xs font-bold">${v}</div><button onclick="voteBabyName('${n}')" class="text-xs bg-clay text-white px-1 rounded-full mt-1">Oy</button></div>`).join(''); }
+    function voteBabyName(name){ appData.babyNamePoll.votes[name]=(appData.babyNamePoll.votes[name]||0)+1; saveDB(); renderBaby(); showToast(`${name} oy aldı`); }
+    function addNewBabyName(){ const opt=document.getElementById('newBabyName')?.value; if(opt && !appData.babyNamePoll.options.includes(opt)){ appData.babyNamePoll.options.push(opt); appData.babyNamePoll.votes[opt]=0; saveDB(); renderBaby(); showToast(`${opt} eklendi`); } }
+    function renderChecklist(){ const c=document.getElementById('checklistDiv'); if(c) c.innerHTML=appData.birthChecklist.map((item,i)=>`<div><input type="checkbox" onchange="toggleChecklist(${i})" ${item.checked?'checked':''}> ${item.item}</div>`).join(''); }
+    function toggleChecklist(i){ appData.birthChecklist[i].checked=!appData.birthChecklist[i].checked; saveDB(); renderBaby(); }
+    function addChecklistItem(){ const item=prompt('Eşya:'); if(item){ appData.birthChecklist.push({item,checked:false}); saveDB(); renderBaby(); } }
+
+    // ========== AİLE ==========
+    function renderFamily(){
+        document.getElementById('sectionContent').innerHTML = `
+            <div class="fade-slide space-y-4">
+                <div class="dashboard-card"><h3 class="font-serif">✅ Görevler</h3><div class="flex gap-2"><input id="taskName" placeholder="Yeni görev" class="flex-1 border rounded-full px-3 py-1 text-sm"><button onclick="addFamilyTask()" class="bg-clay text-white px-3 py-1 rounded-full text-sm">Ekle</button></div><div id="taskList" class="mt-2"></div><div id="chorePoints" class="mt-2 text-sm bg-sand/30 p-2 rounded-xl text-center"></div></div>
+                <div class="dashboard-card"><h3 class="font-serif">🎓 Ödevler</h3><div class="flex gap-2"><input id="hwName" placeholder="Ödev" class="flex-1 border rounded-full px-3 py-1 text-sm"><input type="date" id="hwDue" class="border rounded-full px-2 py-1 text-sm"><button onclick="addHomework()" class="bg-clay text-white px-3 py-1 rounded-full text-sm">Ekle</button></div><div id="homeworkList" class="mt-2 text-sm"></div></div>
+                <div class="dashboard-card"><h3 class="font-serif">🏆 Puan Lideri</h3><div id="leaderboard" class="text-center"></div><button onclick="giveAward()" class="bg-clay text-white px-3 py-1 rounded-full text-sm mt-2">🏅 Ödül Ver</button></div>
+            </div>`;
+        renderFamilyTasks(); renderHomework(); renderLeaderboard();
+    }
+    function addFamilyTask(){ const n=document.getElementById('taskName')?.value; if(n){ appData.tasks.push({name:n,completed:false}); saveDB(); renderFamilyTasks(); showToast('Görev eklendi'); } }
+    function renderFamilyTasks(){ const c=document.getElementById('taskList'); if(c) c.innerHTML=appData.tasks.map((t,i)=>`<div><input type="checkbox" onchange="completeTask(${i})" ${t.completed?'checked':''}> ${t.name}</div>`).join(''); const points=document.getElementById('chorePoints'); if(points) points.innerHTML=`🏆 Puanlar: ${Object.entries(appData.choresPoints).map(([n,p])=>`${n}:${p}`).join(' | ')}`; }
+    function completeTask(i){ appData.tasks[i].completed=!appData.tasks[i].completed; if(appData.tasks[i].completed) appData.choresPoints[appData.currentMember]=(appData.choresPoints[appData.currentMember]||0)+10; saveDB(); renderFamilyTasks(); renderLeaderboard(); showToast('+10 puan!'); }
+    function addHomework(){ const n=document.getElementById('hwName')?.value, d=document.getElementById('hwDue')?.value; if(n){ appData.schoolAssignments.push({name:n,due:d}); saveDB(); renderHomework(); } }
+    function renderHomework(){ const c=document.getElementById('homeworkList'); if(c) c.innerHTML=appData.schoolAssignments.map(h=>`📚 ${h.name} (${h.due})`).join('<br>') || 'Ödev yok.'; }
+    function renderLeaderboard(){ const sorted=Object.entries(appData.choresPoints).sort((a,b)=>b[1]-a[1]); const c=document.getElementById('leaderboard'); if(c) c.innerHTML=`🏆 ${sorted[0][0]} (${sorted[0][1]} puan)<br>🥈 ${sorted[1][0]} (${sorted[1][1]})<br>🥉 ${sorted[2][0]} (${sorted[2][1]})`; }
+    function giveAward(){ const name=prompt('Kime ödül?'); if(name) showToast(`${name} ödül kazandı!`); }
+
+    // ========== MEDYA ==========
+    let photoDB = JSON.parse(localStorage.getItem('cetin_photosDB')) || [];
+    
+    function renderMedia(){
+        document.getElementById('sectionContent').innerHTML = `
+            <div class="fade-slide space-y-4">
+                <div class="dashboard-card"><h3 class="font-serif">📸 Yerel Fotoğraf Yükle</h3><div class="file-upload" onclick="document.getElementById('photoFileInput').click()"><i class="fas fa-cloud-upload-alt text-3xl text-clay"></i><p class="text-sm">Tıkla ve fotoğraf seç</p><input type="file" id="photoFileInput" accept="image/*" multiple style="display:none" onchange="uploadLocalPhotos()"></div><div id="galleryGrid" class="grid grid-cols-3 gap-2 mt-3 max-h-48 overflow-y-auto"></div></div>
+                <div class="dashboard-card"><h3 class="font-serif">🌐 GOOGLE DRIVE / PHOTOS</h3>
+                    <div class="text-center p-3 bg-blue-50 rounded-xl">
+                        <i class="fab fa-google text-2xl text-blue-600"></i>
+                        <p class="text-sm mt-1">Google hesabınızdan fotoğraf seçin</p>
+                        <button onclick="initGooglePicker()" class="google-btn mt-2"><i class="fab fa-google"></i> Google'dan Seç</button>
+                    </div>
+                    <div id="googlePhotosGrid" class="grid grid-cols-3 gap-2 mt-3 max-h-48 overflow-y-auto"></div>
+                </div>
+                <div class="dashboard-card"><h3 class="font-serif">🎬 Slayt Gösterisi</h3><button onclick="startSlideshow()" class="bg-clay text-white px-4 py-2 rounded-full">▶ Başlat</button><div id="slideshow" class="mt-2 text-center"></div></div>
+            </div>`;
+        renderGallery();
+    }
+    
+    function uploadLocalPhotos(){ const files=document.getElementById('photoFileInput').files; for(let f of files){ const reader=new FileReader(); reader.onload=e=>{ photoDB.push({data:e.target.result,date:new Date().toLocaleDateString()}); localStorage.setItem('cetin_photosDB',JSON.stringify(photoDB)); renderGallery(); showToast(`${f.name} yüklendi`); }; reader.readAsDataURL(f); } }
+    function renderGallery(){ const c=document.getElementById('galleryGrid'); if(c) c.innerHTML=photoDB.slice(-12).map(p=>`<img src="${p.data}" class="w-full h-24 object-cover rounded-lg shadow">`).join(''); }
+    
+    let slideshowInterval=null;
+    function startSlideshow(){ 
+        if(photoDB.length===0){ showToast('Fotoğraf yok'); return; }
+        let idx=0; const slideshowDiv=document.getElementById('slideshow');
+        if(slideshowInterval) clearInterval(slideshowInterval);
+        slideshowInterval=setInterval(()=>{ slideshowDiv.innerHTML=`<img src="${photoDB[idx].data}" class="w-full h-48 object-cover rounded-xl shadow">`; idx=(idx+1)%photoDB.length; },3000);
+        showToast('Slayt başladı');
+    }
+
+    // ========== KONUM ==========
+    let userLat=null, userLng=null, map=null;
+    function renderLocation(){
+        document.getElementById('sectionContent').innerHTML = `
+            <div class="fade-slide space-y-4">
+                <div class="dashboard-card"><h3 class="font-serif">📍 Canlı Konum</h3><button onclick="getCurrentLocation()" class="bg-clay text-white px-4 py-2 rounded-full w-full"><i class="fas fa-location-dot"></i> Konumumu Al</button><div id="liveMap" style="height:280px; border-radius:16px;" class="mt-3"></div></div>
+                <div class="dashboard-card"><h3 class="font-serif">🚨 Acil Durum</h3><button onclick="emergencyAlert()" class="bg-red-500 text-white px-4 py-2 rounded-full w-full"><i class="fas fa-sos"></i> SOS ACİL</button></div>
+            </div>`;
+        initLiveMap();
+    }
+    function getCurrentLocation(){ if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ userLat=pos.coords.latitude; userLng=pos.coords.longitude; if(map) map.setView([userLat,userLng],14); L.marker([userLat,userLng]).addTo(map).bindPopup('Ben buradayım').openPopup(); showToast('Konum alındı'); }); } else showToast('GPS desteklenmiyor'); }
+    function initLiveMap(){ const mapDiv=document.getElementById('liveMap'); if(mapDiv){ map=L.map('liveMap').setView([41.0082,28.9784],13); L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map); } }
+    function emergencyAlert(){ showToast('🚨 ACİL! Konum tüm aileye gönderildi.'); if(userLat) window.open(`https://www.google.com/maps?q=${userLat},${userLng}`); }
+
+    // ========== ERP ==========
+    function renderERP(){
+        const totalExpense=appData.budget.reduce((s,b)=>s+b.amount,0);
+        document.getElementById('sectionContent').innerHTML = `
+            <div class="fade-slide space-y-4">
+                <div class="dashboard-card"><h3 class="font-serif">💰 Bütçe Takibi</h3><div class="flex gap-2"><input id="expDesc" placeholder="Harcama" class="flex-1 border rounded-full px-3 py-1 text-sm"><input type="number" id="expAmount" placeholder="TL" class="border rounded-full px-3 py-1 text-sm w-28"><button onclick="addExpense()" class="bg-clay text-white px-3 py-1 rounded-full text-sm">Ekle</button></div><canvas id="budgetChart" height="120" class="mt-2"></canvas><p class="text-center">Toplam: ${totalExpense} TL</p></div>
+            </div>`;
+        renderBudgetChart();
+    }
+    function addExpense(){ const d=document.getElementById('expDesc')?.value, a=parseFloat(document.getElementById('expAmount')?.value); if(d&&a){ appData.budget.push({desc:d,amount:a}); saveDB(); renderERP(); showToast('Kaydedildi'); } }
+    function renderBudgetChart(){ const ctx=document.getElementById('budgetChart')?.getContext('2d'); if(ctx && appData.budget.length){ new Chart(ctx,{type:'doughnut',data:{labels:appData.budget.map(b=>b.desc),datasets:[{data:appData.budget.map(b=>b.amount),backgroundColor:['#b87b5a','#e8d5c4','#d4dfc9']}]}}); } }
+
+    loadDB(); renderMainApp();
+</script>
+</body>
+</html>
