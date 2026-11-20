@@ -110,6 +110,21 @@ elif STYLE == "acoustic":
             mel = [c[2] + 12, c[1] + 12, c[0] + 12, c[1] + 12, c[2] + 12, c[2] + 12]
             for i, p in enumerate(mel): note(t0 + i * .5 + .5, 3, p, .45, 70)
         for i in (0, 1, 2, 3): note(t0 + i, 2, c[i % 3] + 12, .3, 45)  # pizzicato
+elif STYLE == "chip":
+    bpm = 140
+    prog(0, 80); prog(1, 38); prog(2, 81)
+    P = [("C4", "maj"), ("A3", "min"), ("F3", "maj"), ("G3", "maj")]
+    bars = int(DUR * bpm / 240) + 2
+    for b in range(bars):
+        root, kind = P[b % 4]; c = chord(root, kind); t0 = b * 4
+        for i in range(4): note(t0 + i, DR, KICK, .2, 110); note(t0 + i + .5, DR, HAT, .1, 60)
+        note(t0 + 1, DR, SNARE, .2, 95); note(t0 + 3, DR, SNARE, .2, 95)
+        for i in range(8): note(t0 + i * .5, 1, c[0] - 24 + (7 if i % 4 == 2 else 0), .4, 95)
+        arp = [c[0], c[1], c[2], c[1] + 12, c[2], c[1], c[0] + 12, c[2]]
+        for i, p in enumerate(arp): note(t0 + i * .5, 2, p + 12, .25, 55)
+        if b >= 1:
+            mel = [c[2] + 12, c[2] + 12, c[1] + 12, c[2] + 12, c[0] + 24, c[2] + 12, c[1] + 12, c[0] + 12]
+            for i, p in enumerate(mel): note(t0 + i * .5, 0, p, .4, 80)
 else:
     raise SystemExit("unknown style " + STYLE)
 

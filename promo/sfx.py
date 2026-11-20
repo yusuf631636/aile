@@ -55,4 +55,23 @@ c = np.zeros(int(SR * 1.0))
 for i, f in enumerate((1046.5, 1318.5, 1568, 2093)):
     x = bell(f, .6, 6); s = int(SR * i * .08); c[s:s + len(x)] += x
 save("success", c)
+# thermal printer line (short buzzy stepper burst)
+t = tt(.22)
+buzz = np.sign(np.sin(2 * np.pi * 1900 * t)) * 0.25 + rng.standard_normal(len(t)) * 0.35
+gate = (np.sin(2 * np.pi * 38 * t) > -0.2).astype(float)
+save("print", buzz * gate * np.minimum(1, t / .01) * np.minimum(1, (t[-1] - t) / .03))
+
+# paper tear
+t = tt(.5)
+save("tear", rng.standard_normal(len(t)) * np.exp(-t * 6) * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * t)))
+# chiptune coin + level-up (square waves)
+def sq(f, sec, vol=1.0):
+    t = tt(sec); return np.sign(np.sin(2 * np.pi * f * t)) * vol * np.exp(-t * 4)
+c = np.zeros(int(SR * .4)); a = sq(988, .08); b = sq(1319, .27)
+c[:len(a)] += a; c[int(SR * .08):int(SR * .08) + len(b)] += b
+save("coin", c * .5)
+c = np.zeros(int(SR * 1.0))
+for i, f in enumerate((523, 659, 784, 1047, 1319)):
+    x = sq(f, .18); s0 = int(SR * i * .1); c[s0:s0 + len(x)] += x
+save("levelup", c * .5)
 print("sfx ok")
