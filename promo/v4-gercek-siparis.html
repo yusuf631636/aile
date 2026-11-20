@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>GetirTrend – Gerçek Sipariş</title><link rel="stylesheet" href="engine.css">
+<style>
+  .tap { position: absolute; width: 110px; height: 110px; border-radius: 50%; background: rgba(255,255,255,.55);
+    border: 6px solid rgba(255,255,255,.95); box-shadow: 0 10px 30px rgba(0,0,0,.35); z-index: 30; opacity: 0; pointer-events: none; }
+  .rest-hero { height: 300px; background: linear-gradient(135deg,#ff9a3d,#e8542f); display: flex; align-items: flex-end; padding: 30px; color: #fff; }
+  .rest-hero b { font-size: 52px; letter-spacing: -1px; display: block; }
+  .rest-hero span { font-size: 28px; font-weight: 700; opacity: .95; }
+  .add { width: 70px; height: 70px; border-radius: 20px; background: var(--accent); font-weight: 900; font-size: 44px; display: flex; align-items: center; justify-content: center; }
+  .cartbar { position: absolute; left: 26px; right: 26px; bottom: 30px; background: var(--bg2); color: #fff; border-radius: 28px;
+    padding: 28px 32px; display: flex; justify-content: space-between; font-weight: 900; font-size: 36px; }
+  .menu-item b { font-size: 31px; } .menu-item em { white-space: nowrap; font-size: 31px; }
+  .big-alert { position: absolute; inset: 0; background: var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--cardInk); }
+  .track { width: 880px; }
+  .trow { display: flex; align-items: center; gap: 30px; margin: 26px 0; font-size: 54px; font-weight: 800; }
+  .tdot { width: 96px; height: 96px; border-radius: 50%; background: rgba(255,255,255,.15); border: 4px solid rgba(255,255,255,.3); display: flex; align-items: center; justify-content: center; font-size: 50px; flex: none; }
+  .road { position: relative; width: 880px; height: 140px; margin-top: 30px; }
+  .road .line { position: absolute; left: 0; right: 0; top: 70px; height: 10px; border-radius: 6px; background: rgba(255,255,255,.2); }
+  .road .fill { position: absolute; left: 0; top: 70px; height: 10px; border-radius: 6px; background: var(--accent); }
+</style></head>
+<body>
+<div id="stage">
+  <div class="blob" style="width:760px;height:760px;background:#1fbf86"></div>
+  <div class="blob" style="width:620px;height:620px;background:#ffb020"></div>
+  <div class="vignette"></div>
+
+  <div class="scene" id="d1" data-voice="Saat akşam yedi. Müşteriniz acıktı." data-sfx="pop:0.3">
+    <div class="kicker" data-in="0.1">Bir sipariş hikâyesi</div>
+    <div class="gap"></div>
+    <div style="font-weight:200;font-size:300px;letter-spacing:-12px;line-height:1" data-in="0.2" data-anim="pop" id="clock">19:00</div>
+    <div class="gap"></div>
+    <div class="h2" data-in="1.0">Müşteriniz acıktı <span style="font-size:90px">😋</span></div>
+  </div>
+
+  <div class="scene" id="d2" data-voice="Getir Trend'i açtı, sizin restoranınızı seçti." data-min="4.6" data-sfx="tap:2.25;tap:3.05;tap:3.75">
+    <div class="h2" data-in="0.2" style="font-size:66px">Restoranınızı seçti 👆</div>
+    <div class="gap-s"></div>
+    <div class="phone" data-in="0" data-anim="rise" data-d="0.7"><div class="notch"></div><div class="screen">
+      <div class="rest-hero"><div><b>Lezzet Durağı</b><span>⭐ 4.8 · Pide & Lahmacun · 25-35 dk</span></div></div>
+      <div class="app-body">
+        <div class="menu-item"><i>🫓</i><b>Lahmacun</b><em style="margin-right:16px">₺ 120</em><div class="add" id="add1">+</div></div>
+        <div class="menu-item"><i>🍕</i><b>Kıymalı Pide</b><em style="margin-right:16px">₺ 210</em><div class="add">+</div></div>
+        <div class="menu-item"><i>🥛</i><b>Ayran</b><em style="margin-right:16px">₺ 30</em><div class="add" id="add3">+</div></div>
+        <div class="menu-item"><i>🍮</i><b>Sütlaç</b><em style="margin-right:16px">₺ 85</em><div class="add">+</div></div>
+      </div>
+      <div class="cartbar" id="cartbar"><span id="cartN">Sepet (0)</span><span id="cartT">₺ 0</span></div>
+      <div class="tap" id="tap2"></div>
+    </div></div>
+  </div>
+
+  <div class="scene" id="d3" data-voice="Sepetini doldurdu ve siparişi verdi." data-min="3.6" data-sfx="tap:1.2;success:1.5">
+    <div class="h2" data-in="0.1" style="font-size:66px">Siparişi verdi ✅</div>
+    <div class="gap-s"></div>
+    <div class="phone" data-in="0" data-anim="pop" data-d="0.4"><div class="notch"></div><div class="screen">
+      <div class="app-top">Sepetim</div>
+      <div class="app-body">
+        <div class="menu-item"><i>🫓</i><b>2× Lahmacun</b><em>₺ 240</em></div>
+        <div class="menu-item"><i>🥛</i><b>1× Ayran</b><em>₺ 30</em></div>
+        <div class="menu-item"><i>🛵</i><b>Teslimat</b><em>₺ 90</em></div>
+        <div style="display:flex;justify-content:space-between;font-size:44px;font-weight:900;margin:30px 6px">
+          <span>Toplam</span><span>₺ 360</span></div>
+        <div class="app-btn" id="orderBtn" style="font-size:40px;padding:32px">Siparişi Onayla</div>
+      </div>
+      <div class="big-alert" id="okScreen" style="background:#1fbf86;color:#fff;opacity:0">
+        <div style="font-size:200px;line-height:1" id="okIcon">✓</div>
+        <div style="font-size:56px;font-weight:900;margin-top:30px">Siparişin alındı!</div>
+        <div style="font-size:34px;font-weight:600;opacity:.9;margin-top:12px">Lezzet Durağı hazırlıyor</div>
+      </div>
+      <div class="tap" id="tap3"></div>
+    </div></div>
+  </div>
+
+  <div class="scene" id="d4" data-voice="Ve sipariş, anında restoranınızda." data-min="3.8" data-sfx="ding:0.35;ding:1.3;tap:2.5">
+    <div class="kicker" data-in="0.05">Restoran tarafı</div>
+    <div class="gap-s"></div>
+    <div class="phone" data-in="0" data-anim="pop" data-d="0.4" id="ringPhone"><div class="notch"></div><div class="screen">
+      <div class="big-alert" id="ring">
+        <div style="font-size:150px" id="bell">🔔</div>
+        <div style="font-size:66px;font-weight:900;letter-spacing:-2px;margin-top:20px">YENİ SİPARİŞ!</div>
+        <div style="font-size:40px;font-weight:700;margin-top:16px">2× Lahmacun · 1× Ayran</div>
+        <div style="font-size:84px;font-weight:900;margin-top:24px">₺ 360</div>
+        <div style="background:#10241c;color:#fff;font-weight:900;font-size:44px;padding:30px 80px;border-radius:999px;margin-top:50px" id="accept">Kabul Et</div>
+      </div>
+      <div class="tap" id="tap4"></div>
+    </div></div>
+  </div>
+
+  <div class="scene" id="d5" data-voice="Hazırlandı, yola çıktı, teslim edildi." data-min="4.2" data-sfx="pop:0.4;pop:1.4;pop:2.6;success:3.0">
+    <div class="h2" data-in="0.05">Sipariş durumu</div>
+    <div class="gap"></div>
+    <div class="track">
+      <div class="trow" id="r1"><div class="tdot">👨‍🍳</div>Hazırlanıyor</div>
+      <div class="trow" id="r2"><div class="tdot">🛵</div>Yolda</div>
+      <div class="trow" id="r3"><div class="tdot">🏠</div>Teslim edildi</div>
+      <div class="road"><div class="line"></div><div class="fill" id="fill"></div>
+        <div id="moto" style="position:absolute;top:0;font-size:110px;transform:scaleX(-1)">🛵</div></div>
+    </div>
+  </div>
+
+  <div class="scene" id="d6" data-voice="Ödeme, doğrudan kasanıza." data-min="3.2" data-sfx="cash:0.9">
+    <div class="h1" data-in="0.05">Ödeme<br><span class="hl">doğrudan kasanıza</span></div>
+    <div class="gap-l"></div>
+    <div style="position:relative;width:520px;height:380px" data-in="0.3" data-anim="pop">
+      <div id="coins4"></div>
+      <svg viewBox="0 0 440 240" width="520" height="284" style="position:absolute;left:0;bottom:0">
+        <rect x="10" y="40" width="420" height="190" rx="30" fill="#fff"/>
+        <rect x="40" y="70" width="360" height="64" rx="14" fill="#e6f6ef"/>
+        <text x="220" y="116" text-anchor="middle" font-family="Inter" font-weight="900" font-size="42" fill="#0f7a55" id="till4">₺ 0</text>
+        <rect x="150" y="18" width="140" height="24" rx="8" fill="#ffd27a"/>
+        <g fill="#cfe0d9"><circle cx="100" cy="185" r="15"/><circle cx="160" cy="185" r="15"/><circle cx="220" cy="185" r="15"/><circle cx="280" cy="185" r="15"/><circle cx="340" cy="185" r="15"/></g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="scene" id="d7" data-voice="Sıradaki sipariş sizin olsun. Restoranınızı ücretsiz ekleyin: Getir Trend nokta kom, bölü, restoran ol." data-sfx="whoosh:0">
+    <div class="logo" data-in="0.1" data-anim="pop" data-d="0.8">Getir<span>Trend</span></div>
+    <div class="gap"></div>
+    <div class="h2" data-in="0.5">Sıradaki sipariş<br><span class="hl">sizin olsun</span></div>
+    <div class="gap-l"></div>
+    <div class="url" data-in="1.6" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap"></div>
+    <div class="btn" data-in="2.2" data-anim="pop" id="cta4">Ücretsiz Ekle →</div>
+  </div>
+
+  <div class="progress"></div>
+</div>
+<script>window.DEFAULT_DURS = [3.4, 4.6, 3.6, 3.8, 4.2, 3.2, 7];</script>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  // centre of element relative to its .screen (layout offsets ignore CSS transforms)
+  function pos(el) { let x = el.offsetWidth / 2, y = el.offsetHeight / 2, n = el;
+    while (n && !n.classList.contains('screen')) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return [x, y]; }
+  // tap indicator: centred on (x,y) inside its phone screen, pressed at time `at`
+  function tap(el, lt, at, x, y, from) {
+    const k = clamp((lt - at + 0.45) / 0.45), press = clamp((lt - at) / 0.25);
+    const fx = from ? from[0] : x, fy = from ? from[1] : y + 120;
+    if (lt < at - 0.45 || lt > at + 0.45) { if (from && lt > at + 0.45) return; el.style.opacity = 0; return; }
+    const e = easeOut(k);
+    el.style.left = (fx + (x - fx) * e - 55) + 'px'; el.style.top = (fy + (y - fy) * e - 55) + 'px';
+    el.style.opacity = lt < at ? e : 1 - press;
+    el.style.transform = `scale(${lt < at ? 1 : 1 - 0.3 * Math.sin(press * Math.PI)})`;
+  }
+  HOOKS.d1 = (lt) => {
+    const m = Math.min(2, Math.floor(clamp((lt - 0.6) / 1.2) * 3));
+    $('clock').textContent = '19:0' + m;
+  };
+  HOOKS.d2 = (lt) => {
+    const taps = [2.25, 3.05, 3.75], targets = [pos($('add1')), pos($('add1')), pos($('add3'))];
+    const el = $('tap2'); el.style.opacity = 0;
+    taps.forEach((at, i) => { if (lt > at - 0.45 && lt < at + 0.45) tap(el, lt, at, targets[i][0], targets[i][1]); });
+    const n = taps.filter(a => lt >= a).length, prices = [120, 120, 30];
+    const total = prices.slice(0, n).reduce((a, b) => a + b, 0);
+    $('cartN').textContent = `Sepet (${n})`; $('cartT').textContent = '₺ ' + total;
+    const bump = taps.reduce((s, a) => s + (lt > a && lt < a + 0.25 ? Math.sin((lt - a) / 0.25 * Math.PI) : 0), 0);
+    $('cartbar').style.transform = `scale(${1 + 0.06 * bump})`;
+    ['add1', 'add3'].forEach((id, j) => {
+      const at = j ? taps[2] : taps[0], hit = lt > at && lt < at + 0.2;
+      $(id).style.background = hit ? '#1fbf86' : '#ffb020';
+    });
+  };
+  HOOKS.d3 = (lt) => {
+    tap($('tap3'), lt, 1.2, ...pos($('orderBtn')));
+    const ok = clamp((lt - 1.45) / 0.3);
+    $('okScreen').style.opacity = ok;
+    $('okIcon').style.transform = `scale(${0.3 + 0.7 * back(clamp((lt - 1.5) / 0.5))})`;
+    $('orderBtn').style.transform = `scale(${lt > 1.2 && lt < 1.45 ? 0.95 : 1})`;
+  };
+  HOOKS.d4 = (lt) => {
+    const ringing = lt < 2.5;
+    $('bell').style.transform = ringing ? `rotate(${Math.sin(lt * 28) * 18}deg)` : 'none';
+    $('ringPhone').style.translate = ringing && lt > 0.3 ? `${Math.sin(lt * 70) * 6}px 0` : '0 0';
+    tap($('tap4'), lt, 2.5, ...pos($('accept')));
+    const acc = lt > 2.55;
+    $('accept').textContent = acc ? '✓ Kabul edildi' : 'Kabul Et';
+    $('accept').style.background = acc ? '#0f7a55' : '#10241c';
+    $('ring').style.background = acc ? '#ffd27a' : (Math.floor(lt * 3) % 2 && ringing ? '#ffc04d' : '#ffb020');
+  };
+  HOOKS.d5 = (lt) => {
+    const at = [0.4, 1.4, 2.6];
+    ['r1', 'r2', 'r3'].forEach((id, i) => {
+      const k = clamp((lt - at[i]) / 0.3), r = $(id), dot = r.firstElementChild;
+      r.style.opacity = 0.35 + 0.65 * k;
+      dot.style.background = k > 0 ? '#ffb020' : 'rgba(255,255,255,.15)';
+      dot.style.transform = `scale(${k > 0 && k < 1 ? 1 + 0.25 * Math.sin(k * Math.PI) : 1})`;
+    });
+    const p = easeOut(clamp((lt - 1.4) / 1.3));
+    $('fill').style.width = (p * 880) + 'px';
+    $('moto').style.left = (p * 760) + 'px';
+    $('moto').style.top = (Math.sin(lt * 20) * 3) + 'px';
+  };
+  const coins = $('coins4');
+  for (let i = 0; i < 5; i++) coins.insertAdjacentHTML('beforeend',
+    `<div style="position:absolute;width:104px;height:104px;border-radius:50%;background:#ffb020;border:8px solid #ffd27a;color:#7a4b00;font:900 52px Inter;display:flex;align-items:center;justify-content:center">₺</div>`);
+  HOOKS.d6 = (lt) => {
+    [...coins.children].forEach((c, i) => {
+      const k = clamp((lt - 0.5 - i * 0.12) / 0.45), e = easeOut(k);
+      c.style.left = (208 + (i - 2) * 30) + 'px'; c.style.top = (-320 + e * 330) + 'px';
+      c.style.opacity = k > 0 && k < 1 ? 1 : 0;
+    });
+    $('till4').textContent = '₺ ' + Math.round(360 * easeOut((lt - 0.5) / 0.9));
+  };
+  HOOKS.d7 = (lt) => { if (lt > 2.8) $('cta4').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.8) * 7)})`; };
+</script>
+</body>
+</html>
