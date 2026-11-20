@@ -53,7 +53,7 @@
       if (!on) return;
       const inK = i === 0 ? 1 : easeOut(lt / TR), outK = last ? 1 : clamp((s.dur - lt) / TR);
       s.el.style.opacity = Math.min(inK, outK);
-      const drift = 1 + 0.025 * (lt / s.dur);
+      const drift = s.el.dataset.static ? 1 : 1 + 0.025 * (lt / s.dur);
       s.el.style.transform = `scale(${drift * (1 + 0.06 * (1 - outK))}) translateY(${(1 - inK) * 40}px)`;
       s.el.querySelectorAll('[data-in]').forEach(el => animEl(el, lt));
       const hook = H[s.el.id]; if (hook) hook(lt, s.dur, s.el);
@@ -64,7 +64,7 @@
 
   // ambient decoration
   const st = $('#stage');
-  for (let i = 0; i < 18; i++) { const d = document.createElement('div'); d.className = 'dot'; const r = 6 + (i * 5) % 12; d.style.width = d.style.height = r + 'px'; st.prepend(d); }
+  if (document.body.dataset.dots !== 'off') for (let i = 0; i < 18; i++) { const d = document.createElement('div'); d.className = 'dot'; const r = 6 + (i * 5) % 12; d.style.width = d.style.height = r + 'px'; st.prepend(d); }
 
   // live preview with default timings when opened in a browser
   window.addEventListener('load', () => {
