@@ -16,7 +16,7 @@
   background-size: 80px 80px, 80px 80px; background-position: 0 0, 40px 40px; }
 .msgs { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 28px 30px; display: flex; flex-direction: column; }
 .daychip { align-self: center; background: #fff; color: #54656f; font-size: 28px; font-weight: 600; padding: 10px 26px; border-radius: 16px; margin: 20px 0 6px; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
-.w { overflow: hidden; height: 0; flex: none; }
+.mw { overflow: hidden; height: 0; flex: none; }
 .L, .R { display: flex; }
 .R { justify-content: flex-end; }
 .bub { text-align: left; max-width: 830px; font-size: 45px; line-height: 1.3; padding: 18px 28px 14px; border-radius: 34px; margin-top: 16px;
@@ -38,7 +38,7 @@
 .inbar { position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: #f0f2f5; display: flex; align-items: center; gap: 22px; padding: 0 26px 40px; }
 .inbar .em { font-size: 56px; color: #54656f; }
 .field { text-align: left; flex: 1; background: #fff; border-radius: 60px; font-size: 44px; padding: 28px 40px; color: #111b21; min-height: 110px; white-space: nowrap; overflow: hidden; }
-.field.ph { color: #8696a0; }
+.field.phd { color: #8696a0; }
 .send { width: 110px; height: 110px; border-radius: 50%; background: #0f5c45; color: #fff; font-size: 50px; display: flex; align-items: center; justify-content: center; flex: none; }
 .caret { display: inline-block; width: 4px; height: 50px; background: #0f5c45; vertical-align: -8px; margin-left: 2px; }
 .notifB { position: absolute; left: 26px; right: 26px; top: 16px; background: rgba(250,250,250,.97); border-radius: 36px; padding: 26px 28px;

@@ -12,7 +12,7 @@
     <div class="wall"><div class="msgs" id="msgs"><div class="daychip">Bugün</div></div><div class="typing" id="typing"><i></i><i></i><i></i></div>
       ${(C.notifs || []).map((n, i) => `<div class="notifB" id="nb${i}"><img src="assets/logo-mark.svg"><div><div class="h"><b>getirtrend</b><span>şimdi</span></div><div class="t">${n.title}</div><div class="s">${n.body}</div></div></div>`).join('')}
     </div>
-    <div class="inbar"><div class="em">${ic('smile')}</div><div class="field ph" id="field">Mesaj</div><div class="send">${ic('send')}</div></div>
+    <div class="inbar"><div class="em">${ic('smile')}</div><div class="field phd" id="field">Mesaj</div><div class="send">${ic('send')}</div></div>
     ${C.msgs.map((m, i) => m.zoom ? `<div class="viewer" id="vw${i}"><div class="vh">${ic('arrow-left')}<div><b>${m.s === 'R' ? 'Siz' : (m.from || C.name)}</b><br><span style="opacity:.7">Bugün ${clock(m.t)}</span></div></div><img src="${m.img}"></div>` : '').join('')}`;
   const box = $('msgs');
   C.msgs.forEach((m, i) => {
@@ -21,7 +21,7 @@
     if (m.img) inner = `<div class="bub img">${from}<img src="${m.img}" style="height:${m.h || 640}px">${m.cap ? `<div class="cap">${m.cap}</div>` : ''}<small style="padding:0 12px">${clock(m.t)}</small></div>`;
     else if (m.link) inner = `<div class="bub" style="padding:12px 12px 12px">${from}<div class="link"><img src="assets/ui/basvur-og.jpg"><div class="tx"><b>Restoranınızı getirtrend Yemek’e ekleyin</b><em>getirtrend.com</em></div></div><div style="padding:0 12px">${m.text ? m.text + '\n' : ''}<span class="url-t">getirtrend.com/restoran-ol</span></div><small>${clock(m.t)}</small></div>`;
     else inner = `<div class="bub">${from}${m.text}<small>${clock(m.t)}</small></div>`;
-    box.insertAdjacentHTML('beforeend', `<div class="w" id="m${i}"><div class="${m.s}">${inner}</div></div>`);
+    box.insertAdjacentHTML('beforeend', `<div class="mw" id="m${i}"><div class="${m.s}">${inner}</div></div>`);
   });
   // length + sound cues for the build script
   const cues = [];
@@ -54,7 +54,7 @@
       const full = [...(m.typed || m.text)], p = clamp((lt - m.ty) / Math.max(.3, m.t - m.ty - .3));
       txt = full.slice(0, Math.round(p * full.length)).join('');
     } });
-    if (txt) { f.classList.remove('ph'); f.innerHTML = txt + '<span class="caret"></span>'; } else { f.classList.add('ph'); f.textContent = 'Mesaj'; }
+    if (txt) { f.classList.remove('phd'); f.innerHTML = txt + '<span class="caret"></span>'; } else { f.classList.add('phd'); f.textContent = 'Mesaj'; }
     (C.notifs || []).forEach((n, i) => {
       const nk = easeOut((lt - n.t) / 0.35) * (1 - easeOut((lt - n.t - (n.d || 2)) / 0.35));
       $('nb' + i).style.transform = `translateY(${-420 + 436 * nk}px)`;
