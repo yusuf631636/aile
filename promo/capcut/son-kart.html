@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta charset="UTF-8"><title>getirtrend – Kapanış Kartı</title>
+<link rel="stylesheet" href="../engine.css"><link rel="stylesheet" href="../assets/brand.css"><link rel="stylesheet" href="../ad.css"></head>
+<body data-music="pop" data-dots="off">
+<div id="stage">
+  <div class="scene" id="e" data-dur="5.2" data-sfx="whoosh:0;success:0.6">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:136px"><img src="../assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="cap" data-in="0.4">Restoranınızı<br><em>ücretsiz</em> ekleyin</div>
+    <div class="gap"></div>
+    <div style="display:flex;gap:22px" data-in="0.8" data-anim="up">
+      <img class="photo" src="../assets/pide.jpg" style="width:290px;height:290px;transform:rotate(-4deg);border:8px solid #fff">
+      <img class="photo" src="../assets/lahmacun2.jpg" style="width:290px;height:290px;transform:translateY(-22px);border:8px solid #fff">
+      <img class="photo" src="../assets/kebap.jpg" style="width:290px;height:290px;transform:rotate(4deg);border:8px solid #fff">
+    </div>
+    <div class="gap"></div>
+    <div class="urlb" data-in="1.2" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btnr" data-in="1.6" data-anim="pop" id="cta">Hemen Başvur →</div>
+  </div>
+</div>
+<script>window.DEFAULT_DURS = [5.2];</script>
+<script src="../engine.js"></script>
+<script>HOOKS.e = (lt) => { if (lt > 2.2) document.getElementById('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.2) * 7)})`; };</script>
+</body></html>
