@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head><meta charset="UTF-8"><title>GetirTrend – Önce / Sonra</title><link rel="stylesheet" href="engine.css">
+<head><meta charset="UTF-8"><title>GetirTrend – Önce / Sonra</title><link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
 <style>
   :root { --pink: #ff2d75; --cyan: #22e4ff; --yel: #ffd400; }
   #stage { background: #07070d; }
@@ -44,12 +44,14 @@
 
   <div class="scene" id="f2" data-dur="2.0" data-sfx="whoosh:1.6">
     <div class="h1 neon" id="taki" style="font-size:190px">Ta ki…</div>
+    <div class="gap-l"></div>
+    <div data-in="1.0" data-anim="pop" style="filter:drop-shadow(0 0 30px rgba(215,53,31,.9))"><span class="gt inv" style="font-size:120px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
   </div>
 
   <div class="scene" id="f3" data-static="1" data-dur="5.6" data-sfx="pop:0;ding:1.2;ding:2.3;ding:3.4;cash:4.6">
     <div class="lbl neon" style="--c:var(--cyan)" data-in="0.05" data-anim="pop">SONRA</div>
     <div class="shop" id="shopB"></div>
-    <div class="cap neon" style="--c:var(--pink)" data-in="0.5">GetirTrend'e katıldı,<br><span style="color:var(--yel)">siparişler yağdı!</span></div>
+    <div class="cap neon" style="--c:var(--pink)" data-in="0.5">getirtrend'e katıldı,<br><span style="color:var(--yel)">siparişler yağdı!</span></div>
     <div class="flashW" id="flash" style="position:absolute;inset:0;background:#fff;opacity:0"></div>
   </div>
 
@@ -76,7 +78,7 @@
     <div class="gap-l"></div>
     <div class="btnN" data-in="1.8" data-anim="pop" id="ctaN">Hemen Başvur →</div>
     <div class="gap-l"></div>
-    <div style="font-weight:900;font-size:80px;letter-spacing:-3px" data-in="2.4">Getir<span style="color:var(--yel)">Trend</span></div>
+    <div data-in="2.4" data-anim="pop"><span class="gt inv" style="font-size:96px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
   </div>
 </div>
 <script>window.DEFAULT_DURS = [4, 2, 5.6, 5, 5.6];</script>
@@ -89,7 +91,7 @@
     <div class="clockW"><div class="hand" id="${id}h" style="height:70px;margin:-70px 0 0 -4px"></div><div class="hand" id="${id}m" style="height:90px;margin:-90px 0 0 -4px;width:6px"></div></div>
     ${[180, 450, 720].map(x => `<div class="lamp" style="left:${x}px"></div><div class="bulb" style="left:${x}px"></div><div class="glow" style="left:${x}px"></div>`).join('')}
     <div class="counter"></div>
-    <div class="phone2" id="${id}p"><b id="${id}n">0</b>sipariş</div>
+    <div class="phone2" id="${id}p"><img src="assets/logo-mark.svg" style="width:56px;height:56px;border-radius:14px;margin-bottom:8px"><b id="${id}n">0</b>sipariş</div>
     <div class="printer"></div><div class="paper" id="${id}r">
       <div style="text-align:center">GETİRTREND</div><div>SİPARİŞ #1024</div><div>2× Lahmacun  240</div><div>1× Ayran      30</div><div>Teslimat      90</div><div>-------------------</div><div>TOPLAM    ₺ 360</div></div>`;
   $('shopA').innerHTML = shopHTML('a'); $('shopB').innerHTML = shopHTML('b');

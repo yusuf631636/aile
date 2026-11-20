@@ -10,7 +10,9 @@ const fs = require('fs');
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   await page.goto('file://' + path.resolve(html) + '?capture');
-  await page.evaluate(() => document.fonts.ready);
+  // load every declared font face up front so text never renders in a fallback font mid-video
+  await page.evaluate(() => Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))));
+  await page.evaluate(async () => { await Promise.all([...document.fonts].map(f => f.load().catch(() => {}))); await document.fonts.ready; });
   const total = await page.evaluate(d => window.setTimeline(d), JSON.parse(dursJson));
   const n = Math.round((total + 0.8) * fps); // hold the last scene a little after the voice ends
   for (let i = 0; i < n; i++) {

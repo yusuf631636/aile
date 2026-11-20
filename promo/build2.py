@@ -42,9 +42,9 @@ SFX = {k: read_wav(WORK / "sfx" / f"{k}.wav") for k in SFX_GAIN}
 
 for page in PAGES:
     name = page.stem
-    html = page.read_text(encoding="utf-8")
-    body = dict(re.findall(r'(data-[\w-]+)="([^"]*)"', re.search(r"<body[^>]*>", html).group(0)))
-    scenes = [dict(re.findall(r'(data-[\w-]+)="([^"]*)"', t)) for t in re.findall(r'<div class="scene"[^>]*>', html)]
+    meta = json.loads(subprocess.run(["node", str(HERE / "render_meta.js"), str(page)], check=True, capture_output=True, text=True).stdout)
+    body = {"data-music": meta["music"], "data-switch": meta["sw"]}
+    scenes = [{"data-dur": s["dur"], "data-sfx": s["sfx"]} for s in meta["scenes"]]
     durs = [float(s["data-dur"]) for s in scenes]
     total = sum(durs) + 0.5
     wd = WORK / name; wd.mkdir(exist_ok=True)

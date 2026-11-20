@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Esnaf Grubu</title><link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="chat.css">
+<style>
+  #out { background: var(--gt-blush); color: var(--gt-ink); }
+  #out .photos { display: flex; gap: 22px; }
+  #out .photos img { width: 300px; height: 300px; border-radius: 34px; object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,.25); border: 8px solid #fff; }
+</style></head>
+<body data-music="acoustic" data-dots="off">
+<div id="stage">
+  <div class="scene" id="chat" data-static="1"></div>
+  <div class="scene" id="out" data-dur="5.6" data-sfx="whoosh:0;success:0.5">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:128px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="h2 jak" data-in="0.5">Çarşıda herkes<br><span style="color:var(--gt-red)">getirtrend'de</span></div>
+    <div class="gap"></div>
+    <div class="photos" data-in="0.9" data-anim="up">
+      <img src="assets/lahmacun.jpg" style="transform:rotate(-4deg)"><img src="assets/adana.jpg" style="transform:translateY(-24px)"><img src="assets/baklava.jpg" style="transform:rotate(4deg)">
+    </div>
+    <div class="gap"></div>
+    <div class="url jak" data-in="1.3" data-anim="pop" style="background:var(--gt-ink);color:#fff">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btn jak" data-in="1.8" data-anim="pop" id="cta" style="background:var(--gt-red);color:#fff;box-shadow:0 24px 60px rgba(215,53,31,.4)">Restoranını Ekle →</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+window.CHAT = {
+  name: 'Çarşı Esnafları 🤝', sub: 'Ahmet, Kemal, Selim, Siz', avatar: 'assets/lahmacun3.jpg', clockStart: 20 * 60 + 52, end: 25.2, group: true,
+  members: { 'Ahmet · Kebapçı': '#c2410c', 'Kemal · Tatlıcı': '#7c3aed', 'Selim · Dönerci': '#0369a1' },
+  msgs: [
+    { s: 'L', from: 'Ahmet · Kebapçı', t: 1.1, text: 'Arkadaşlar bu akşam durum nasıl? Bizde sinek avlıyoruz 😅' },
+    { s: 'L', from: 'Kemal · Tatlıcı', t: 2.7, text: 'Bizde de sessiz valla' },
+    { s: 'R', t: 4.5, ty: 3.3, text: 'Bizde telefon susmuyor çok şükür 🙏' },
+    { s: 'L', from: 'Selim · Dönerci', t: 5.9, text: 'Nasıl yani? 😮' },
+    { s: 'R', t: 7.6, ty: 6.4, text: "getirtrend'e geçtim, siparişler oradan geliyor" },
+    { s: 'R', t: 8.6, img: 'assets/ui/lock.jpg', h: 760, cap: 'Son yarım saat 👇', zoom: [9.1, 11.3] },
+    { s: 'L', from: 'Ahmet · Kebapçı', t: 12.6, text: 'Maşallah! Kurulumu zor mu?' },
+    { s: 'R', t: 14.4, ty: 13.2, text: 'Hiç zor değil, menüyü resimleriyle onlar yüklüyor' },
+    { s: 'R', t: 16.0, ty: 14.8, text: 'Siparişler AlfaPOS kasaya düşüyor, fiş yazıcıdan çıkıyor 👌' },
+    { s: 'L', from: 'Kemal · Tatlıcı', t: 17.4, text: 'Başvuru nereden?' },
+    { s: 'R', t: 19.0, ty: 17.9, link: true, typed: 'getirtrend.com/restoran-ol' },
+    { s: 'L', from: 'Selim · Dönerci', t: 20.5, text: 'Ben başvurdum bile 👍' },
+    { s: 'L', from: 'Ahmet · Kebapçı', t: 21.8, text: 'Ben de! Hayırlı olsun 🤝' },
+    { s: 'L', from: 'Kemal · Tatlıcı', t: 23.0, text: '👏👏👏' },
+  ],
+};
+</script>
+<script src="chat.js"></script>
+<script>
+  window.DEFAULT_DURS = [CHAT.end, 5.6];
+  HOOKS.out = (lt) => { if (lt > 2.4) document.getElementById('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

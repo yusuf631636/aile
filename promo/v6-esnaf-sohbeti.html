@@ -1,127 +1,54 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head><meta charset="UTF-8"><title>GetirTrend – Esnaf Sohbeti</title><link rel="stylesheet" href="engine.css">
+<head><meta charset="UTF-8"><title>getirtrend – Esnaf Sohbeti</title><link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="chat.css">
 <style>
-  #stage { background: #f2ece4; color: #111b21; }
-  .scene { padding: 0; }
-  .sb { position: absolute; top: 0; left: 0; right: 0; height: 74px; background: #0b4a37; color: #fff; display: flex;
-    justify-content: space-between; align-items: center; padding: 0 44px; font-size: 32px; font-weight: 700; z-index: 5; }
-  .hdr { position: absolute; top: 74px; left: 0; right: 0; height: 170px; background: #0f5c45; color: #fff; display: flex;
-    align-items: center; gap: 26px; padding: 0 34px; z-index: 5; box-shadow: 0 4px 20px rgba(0,0,0,.15); }
-  .hdr .back { font-size: 56px; font-weight: 300; }
-  .av { width: 110px; height: 110px; border-radius: 50%; background: #ffcf7a; display: flex; align-items: center; justify-content: center; font-size: 70px; flex: none; }
-  .hdr b { display: block; font-size: 46px; letter-spacing: -.5px; }
-  .hdr span { font-size: 32px; opacity: .9; }
-  .wall { position: absolute; top: 244px; left: 0; right: 0; bottom: 190px; overflow: hidden;
-    background-color: #efe6da; background-image: radial-gradient(rgba(15,92,69,.07) 3px, transparent 4px), radial-gradient(rgba(255,176,32,.08) 3px, transparent 4px);
-    background-size: 80px 80px, 80px 80px; background-position: 0 0, 40px 40px; }
-  .msgs { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 30px 30px; display: flex; flex-direction: column; }
-  .w { overflow: hidden; height: 0; flex: none; }
-  .bub { text-align: left; max-width: 820px; font-size: 46px; line-height: 1.3; padding: 22px 30px 16px; border-radius: 34px; margin-top: 18px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.08); position: relative; }
-  .L .bub { background: #fff; border-top-left-radius: 8px; align-self: flex-start; }
-  .R { display: flex; justify-content: flex-end; }
-  .L { display: flex; justify-content: flex-start; }
-  .R .bub { background: #d6f5e3; border-top-right-radius: 8px; }
-  .bub small { display: block; text-align: right; font-size: 26px; color: #667781; margin-top: 4px; }
-  .R .bub small::after { content: " ✓✓"; color: #34b7f1; font-weight: 700; }
-  .typing { position: absolute; left: 30px; bottom: 30px; background: #fff; border-radius: 34px; border-top-left-radius: 8px; padding: 30px 36px; display: flex; gap: 14px; opacity: 0; }
-  .typing i { width: 20px; height: 20px; border-radius: 50%; background: #8696a0; display: block; }
-  .inbar { position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: #f0f2f5; display: flex; align-items: center; gap: 22px; padding: 0 26px 40px; }
-  .field { text-align: left; flex: 1; background: #fff; border-radius: 60px; font-size: 44px; padding: 30px 40px; color: #111b21; min-height: 110px; white-space: nowrap; overflow: hidden; }
-  .field.ph { color: #8696a0; }
-  .send { width: 110px; height: 110px; border-radius: 50%; background: #0f5c45; color: #fff; font-size: 52px; display: flex; align-items: center; justify-content: center; flex: none; }
-  .caret { display: inline-block; width: 4px; height: 50px; background: #0f5c45; vertical-align: -8px; margin-left: 2px; }
-  .notifB { position: absolute; left: 30px; right: 30px; top: 20px; background: rgba(255,255,255,.97); border-radius: 36px; padding: 28px 30px;
-    display: flex; gap: 26px; align-items: center; box-shadow: 0 20px 60px rgba(0,0,0,.25); z-index: 20; transform: translateY(-400px); }
-  .notifB .ic { width: 100px; height: 100px; border-radius: 24px; background: #0f5c45; color: #ffb020; font-weight: 900; font-size: 40px; display: flex; align-items: center; justify-content: center; flex: none; }
-  .notifB b { font-size: 36px; display: block; } .notifB span { font-size: 32px; color: #3b4a54; }
-  .link { background: #fff; border-radius: 22px; overflow: hidden; margin-bottom: 10px; }
-  .link .th { height: 220px; background: linear-gradient(135deg, #0f5c45, #08352a); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 74px; letter-spacing: -3px; }
-  .link .th span { color: #ffb020; }
-  .link .tx { padding: 18px 22px; font-size: 34px; } .link .tx b { display: block; font-size: 38px; } .link .tx em { font-style: normal; color: #667781; font-size: 30px; }
-  #o1 { background: #fff; color: var(--cardInk); }
-  .logoD { font-weight: 900; font-size: 150px; letter-spacing: -6px; color: #0f5c45; } .logoD span { color: #ffb020; }
+  #out { background: var(--gt-blush); color: var(--gt-ink); }
+  #out .photos { display: flex; gap: 22px; }
+  #out .photos img { width: 300px; height: 300px; border-radius: 34px; object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,.25); border: 8px solid #fff; }
 </style></head>
 <body data-music="chill" data-dots="off">
 <div id="stage">
-  <div class="scene" id="chat" data-static="1" data-dur="21.6"
-       data-sfx="pop:1.2;pop:2.6;tap:4.3;tap:6.3;pop:7.6;tap:9.5;tap:11.3;ding:11.7;tap:13.8;pop:15.0;tap:16.6;pop:18.0;tap:19.8">
-    <div class="sb"><span>20:41</span><span>📶 🔋 78%</span></div>
-    <div class="hdr"><div class="back">‹</div><div class="av">👨‍🍳</div><div><b>Hasan Usta · Pideci</b><span id="st">çevrimiçi</span></div></div>
-    <div class="wall">
-      <div class="notifB" id="nb"><div class="ic">GT</div><div><b>GetirTrend · Yeni sipariş! 🔔</b><span>2× Lahmacun, 1× Ayran · ₺ 360</span></div></div>
-      <div class="msgs" id="msgs"></div>
-      <div class="typing" id="typing"><i></i><i></i><i></i></div>
+  <div class="scene" id="chat" data-static="1"></div>
+  <div class="scene" id="out" data-dur="5.6" data-sfx="whoosh:0;success:0.5">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:128px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="h2 jak" data-in="0.5">Sen de hemen<br><span style="color:var(--gt-red)">restoranını ekle</span></div>
+    <div class="gap"></div>
+    <div class="photos" data-in="0.9" data-anim="up">
+      <img src="assets/pide.jpg" style="transform:rotate(-4deg)"><img src="assets/durum.jpg" style="transform:translateY(-24px)"><img src="assets/kebap.jpg" style="transform:rotate(4deg)">
     </div>
-    <div class="inbar"><div style="font-size:56px">😊</div><div class="field ph" id="field">Mesaj</div><div class="send">➤</div></div>
-  </div>
-
-  <div class="scene" id="o1" data-dur="5.4" data-sfx="whoosh:0;success:0.5">
-    <div class="logoD" data-in="0.15" data-anim="pop" data-d="0.7">Getir<span>Trend</span></div>
     <div class="gap"></div>
-    <div class="h2" data-in="0.6" style="color:#10241c">Sen de hemen<br><span style="color:#0f7a55">restoranını ekle</span></div>
-    <div class="gap-l"></div>
-    <div class="url" data-in="1.2" data-anim="pop" style="background:#10241c;color:#fff">getirtrend.com/restoran-ol</div>
-    <div class="gap"></div>
-    <div class="btn" data-in="1.7" data-anim="pop" id="ctaO">Ücretsiz Kaydol →</div>
+    <div class="url jak" data-in="1.3" data-anim="pop" style="background:var(--gt-ink);color:#fff">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btn jak" data-in="1.8" data-anim="pop" id="cta" style="background:var(--gt-red);color:#fff;box-shadow:0 24px 60px rgba(215,53,31,.4)">Ücretsiz Başvur →</div>
   </div>
 </div>
-<script>window.DEFAULT_DURS = [21.6, 5.4];</script>
 <script src="engine.js"></script>
+<script src="assets/icons.js"></script>
 <script>
-  const $ = id => document.getElementById(id);
-  // side, time it appears (sent), content; "R" messages are typed into the input first starting at `ty`
-  const M = [
-    ['L', 1.2, 'Selamün aleyküm Mehmet abi 👋'],
-    ['L', 2.6, 'Dükkân nasıl, işler ne âlemde?'],
-    ['R', 4.3, 'Aleyküm selam Hasan 😊', 3.0],
-    ['R', 6.3, 'Maşallah bu ara siparişe yetişemiyoruz 😅', 4.6],
-    ['L', 7.6, 'Hayırdır abi, sırrın ne? 😄'],
-    ['R', 9.5, "Restoranı GetirTrend'e ekledim 👍", 8.0],
-    ['R', 11.3, 'Siparişler doğrudan kasaya düşüyor 💰', 9.8],
-    ['R', 13.8, 'Bak yine sipariş geldi 😄', 12.4],
-    ['L', 15.0, 'Abi ben nasıl eklerim? 🙏'],
-    ['R', 16.6, '__LINK__', 15.4, 'getirtrend.com/restoran-ol'],
-    ['L', 18.0, 'Hemen ekliyorum abi, Allah razı olsun 🤲'],
-    ['R', 19.8, 'Hayırlı işler kardeşim 🤝', 18.6],
-  ];
-  const clock = t => '20:4' + Math.min(9, 1 + Math.floor(t / 4));
-  const box = $('msgs');
-  M.forEach((m, i) => {
-    const inner = m[2] === '__LINK__'
-      ? `<div class="bub" style="padding:14px 14px 12px"><div class="link"><div class="th">Getir<span>Trend</span></div><div class="tx"><b>Restoranını ücretsiz ekle</b><em>getirtrend.com</em></div></div><div style="padding:0 12px;color:#027eb5;text-decoration:underline">getirtrend.com/restoran-ol</div><small>${clock(m[1])}</small></div>`
-      : `<div class="bub">${m[2]}<small>${clock(m[1])}</small></div>`;
-    box.insertAdjacentHTML('beforeend', `<div class="w" id="m${i}"><div class="${m[0]}">${inner}</div></div>`);
-  });
-  HOOKS.chat = (lt) => {
-    M.forEach((m, i) => {
-      const w = $('m' + i), k = easeOut((lt - m[1]) / 0.3);
-      w.style.height = (k * w.firstElementChild.offsetHeight) + 'px';
-      const b = w.querySelector('.bub');
-      b.style.transform = `scale(${0.85 + 0.15 * k})`; b.style.transformOrigin = m[0] === 'L' ? 'left bottom' : 'right bottom';
-      b.style.opacity = k;
-    });
-    // incoming typing indicator
-    const typingNow = M.some(m => m[0] === 'L' && lt > m[1] - 0.9 && lt < m[1]);
-    const tk = typingNow ? 1 : 0;
-    $('typing').style.opacity = tk;
-    [...$('typing').children].forEach((d, i) => d.style.transform = `translateY(${-10 * Math.max(0, Math.sin(lt * 9 - i * .8))}px)`);
-    box.style.paddingBottom = (30 + tk * 140) + 'px';
-    $('st').textContent = typingNow ? 'yazıyor...' : 'çevrimiçi';
-    // my typing in the input field
-    const f = $('field'); let txt = '';
-    M.forEach(m => { if (m[0] === 'R' && lt >= m[3] && lt < m[1]) {
-      const full = m[4] || m[2], p = clamp((lt - m[3]) / Math.max(.3, m[1] - m[3] - .3));
-      txt = full.slice(0, Math.round(p * [...full].length) ? [...full].slice(0, Math.round(p * [...full].length)).join('').length : 0);
-    } });
-    if (txt) { f.classList.remove('ph'); f.innerHTML = txt + '<span class="caret"></span>'; }
-    else { f.classList.add('ph'); f.textContent = 'Mesaj'; }
-    // order notification banner
-    const nk = easeOut((lt - 11.6) / 0.35) * (1 - easeOut((lt - 13.6) / 0.35));
-    $('nb').style.transform = `translateY(${-400 + 420 * nk}px)`;
-  };
-  HOOKS.o1 = (lt) => { if (lt > 2.4) $('ctaO').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+window.CHAT = {
+  name: 'Hasan Usta · Pideci', sub: 'çevrimiçi', avatar: 'assets/pide2.jpg', clockStart: 20 * 60 + 41, end: 24.6,
+  msgs: [
+    { s: 'L', t: 1.2, text: 'Selamün aleyküm Mehmet abi 👋' },
+    { s: 'L', t: 2.6, text: 'Dükkân nasıl, işler ne âlemde?' },
+    { s: 'R', t: 4.3, ty: 3.1, text: 'Aleyküm selam Hasan 😊' },
+    { s: 'R', t: 6.3, ty: 4.7, text: 'Maşallah bu ara siparişe yetişemiyoruz 😅' },
+    { s: 'L', t: 7.7, text: 'Hayırdır abi, sırrın ne? 😄' },
+    { s: 'R', t: 9.4, ty: 8.1, text: "getirtrend'e restoranı ekledim 👍" },
+    { s: 'R', t: 10.4, img: 'assets/ui/demo-top.jpg', h: 620, cap: 'Müşteri bizi böyle görüyor 👇', zoom: [10.9, 12.9] },
+    { s: 'R', t: 15.6, ty: 14.6, text: 'Bak yine sipariş geldi 😄' },
+    { s: 'L', t: 17.0, text: 'Abi ben nasıl eklerim? 🙏' },
+    { s: 'R', t: 18.8, ty: 17.6, link: true, text: 'Buradan başvur, ücretsiz 👇', typed: 'getirtrend.com/restoran-ol' },
+    { s: 'L', t: 20.6, text: 'Hemen ekliyorum abi, Allah razı olsun 🤲' },
+    { s: 'R', t: 22.4, ty: 21.2, text: 'Hayırlı işler kardeşim 🤝' },
+  ],
+  notifs: [{ t: 13.3, d: 1.9, title: '🔔 Yeni sipariş · 360 TL', body: '2× Lahmacun, 1× Ayran · Kapıda nakit' }],
+};
+</script>
+<script src="chat.js"></script>
+<script>
+  window.DEFAULT_DURS = [CHAT.end, 5.6];
+  HOOKS.out = (lt) => { if (lt > 2.4) document.getElementById('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
 </script>
 </body>
 </html>
