@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>GetirTrend Tanıtım</title>
+<style>
+  :root {
+    --bg1: #0b3d2e; --bg2: #0f5c45; --accent: #ffb020; --accent2: #ff6a3d;
+    --ink: #ffffff; --muted: rgba(255,255,255,.75); --card: #ffffff; --cardInk: #12241d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg1); }
+  body { font-family: 'Inter', 'DejaVu Sans', sans-serif; color: var(--ink); }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: radial-gradient(circle at 30% 20%, var(--bg2), var(--bg1) 70%); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .45; }
+  .scene { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; padding: 0 90px; opacity: 0; }
+  .logo { font-weight: 900; font-size: 120px; letter-spacing: -4px; }
+  .logo span { color: var(--accent); }
+  .h1 { font-weight: 900; font-size: 104px; line-height: 1.05; letter-spacing: -3px; }
+  .h2 { font-weight: 800; font-size: 72px; line-height: 1.12; letter-spacing: -1.5px; }
+  .p  { font-weight: 500; font-size: 48px; line-height: 1.35; color: var(--muted); }
+  .hl { color: var(--accent); }
+  .pill { display: inline-block; background: var(--accent); color: var(--cardInk); font-weight: 800;
+    font-size: 44px; padding: 18px 44px; border-radius: 999px; }
+  .zero { font-weight: 900; font-size: 420px; line-height: .9; letter-spacing: -20px; color: var(--accent);
+    text-shadow: 0 20px 60px rgba(0,0,0,.35); }
+  .zero small { font-size: 220px; letter-spacing: -8px; }
+  .strike { position: relative; display: inline-block; font-weight: 900; font-size: 112px; color: rgba(255,255,255,.9); margin: 0 18px; }
+  .strike i { position: absolute; left: -10px; right: -10px; top: 52%; height: 14px; background: var(--accent2);
+    border-radius: 8px; transform-origin: left center; }
+  .card { background: var(--card); color: var(--cardInk); border-radius: 40px; padding: 40px 48px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.35); text-align: left; width: 760px; }
+  .card .row { display: flex; justify-content: space-between; font-size: 40px; font-weight: 600; margin-top: 14px; }
+  .card .tag { display: inline-block; background: #e6f6ef; color: #0f7a55; font-weight: 800; font-size: 32px;
+    padding: 8px 22px; border-radius: 999px; }
+  .step { display: flex; align-items: center; gap: 36px; background: rgba(255,255,255,.1);
+    border: 2px solid rgba(255,255,255,.18); border-radius: 36px; padding: 34px 44px; width: 860px; margin: 18px 0; text-align: left; }
+  .step b { flex: none; width: 100px; height: 100px; border-radius: 50%; background: var(--accent); color: var(--cardInk);
+    font-size: 56px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  .step span { font-size: 56px; font-weight: 800; }
+  .url { background: #fff; color: var(--cardInk); font-weight: 800; font-size: 54px; padding: 30px 50px;
+    border-radius: 28px; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+  .btn { background: var(--accent); color: var(--cardInk); font-weight: 900; font-size: 60px; padding: 34px 70px;
+    border-radius: 999px; box-shadow: 0 20px 50px rgba(255,176,32,.45); }
+  .till { position: relative; width: 420px; height: 300px; }
+  .coin { position: absolute; width: 90px; height: 90px; border-radius: 50%; background: var(--accent);
+    border: 8px solid #ffd27a; color: #7a4b00; font-weight: 900; font-size: 46px; display: flex;
+    align-items: center; justify-content: center; }
+  .progress { position: absolute; left: 0; bottom: 0; height: 10px; background: var(--accent); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob" id="b1" style="width:700px;height:700px;background:#1fbf86;"></div>
+  <div class="blob" id="b2" style="width:600px;height:600px;background:#ffb020;"></div>
+
+  <!-- S1: Selam -->
+  <div class="scene" id="s1">
+    <div class="logo" id="s1logo">Getir<span>Trend</span></div>
+    <div style="height:70px"></div>
+    <div class="h2" id="s1a">Merhaba,<br>hayırlı akşamlar</div>
+    <div style="height:40px"></div>
+    <div class="p" id="s1b">Esnaf dostlarımıza bir müjdemiz var</div>
+  </div>
+
+  <!-- S2: Problem -->
+  <div class="scene" id="s2">
+    <div class="h2" id="s2a">Paket servis komisyonları<br>kazancınızı mı eritiyor?</div>
+    <div style="height:90px"></div>
+    <div id="s2nums" style="white-space:nowrap">
+      <div class="strike" id="n1">%20<i id="x1"></i></div>
+      <div class="strike" id="n2">%25<i id="x2"></i></div>
+      <div class="strike" id="n3">%30<i id="x3"></i></div>
+    </div>
+  </div>
+
+  <!-- S3: %0 -->
+  <div class="scene" id="s3">
+    <div class="pill" id="s3pill">GetirTrend'de</div>
+    <div style="height:30px"></div>
+    <div class="zero" id="s3zero"><small>%</small>0</div>
+    <div class="h1" id="s3a">KOMİSYON</div>
+    <div style="height:40px"></div>
+    <div class="h2" id="s3b">İlk yıl boyunca<br><span class="hl">tamamen sıfır!</span></div>
+  </div>
+
+  <!-- S4: Doğrudan kasanıza -->
+  <div class="scene" id="s4">
+    <div class="h2" id="s4a">Siparişler<br><span class="hl">doğrudan kasanıza</span> düşer</div>
+    <div style="height:80px"></div>
+    <div class="card" id="s4card">
+      <div class="tag">Yeni sipariş</div>
+      <div class="row" style="font-size:46px;font-weight:800;margin-top:22px"><span>2× Lahmacun, 1× Ayran</span></div>
+      <div class="row"><span>Tutar</span><span>₺ 360</span></div>
+      <div class="row"><span>Komisyon</span><span style="color:#0f7a55;font-weight:800">₺ 0</span></div>
+      <div class="row" style="border-top:3px dashed #d9e3df;padding-top:16px;font-weight:900;font-size:48px"><span>Size kalan</span><span>₺ 360</span></div>
+    </div>
+    <div style="height:70px"></div>
+    <div class="till" id="till">
+      <div class="coin" id="c1">₺</div><div class="coin" id="c2">₺</div><div class="coin" id="c3">₺</div>
+      <svg viewBox="0 0 420 220" width="420" height="220" style="position:absolute;left:0;bottom:0">
+        <rect x="10" y="40" width="400" height="170" rx="28" fill="#ffffff"/>
+        <rect x="40" y="70" width="340" height="56" rx="12" fill="#e6f6ef"/>
+        <text x="210" y="110" text-anchor="middle" font-family="Inter" font-weight="900" font-size="38" fill="#0f7a55" id="tillText">₺ 0</text>
+        <rect x="140" y="20" width="140" height="22" rx="8" fill="#ffd27a"/>
+        <circle cx="90" cy="170" r="14" fill="#cfe0d9"/><circle cx="150" cy="170" r="14" fill="#cfe0d9"/>
+        <circle cx="210" cy="170" r="14" fill="#cfe0d9"/><circle cx="270" cy="170" r="14" fill="#cfe0d9"/>
+        <circle cx="330" cy="170" r="14" fill="#cfe0d9"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- S5: 3 adım -->
+  <div class="scene" id="s5">
+    <div class="h2" id="s5a">Başlamak çok kolay</div>
+    <div style="height:60px"></div>
+    <div class="step" id="st1"><b>1</b><span>Restoranını ekle</span></div>
+    <div class="step" id="st2"><b>2</b><span>Menünü yükle</span></div>
+    <div class="step" id="st3"><b>3</b><span>Siparişleri al</span></div>
+    <div style="height:50px"></div>
+    <div class="pill" id="s5pill">Kayıt ücretsiz</div>
+  </div>
+
+  <!-- S6: CTA -->
+  <div class="scene" id="s6">
+    <div class="logo" id="s6logo">Getir<span>Trend</span></div>
+    <div style="height:60px"></div>
+    <div class="h2" id="s6a">Restoranınızı<br><span class="hl">ücretsiz</span> ekleyin</div>
+    <div style="height:70px"></div>
+    <div class="url" id="s6url">getirtrend.com/restoran-ol</div>
+    <div style="height:60px"></div>
+    <div class="btn" id="s6btn">Hemen Başvur</div>
+    <div style="height:90px"></div>
+    <div class="h2" id="s6b" style="font-size:64px">Hayırlı işler!</div>
+  </div>
+
+  <div class="progress" id="prog"></div>
+</div>
+
+<script>
+  const DUR = 24;
+  const S = { s1:[0,3.6], s2:[3.6,7.6], s3:[7.6,12], s4:[12,16.6], s5:[16.6,20.4], s6:[20.4,24] };
+  const $ = id => document.getElementById(id);
+  const clamp = (x,a=0,b=1) => Math.max(a, Math.min(b, x));
+  const easeOut = x => 1 - Math.pow(1 - clamp(x), 3);
+  const back = x => { x = clamp(x); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3*Math.pow(x-1,3) + c1*Math.pow(x-1,2); };
+  // progress of an element appearing at local time `start` over `d` seconds
+  const p = (lt, start, d=0.5) => clamp((lt - start) / d);
+
+  function enter(el, k, dy=60, scale=false) {
+    const e = easeOut(k);
+    el.style.opacity = e;
+    el.style.transform = scale ? `scale(${0.6 + 0.4*back(k)})` : `translateY(${(1-e)*dy}px)`;
+  }
+
+  function render(t) {
+    // background drift
+    $('b1').style.left = (-200 + 120*Math.sin(t*0.4)) + 'px';
+    $('b1').style.top  = (-100 + 160*Math.cos(t*0.3)) + 'px';
+    $('b2').style.left = (600 + 100*Math.cos(t*0.35)) + 'px';
+    $('b2').style.top  = (1300 + 140*Math.sin(t*0.45)) + 'px';
+    $('prog').style.width = (t / DUR * 1080) + 'px';
+
+    for (const [id, [a, b]] of Object.entries(S)) {
+      const el = $(id), lt = t - a, len = b - a;
+      const inK = clamp(lt / 0.35), outK = id === 's6' ? 1 : clamp((b - t) / 0.35);
+      el.style.opacity = Math.min(inK, outK);
+      el.style.display = (t >= a - 0.01 && t <= b + 0.01) ? 'flex' : 'none';
+      el.style.transform = `scale(${1 + 0.04*(1-outK)})`;
+      if (el.style.display === 'none') continue;
+      renderScene(id, lt, len);
+    }
+  }
+
+  function renderScene(id, lt) {
+    if (id === 's1') {
+      enter($('s1logo'), p(lt, 0.1, 0.7), 0, true);
+      enter($('s1a'), p(lt, 0.8));
+      enter($('s1b'), p(lt, 1.4));
+    } else if (id === 's2') {
+      enter($('s2a'), p(lt, 0.1));
+      ['n1','n2','n3'].forEach((n,i) => enter($(n), p(lt, 0.6 + i*0.25, 0.4), 0, true));
+      ['x1','x2','x3'].forEach((x,i) => $(x).style.transform = `scaleX(${easeOut(p(lt, 2.0 + i*0.3, 0.3))})`);
+      const shake = lt > 2.0 && lt < 3.0 ? Math.sin(lt*60)*6 : 0;
+      $('s2nums').style.transform = `translateX(${shake}px)`;
+    } else if (id === 's3') {
+      enter($('s3pill'), p(lt, 0.1));
+      enter($('s3zero'), p(lt, 0.4, 0.6), 0, true);
+      const pulse = lt > 1.2 ? 1 + 0.03*Math.sin((lt-1.2)*6) : 1;
+      if (lt > 1.0) $('s3zero').style.transform = `scale(${pulse})`;
+      enter($('s3a'), p(lt, 0.9));
+      enter($('s3b'), p(lt, 1.6));
+    } else if (id === 's4') {
+      enter($('s4a'), p(lt, 0.1));
+      enter($('s4card'), p(lt, 0.6, 0.6), 120);
+      enter($('till'), p(lt, 1.2), 80);
+      ['c1','c2','c3'].forEach((c, i) => {
+        const k = p(lt, 1.9 + i*0.35, 0.55), e = easeOut(k);
+        const el = $(c);
+        el.style.left = (165 + (i-1)*40) + 'px';
+        el.style.top = (-260 + e*270) + 'px';
+        el.style.opacity = k <= 0 ? 0 : (k >= 1 ? 0 : 1);
+      });
+      const total = Math.round(360 * easeOut(p(lt, 1.9, 1.6)));
+      $('tillText').textContent = '₺ ' + total;
+    } else if (id === 's5') {
+      enter($('s5a'), p(lt, 0.1));
+      ['st1','st2','st3'].forEach((s,i) => {
+        const k = p(lt, 0.6 + i*0.45, 0.5), e = easeOut(k);
+        $(s).style.opacity = e; $(s).style.transform = `translateX(${(1-e)*-200}px)`;
+      });
+      enter($('s5pill'), p(lt, 2.2, 0.5), 0, true);
+    } else if (id === 's6') {
+      enter($('s6logo'), p(lt, 0.1, 0.6), 0, true);
+      enter($('s6a'), p(lt, 0.6));
+      enter($('s6url'), p(lt, 1.1));
+      enter($('s6btn'), p(lt, 1.5, 0.6), 0, true);
+      if (lt > 2.2) $('s6btn').style.transform = `scale(${1 + 0.04*Math.sin((lt-2.2)*7)})`;
+      enter($('s6b'), p(lt, 2.0));
+    }
+  }
+
+  window.render = render; window.DUR = DUR;
+  // live preview when opened directly in a browser
+  if (!location.search.includes('capture')) {
+    const t0 = performance.now();
+    (function loop(){ render(((performance.now()-t0)/1000) % (DUR + 1.5)); requestAnimationFrame(loop); })();
+  } else render(0);
+</script>
+</body>
+</html>
