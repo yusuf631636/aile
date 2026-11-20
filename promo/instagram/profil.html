@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><link rel="stylesheet" href="../assets/brand.css">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1080px; height: 1080px; overflow: hidden; }
+  .c { width: 1080px; height: 1080px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+  /* v1: brand gradient, big white bag mark */
+  .v1 { background: linear-gradient(135deg, #D7351F 0%, #8e1f12 55%, #1C1411 100%); }
+  /* v2: white, mark + wordmark */
+  .v2 { background: #fff; }
+  /* v3: red flat, mark + wordmark white */
+  .v3 { background: #D7351F; }
+  /* v4: dark, mark + wordmark */
+  .v4 { background: #1C1411; }
+</style></head><body>
+<div class="c" id="box"></div>
+<script>
+  const v = location.hash.slice(1) || 'v1', box = document.getElementById('box');
+  box.className = 'c ' + v;
+  // bag mark paths from the site's logo (without its rounded square), drawn on any background
+  const bag = (s, body = '#fff', handle = '#FFB21E', arrow = '#D7351F') => `
+    <svg viewBox="8 9 24 24" width="${s}" height="${s}"><path d="M10.5 15h19l-1.7 14.3a2.2 2.2 0 0 1-2.2 1.9H14.4a2.2 2.2 0 0 1-2.2-1.9z" fill="${body}"/>
+    <path d="M15.4 15v-1.6a4.6 4.6 0 0 1 9.2 0V15" fill="none" stroke="${handle}" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M14.6 26.4l3.6-3.7 2.6 2.6 4.6-5" fill="none" stroke="${arrow}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22.6 20.2h2.9v2.9" fill="none" stroke="${arrow}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const word = (fs, c1, c2) => `<div class="gt" style="font-size:${fs}px;color:${c1}"><span>getir<b style="color:${c2}">trend</b></span></div>`;
+  if (v === 'v1') box.innerHTML = bag(560, '#fff', '#FFB21E', '#D7351F');
+  if (v === 'v2') box.innerHTML = `<img src="../assets/logo-mark.svg" style="width:420px;height:420px;border-radius:96px;box-shadow:0 30px 70px rgba(215,53,31,.3)"><div style="height:50px"></div>${word(140, '#221D19', '#D7351F')}`;
+  if (v === 'v3') box.innerHTML = `${bag(420, '#fff', '#FFB21E', '#D7351F')}<div style="height:30px"></div>${word(140, '#fff', '#FFD9A0')}`;
+  if (v === 'v4') box.innerHTML = `<img src="../assets/logo-mark.svg" style="width:420px;height:420px;border-radius:96px"><div style="height:50px"></div>${word(140, '#fff', '#FF6A52')}`;
+</script></body></html>
