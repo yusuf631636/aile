@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>GetirTrend – 3 Adımda Başla</title><link rel="stylesheet" href="engine.css"></head>
+<body>
+<div id="stage">
+  <div class="blob" style="width:760px;height:760px;background:#1fbf86"></div>
+  <div class="blob" style="width:620px;height:620px;background:#ff8a3d"></div>
+  <div class="vignette"></div>
+
+  <div class="scene" id="b1" data-voice="Restoranınızı internete taşımak, hiç bu kadar kolay olmamıştı.">
+    <div class="brand" data-in="0">Getir<span>Trend</span></div>
+    <div class="h1" data-in="0.2">Restoranını<br><span class="hl">dijitale</span><br>taşı</div>
+    <div class="gap"></div>
+    <div class="pill" data-in="1.2" data-anim="pop">Sadece 3 adım</div>
+  </div>
+
+  <div class="scene" id="b2" data-voice="Birinci adım. Restoranınızı ücretsiz kaydedin.">
+    <div class="brand">Getir<span>Trend</span></div>
+    <div style="display:flex;align-items:center;gap:36px" data-in="0.1">
+      <div class="step-badge">1</div><div class="h2" style="text-align:left">Ücretsiz<br>kaydol</div>
+    </div>
+    <div class="gap"></div>
+    <div class="phone" data-in="0.4" data-anim="rise" data-d="0.8"><div class="notch"></div><div class="screen">
+      <div class="app-top">Getir<span>Trend</span> · Restoran Ol</div>
+      <div class="app-body">
+        <div class="field"><small>Restoran adı</small><div id="ty1"></div></div>
+        <div class="field"><small>Mutfak</small><div id="ty2"></div></div>
+        <div class="field"><small>Telefon</small><div id="ty3"></div></div>
+        <div class="field"><small>Adres</small><div id="ty4"></div></div>
+        <div class="app-btn" id="kayit">Kaydı Tamamla</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="scene" id="b3" data-voice="İkinci adım. Menünüzü ve fiyatlarınızı yükleyin.">
+    <div class="brand">Getir<span>Trend</span></div>
+    <div style="display:flex;align-items:center;gap:36px" data-in="0.1">
+      <div class="step-badge">2</div><div class="h2" style="text-align:left">Menünü<br>yükle</div>
+    </div>
+    <div class="gap"></div>
+    <div class="phone" data-in="0.3" data-anim="rise" data-d="0.8"><div class="notch"></div><div class="screen">
+      <div class="app-top">Menüm</div>
+      <div class="app-body">
+        <div class="menu-item" data-in="1.0" data-anim="right"><i>🫓</i><b>Lahmacun</b><em>₺ 120</em></div>
+        <div class="menu-item" data-in="1.3" data-anim="right"><i>🍕</i><b>Kıymalı Pide</b><em>₺ 210</em></div>
+        <div class="menu-item" data-in="1.6" data-anim="right"><i>🥙</i><b>Tavuk Döner</b><em>₺ 180</em></div>
+        <div class="menu-item" data-in="1.9" data-anim="right"><i>🥗</i><b>Çoban Salata</b><em>₺ 90</em></div>
+        <div class="menu-item" data-in="2.2" data-anim="right"><i>🥛</i><b>Ayran</b><em>₺ 30</em></div>
+        <div class="menu-item" data-in="2.5" data-anim="right"><i>🍮</i><b>Sütlaç</b><em>₺ 85</em></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="scene" id="b4" data-voice="Üçüncü adım. Siparişleri almaya başlayın. Siparişler doğrudan kasanıza düşer.">
+    <div class="brand">Getir<span>Trend</span></div>
+    <div style="display:flex;align-items:center;gap:36px" data-in="0.1">
+      <div class="step-badge">3</div><div class="h2" style="text-align:left">Siparişleri<br>al</div>
+    </div>
+    <div class="gap"></div>
+    <div class="phone" data-in="0.3" data-anim="rise" data-d="0.8"><div class="notch"></div><div class="screen" style="background:linear-gradient(#0f5c45,#08352a)">
+      <div style="color:#fff;text-align:center;padding-top:150px;font-weight:300;font-size:150px;letter-spacing:-4px">19:42</div>
+      <div style="color:rgba(255,255,255,.8);text-align:center;font-size:34px;font-weight:600">Cuma, 20 Kasım</div>
+      <div class="notif" data-in="1.0" data-anim="down" style="top:480px"><i>🛵</i><div><b>Yeni sipariş · ₺ 360</b><span>2× Lahmacun, 1× Ayran</span></div></div>
+      <div class="notif" data-in="1.8" data-anim="down" style="top:640px"><i>🛵</i><div><b>Yeni sipariş · ₺ 420</b><span>2× Kıymalı Pide</span></div></div>
+      <div class="notif" data-in="2.6" data-anim="down" style="top:800px"><i>🛵</i><div><b>Yeni sipariş · ₺ 270</b><span>Tavuk Döner, Sütlaç</span></div></div>
+    </div></div>
+  </div>
+
+  <div class="scene" id="b5" data-voice="Hemen başvurun. Getir Trend nokta kom, bölü, restoran ol. Hayırlı işler.">
+    <div class="logo" data-in="0.1" data-anim="pop" data-d="0.8">Getir<span>Trend</span></div>
+    <div class="gap"></div>
+    <div class="h2" data-in="0.5">Hemen <span class="hl">ücretsiz</span><br>başvurun</div>
+    <div class="gap-l"></div>
+    <div class="url" data-in="1.2" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap"></div>
+    <div class="btn" data-in="1.8" data-anim="pop" id="cta2">Restoranını Ekle →</div>
+    <div class="gap-l"></div>
+    <div class="p" data-in="3.2">Hayırlı işler 🤝</div>
+  </div>
+
+  <div class="progress"></div>
+</div>
+<script>window.DEFAULT_DURS = [4, 4, 4.4, 6, 6];</script>
+<script src="engine.js"></script>
+<script>
+  const typed = [['ty1', 'Lezzet Durağı'], ['ty2', 'Pide & Lahmacun'], ['ty3', '0 (5xx) xxx xx xx'], ['ty4', 'Merkez Mah. No: 12']];
+  HOOKS.b2 = (lt) => {
+    typed.forEach(([id, txt], i) => {
+      const n = Math.floor(clamp((lt - 0.9 - i * 0.45) / 0.4) * txt.length);
+      document.getElementById(id).textContent = txt.slice(0, n);
+    });
+    const b = document.getElementById('kayit'), done = lt > 2.9;
+    b.textContent = done ? '✓ Kayıt alındı' : 'Kaydı Tamamla';
+    b.style.background = done ? '#1fbf86' : '#ffb020'; b.style.color = done ? '#fff' : '#10241c';
+  };
+  HOOKS.b5 = (lt) => { if (lt > 2.4) document.getElementById('cta2').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>
