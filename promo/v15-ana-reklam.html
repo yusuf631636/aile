@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Ana Reklam</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="chat.css"><link rel="stylesheet" href="ad.css">
+<style>
+  #chat { font-family: 'Inter', sans-serif; }
+  .zone { transition: none; }
+  .zcard { background: #fff; border-radius: 34px; padding: 30px 36px; box-shadow: 0 24px 60px rgba(0,0,0,.18); width: 900px; text-align: left; }
+  .zrow { display: flex; align-items: center; gap: 22px; font-size: 40px; font-weight: 700; margin: 12px 0; }
+  .zrow .ic { font-size: 50px; color: var(--gt-red); }
+  .zrow span { margin-left: auto; color: var(--gt-red); font-weight: 800; }
+  .chk { display: flex; align-items: center; gap: 26px; background: #fff; border-radius: 30px; padding: 28px 34px; width: 920px; margin: 14px 0;
+    box-shadow: 0 14px 40px rgba(0,0,0,.1); font-size: 44px; font-weight: 800; text-align: left; letter-spacing: -1px; }
+  .chk .ic { font-size: 60px; color: #fff; background: var(--gt-red); border-radius: 20px; padding: 14px; width: 1.6em; height: 1.6em; }
+  .map { position: relative; width: 940px; height: 820px; border-radius: 50px; overflow: hidden; background: #f3efe8; box-shadow: 0 40px 100px rgba(0,0,0,.4); }
+  .road2 { position: absolute; background: #fff; box-shadow: 0 0 0 3px #e2ddd3; }
+  .pin { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 64px; color: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+  .eta { position: absolute; left: 30px; right: 30px; bottom: 30px; background: #fff; border-radius: 30px; padding: 26px 30px; display: flex; align-items: center; gap: 24px; color: #111; box-shadow: 0 10px 30px rgba(0,0,0,.15); text-align: left; }
+</style></head>
+<body data-music="pop" data-dots="off">
+<div id="stage">
+  <!-- 1 hook -->
+  <div class="scene" id="s1" data-static="1" data-dur="3.4" data-sfx="whoosh:0;pop:0.5">
+    <div class="bgp" id="s1bg" style="background-image:url(assets/lahmacun2.jpg)"></div><div class="shade"></div>
+    <div data-in="0.1" data-anim="pop"><span class="gt inv" style="font-size:80px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="cap w" data-in="0.4" style="font-size:140px;letter-spacing:-6px">Restoranın<br><em>mı var?</em></div>
+    <div class="gap"></div>
+    <div class="cap w" data-in="1.2" style="font-size:56px;letter-spacing:-1px">O zaman sonuna kadar izle 👇</div>
+  </div>
+
+  <!-- 2 chat moment -->
+  <div class="scene" id="chat" data-static="1"></div>
+
+  <!-- 3 customer opens app -->
+  <div class="scene" id="s3" data-dur="4.0" data-sfx="whoosh:0" >
+    <div class="kick" data-in="0.05" data-anim="pop">Müşteri tarafı</div>
+    <div class="gap-s"></div>
+    <div class="cap" data-in="0.15" style="font-size:66px">Müşteri getirtrend'den<br><em>restoranınızı</em> seçer</div>
+    <div class="gap-s"></div>
+    <div class="ph" data-in="0.2" data-anim="rise" data-d="0.7" style="transform-origin:top"><div class="isl"></div><div class="scr"><img class="full" id="restImg" src="assets/ui/home.jpg"></div></div>
+  </div>
+
+  <!-- 4 add to cart -->
+  <div class="scene" id="s4" data-dur="3.4" data-sfx="tap:1.1;success:1.3">
+    <div class="cap" data-in="0.05" style="font-size:66px"><em>3 dokunuşla</em><br>sipariş verir</div>
+    <div class="gap-s"></div>
+    <div class="ph"><div class="isl"></div><div class="scr">
+      <img class="full" src="assets/ui/menu-before.jpg"><img class="full" id="after" src="assets/ui/menu-after.jpg" style="opacity:0">
+      <div class="tapc" id="tap" style="left:212px;top:382px"></div></div></div>
+  </div>
+
+  <!-- 5 ring -->
+  <div class="scene" id="s5" data-dur="3.6" data-sfx="ding:0.4;ding:1.5">
+    <div class="kick" data-in="0.05" data-anim="pop">Restoran tarafı</div>
+    <div class="gap-s"></div>
+    <div class="cap" data-in="0.15" style="font-size:66px">Sipariş <em>zille</em> düşer<br>kilit ekranında bile 🔔</div>
+    <div class="gap-s"></div>
+    <div class="ph" id="ringPh"><div class="isl"></div><div class="scr"><img class="full" src="assets/ui/lock.jpg"></div></div>
+  </div>
+
+  <!-- 6 receipt -->
+  <div class="scene" id="s6" data-dur="4.0" data-sfx="whoosh:0">
+    <div class="cap" data-in="0.05" style="font-size:70px"><em>AlfaPOS</em> kasanıza geçer,<br>fiş yazıcıdan çıkar</div>
+    <div class="gap"></div>
+    <div class="printer" data-in="0.15" data-anim="pop"></div>
+    <div id="rwrap" style="height:0;overflow:hidden;margin-top:-30px;position:relative;z-index:2">
+      <div class="rcpt"><div class="in">
+        <div class="c"><span class="gt" style="font-size:44px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+        <div class="c" style="margin-top:10px">PAKET SERVİS ADİSYONU</div><hr>
+        <div class="row"><span>1× Kaşarlı Lahmacun</span><span>122,40</span></div>
+        <div class="row"><span>1× Lahmacun</span><span>102,00</span></div>
+        <div class="row"><span>1× Ayran (20 cl)</span><span>25,00</span></div><hr>
+        <div class="row" style="font-weight:700;font-size:36px"><span>TOPLAM</span><span>249,40 TL</span></div>
+        <div class="row"><span>Ödeme</span><span>Kapıda nakit</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 7 delivery zones -->
+  <div class="scene" id="s7" data-dur="5.2" data-sfx="whoosh:0;pop:1.0;pop:1.6;pop:2.2;success:3.4">
+    <div class="cap" data-in="0.05">Teslimat,<br><em>sizin kuralınız</em></div>
+    <div class="gap-s"></div>
+    <svg viewBox="0 0 900 560" width="900" height="560" data-in="0.2" data-anim="pop" style="filter:drop-shadow(0 20px 40px rgba(0,0,0,.15))">
+      <rect x="0" y="0" width="900" height="560" rx="44" fill="#f3efe8"/>
+      <g id="zones" stroke="#fff" stroke-width="8" stroke-linejoin="round" font-family="Plus Jakarta Sans" font-weight="800" font-size="40" text-anchor="middle">
+        <path d="M40 40 H420 V250 H260 L40 300 Z" fill="#e5ded2"/><text x="220" y="160" fill="#6b625a" stroke="none">Nilüfer</text>
+        <path d="M420 40 H860 V230 L600 280 L420 250 Z" fill="#e5ded2"/><text x="640" y="150" fill="#6b625a" stroke="none">Osmangazi</text>
+        <path d="M40 300 L260 250 H420 L600 280 L560 520 H40 Z" fill="#e5ded2"/><text x="300" y="410" fill="#6b625a" stroke="none">Yıldırım</text>
+        <path d="M600 280 L860 230 V520 H560 Z" fill="#e5ded2"/><text x="720" y="400" fill="#6b625a" stroke="none">Gürsu</text>
+      </g>
+    </svg>
+    <div class="gap-s"></div>
+    <div class="zcard" data-in="2.4" data-anim="up">
+      <div class="zrow" data-ic="bike">Servis ücreti<span>Ücretsiz</span></div>
+      <div class="zrow" data-ic="basket">Min. sepet<span>150 TL</span></div>
+      <div class="zrow" data-ic="clock">Teslimat süresi<span>30–45 dk</span></div>
+    </div>
+  </div>
+
+  <!-- 8 courier -->
+  <div class="scene" id="s8" data-static="1" data-dur="4.2" data-sfx="whoosh:0;success:3.3">
+    <div class="bgp" style="background-image:url(assets/adana.jpg);filter:blur(12px) brightness(.45)"></div>
+    <div class="cap w" data-in="0.05" style="font-size:70px">Kurye yola çıkar,<br><em>müşteri canlı takip eder</em></div>
+    <div class="gap"></div>
+    <div class="map" data-in="0.15" data-anim="pop">
+      <div class="road2" style="left:0;right:0;top:280px;height:46px"></div><div class="road2" style="left:0;right:0;top:580px;height:46px"></div>
+      <div class="road2" style="top:0;bottom:0;left:220px;width:46px"></div><div class="road2" style="top:0;bottom:0;left:640px;width:46px"></div>
+      <div style="position:absolute;left:300px;top:360px;width:280px;height:170px;border-radius:30px;background:#dfe9d6"></div>
+      <svg width="940" height="820" style="position:absolute;inset:0"><path id="route" d="M243 150 L243 303 L663 303 L663 603 L800 603" fill="none" stroke="#D7351F" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1400" stroke-dashoffset="1400"/></svg>
+      <div class="pin" style="left:243px;top:150px;background:#221D19" data-ic="store"></div>
+      <div class="pin" style="left:800px;top:603px;background:#0f7a55" data-ic="home"></div>
+      <div class="pin" id="bike" style="background:#D7351F;width:110px;height:110px" data-ic="bike"></div>
+      <div class="eta"><img src="assets/logo-mark.svg" style="width:80px;height:80px;border-radius:20px"><div style="flex:1"><div style="font-size:34px;font-weight:800">Siparişin yolda</div><div style="font-size:28px;color:#555" id="etaT">Tahmini varış 12 dk</div></div></div>
+    </div>
+  </div>
+
+  <!-- 9 cash at door -->
+  <div class="scene" id="s9" data-static="1" data-dur="3.2" data-sfx="cash:0.6">
+    <div class="bgp" id="s9bg" style="background-image:url(assets/kebap.jpg)"></div><div class="shade"></div>
+    <div class="cap w" data-in="0.2" style="font-size:110px;letter-spacing:-4px">Ödemeyi<br><em>kapıda</em> siz alın</div>
+    <div class="gap-s"></div>
+    <div class="cap w" data-in="0.8" style="font-size:52px;letter-spacing:-1px">Nakit ya da kendi POS'unuzla</div>
+  </div>
+
+  <!-- 10 benefits -->
+  <div class="scene" id="s10" data-dur="4.6" data-sfx="pop:0.4;pop:0.9;pop:1.4;pop:1.9">
+    <div class="cap" data-in="0.05" style="font-size:80px">Neden <em>getirtrend?</em></div>
+    <div class="gap"></div>
+    <div class="chk" data-in="0.4" data-anim="left" data-ic="check">Başvuru ücretsiz, aylık sabit ücret yok</div>
+    <div class="chk" data-in="0.9" data-anim="right" data-ic="image">Menünüz resimleriyle sizin yerinize yüklenir</div>
+    <div class="chk" data-in="1.4" data-anim="left" data-ic="bell-ring">Sesli bildirim, şubeler tek panelde</div>
+    <div class="chk" data-in="1.9" data-anim="right" data-ic="receipt">AlfaPOS entegrasyonu ücretsiz</div>
+  </div>
+
+  <!-- 11 CTA -->
+  <div class="scene" id="s11" data-dur="6.6" data-sfx="whoosh:0;success:0.6">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:136px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="cap" data-in="0.5">Sıradaki sipariş<br><em>sizin olsun</em></div>
+    <div class="gap"></div>
+    <div style="display:flex;gap:22px" data-in="0.9" data-anim="up">
+      <img class="photo" src="assets/pide.jpg" style="width:290px;height:290px;transform:rotate(-4deg);border:8px solid #fff">
+      <img class="photo" src="assets/durum.jpg" style="width:290px;height:290px;transform:translateY(-22px);border:8px solid #fff">
+      <img class="photo" src="assets/baklava.jpg" style="width:290px;height:290px;transform:rotate(4deg);border:8px solid #fff">
+    </div>
+    <div class="gap"></div>
+    <div class="urlb" data-in="1.3" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btnr" data-in="1.8" data-anim="pop" id="cta">Ücretsiz Başvur →</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+window.CHAT = {
+  name: 'Hasan Usta · Pideci', sub: 'çevrimiçi', avatar: 'assets/pide2.jpg', clockStart: 20 * 60 + 41, end: 8.6,
+  msgs: [
+    { s: 'L', t: 0.6, text: 'Mehmet abi işler nasıl? Bizde sinek avlıyoruz 😅' },
+    { s: 'R', t: 2.6, ty: 1.3, text: 'Maşallah siparişe yetişemiyoruz 😄' },
+    { s: 'L', t: 3.8, text: 'Hayırdır abi, sırrın ne?' },
+    { s: 'R', t: 5.6, ty: 4.4, text: "getirtrend'e ekledim, siparişler oradan 👍" },
+  ],
+  notifs: [{ t: 6.3, d: 1.9, title: '🔔 Yeni sipariş · 360 TL', body: '2× Lahmacun, 1× Ayran · Kapıda nakit' }],
+};
+</script>
+<script src="chat.js"></script>
+<script>
+  const $ = id => document.getElementById(id), K = 596 / 390;
+  window.DEFAULT_DURS = [...document.querySelectorAll('.scene')].map(s => +s.dataset.dur);
+  HOOKS.s1 = (lt) => { $('s1bg').style.transform = `scale(${1.05 + 0.08 * lt / 3.4})`; };
+  HOOKS.s3 = (lt) => { $('restImg').style.transform = `translateY(${-easeOut(clamp((lt - 0.9) / 2.8)) * 1300 * K}px)`; };
+  HOOKS.s4 = (lt) => {
+    const t = $('tap'), k = clamp((lt - 0.5) / 0.6), pr = clamp((lt - 1.1) / 0.25);
+    t.style.opacity = lt < 1.1 ? easeOut(k) : 1 - pr; t.style.transform = `translate(${(1 - easeOut(k)) * 120}px, ${(1 - easeOut(k)) * 200}px) scale(${lt < 1.1 ? 1 : 1 - .3 * Math.sin(pr * Math.PI)})`;
+    $('after').style.opacity = clamp((lt - 1.15) / 0.15);
+  };
+  HOOKS.s5 = (lt) => { const r = (lt > 0.4 && lt < 1.2) || (lt > 1.5 && lt < 2.3); $('ringPh').style.transform = r ? `rotate(${Math.sin(lt * 60) * 2.2}deg)` : 'none'; };
+  HOOKS.s6 = (lt) => { $('rwrap').style.height = (easeOut(clamp((lt - 0.5) / 2.2)) * 760) + 'px'; };
+  HOOKS.s7 = (lt) => {
+    const zs = [...document.querySelectorAll('#zones path')], tx = [...document.querySelectorAll('#zones text')];
+    [1.0, 1.6, 2.2].forEach((a, i) => { const on = lt >= a, idx = [0, 1, 2][i];
+      zs[idx].setAttribute('fill', on ? '#D7351F' : '#e5ded2'); tx[idx].setAttribute('fill', on ? '#fff' : '#6b625a'); });
+  };
+  HOOKS.s8 = (lt) => {
+    const p = easeOut(clamp((lt - 0.6) / 2.6)), path = $('route'), L = path.getTotalLength();
+    path.style.strokeDashoffset = 1400 - p * 1400;
+    const pt = path.getPointAtLength(p * L); $('bike').style.left = pt.x + 'px'; $('bike').style.top = pt.y + 'px';
+    $('etaT').textContent = p >= 1 ? 'Teslim edildi ✓' : `Tahmini varış ${Math.max(1, Math.round(12 * (1 - p)))} dk`;
+  };
+  HOOKS.s9 = (lt) => { $('s9bg').style.transform = `scale(${1.05 + 0.08 * lt / 3.2})`; };
+  HOOKS.s11 = (lt) => { if (lt > 2.4) $('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

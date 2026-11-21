@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>GetirTrend – Dükkânın Bir Günü</title><link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  #stage { background: #87c6f0; }
+  .scene { padding: 0; }
+  .abs { position: absolute; }
+  #sky { position: absolute; inset: 0; }
+  .cloud { position: absolute; width: 260px; height: 90px; background: #fff; border-radius: 60px; opacity: .9; }
+  .cloud::before { content: ""; position: absolute; left: 50px; top: -50px; width: 120px; height: 120px; border-radius: 50%; background: inherit; }
+  .cloud::after { content: ""; position: absolute; left: 130px; top: -30px; width: 90px; height: 90px; border-radius: 50%; background: inherit; }
+  .star { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+  .city { position: absolute; width: 140px; background: #6f8fae; border-radius: 6px 6px 0 0; }
+  .shopF { position: absolute; left: 130px; top: 600px; width: 820px; height: 780px; background: #f3e3c8; border-radius: 16px 16px 0 0; box-shadow: 0 30px 60px rgba(0,0,0,.2); }
+  .sign { position: absolute; left: 60px; right: 60px; top: 40px; height: 130px; background: #221D19; border-radius: 18px; color: #fff; font-weight: 900; font-size: 74px;
+    letter-spacing: -2px; display: flex; align-items: center; justify-content: center; }
+  .sign span { color: #ffb020; margin-left: 16px; }
+  .awning { position: absolute; left: 30px; right: 30px; top: 200px; height: 110px; border-radius: 0 0 30px 30px;
+    background: repeating-linear-gradient(90deg, #ff7a3d 0 70px, #fff6ea 70px 140px); box-shadow: 0 12px 0 rgba(0,0,0,.08); }
+  .win { position: absolute; left: 60px; top: 350px; width: 440px; height: 380px; border-radius: 12px; background: #2b3a46; border: 14px solid #8a6544; overflow: hidden; }
+  .win .in { position: absolute; inset: 0; background: linear-gradient(#ffe2a3, #ffc670); opacity: 0; }
+  .door { position: absolute; right: 60px; top: 350px; width: 220px; height: 430px; border-radius: 12px 12px 0 0; background: #8a6544; border: 10px solid #6b4a2f; }
+  .door .gl { position: absolute; left: 20px; right: 20px; top: 20px; height: 190px; background: #2b3a46; border-radius: 8px; }
+  .shutter { position: absolute; left: 40px; right: 40px; top: 320px; height: 460px; transform-origin: top;
+    background: repeating-linear-gradient(#b8bec4 0 26px, #9aa1a8 26px 30px); border-radius: 6px; z-index: 3; }
+  .road { position: absolute; left: 0; right: 0; top: 1380px; height: 560px; background: #59606a; }
+  .walk { position: absolute; left: 0; right: 0; top: 1380px; height: 90px; background: #c9c2b5; border-bottom: 10px solid #a79f92; }
+  .dash { position: absolute; top: 1610px; width: 120px; height: 14px; background: #f2f2f2; border-radius: 7px; }
+  .tree { position: absolute; top: 1080px; width: 30px; height: 300px; background: #7a5233; }
+  .tree::before { content: ""; position: absolute; left: -95px; top: -150px; width: 220px; height: 220px; border-radius: 50%; background: #3f9a5b; }
+  .lampP { position: absolute; top: 1010px; width: 16px; height: 380px; background: #3a3f46; }
+  .lampP i { position: absolute; left: -22px; top: -30px; width: 60px; height: 40px; border-radius: 20px 20px 6px 6px; background: #555; }
+  .lampP b { position: absolute; left: -150px; top: -10px; width: 316px; height: 400px; background: radial-gradient(ellipse at top, rgba(255,214,120,.5), transparent 70%); opacity: 0; }
+  .courier { position: absolute; top: 1430px; font-size: 170px; transform: scaleX(-1); }
+  .bubble { position: absolute; left: 330px; top: 470px; background: #fff; color: #10241c; border-radius: 30px; padding: 22px 34px; font-weight: 900; font-size: 46px;
+    box-shadow: 0 16px 40px rgba(0,0,0,.25); white-space: nowrap; opacity: 0; z-index: 6; }
+  .bubble::after { content: ""; position: absolute; left: 60px; bottom: -22px; border: 14px solid transparent; border-top: 14px solid #fff; border-left-width: 0; }
+  .clockC { position: absolute; top: 90px; left: 50%; transform: translateX(-50%); background: rgba(16,36,28,.82); color: #fff; font-weight: 800; font-size: 84px;
+    padding: 14px 50px; border-radius: 999px; letter-spacing: 2px; z-index: 7; font-family: 'JetBrains Mono', monospace; }
+  .capC { position: absolute; left: 50px; right: 50px; top: 1690px; text-align: center; color: #fff; font-weight: 900; font-size: 66px; line-height: 1.15;
+    letter-spacing: -1.5px; text-shadow: 0 4px 16px rgba(0,0,0,.4); z-index: 7; }
+  .till { position: absolute; left: 50%; top: 820px; transform: translateX(-50%); background: #fff; border-radius: 40px; padding: 40px 60px; text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,.45); z-index: 8; opacity: 0; color: #10241c; }
+  .till small { display: block; font-size: 40px; font-weight: 700; color: #5d6e67; }
+  .till b { white-space: nowrap; display: block; font-size: 120px; font-weight: 900; letter-spacing: -4px; color: #D7351F; }
+  #o8 { background: linear-gradient(#fff6ea, #ffe7c7); color: #10241c; }
+</style></head>
+<body data-music="acoustic" data-dots="off">
+<div id="stage">
+  <div class="scene" id="day" data-static="1" data-dur="22.5"
+       data-sfx="whoosh:0.8;pop:3.2;ding:6.2;ding:7.8;ding:9.4;whoosh:10.8;ding:12.0;ding:13.2;ding:14.4;ding:15.6;whoosh:16.8;cash:19.0;success:19.6">
+    <div id="sky"></div>
+    <div id="sun" class="abs" style="width:200px;height:200px;border-radius:50%;background:radial-gradient(#fff6b0,#ffd23f);box-shadow:0 0 80px #ffd23f"></div>
+    <div id="moon" class="abs" style="width:150px;height:150px;border-radius:50%;background:#f4f1e0;box-shadow:0 0 60px rgba(255,255,230,.6);opacity:0"></div>
+    <div id="stars"></div>
+    <div id="clouds"></div>
+    <div id="city"></div>
+    <div class="road"></div><div class="walk"></div><div id="dashes"></div>
+    <div class="tree" style="left:40px"></div><div class="tree" style="left:1010px"></div>
+    <div class="shopF">
+      <div class="sign">Lezzet<span>Durağı</span></div>
+      <div class="awning"></div>
+      <div class="win"><div class="in" id="winIn"></div>
+        <img src="assets/pide2.jpg" style="position:absolute;left:24px;bottom:24px;width:180px;height:180px;border-radius:18px;object-fit:cover;border:6px solid #fff"><img src="assets/lahmacun.jpg" style="position:absolute;left:216px;bottom:24px;width:180px;height:180px;border-radius:18px;object-fit:cover;border:6px solid #fff">
+        <div style="position:absolute;right:16px;top:18px;background:#fff;border-radius:14px;padding:10px 14px;transform:rotate(5deg);box-shadow:0 6px 14px rgba(0,0,0,.25)"><span class="gt" style="font-size:34px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+      </div>
+      <div class="door"><div class="gl"></div><div id="openSign" style="position:absolute;left:30px;right:30px;top:60px;background:#fff;border-radius:10px;text-align:center;font-weight:900;font-size:34px;padding:12px 0;color:#c0392b">KAPALI</div></div>
+      <div class="shutter" id="shutter"></div>
+    </div>
+    <div class="lampP" style="left:120px"><i></i><b></b></div><div class="lampP" style="left:950px"><i></i><b></b></div>
+    <div class="bubble" id="bubble">🔔 Yeni sipariş!</div>
+    <div id="couriers"></div>
+    <div class="till" id="till"><div style="margin-bottom:14px"><span class="gt" style="font-size:46px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div><small>Bugünkü siparişler</small><b id="tillN">₺ 0</b><small id="tillC">0 sipariş · doğrudan kasanızda</small></div>
+    <div class="clockC" id="clk">08:00</div>
+    <div class="capC" id="cap"></div>
+  </div>
+
+  <div class="scene" id="o8" data-dur="5.5" data-sfx="success:0.5">
+    <div style="font-size:150px" data-in="0.1" data-anim="pop">🤲</div>
+    <div class="gap-s"></div>
+    <div class="h2" data-in="0.4" style="color:#10241c">Her gününüz<br><span style="color:#e8742f">bereketli olsun</span></div>
+    <div class="gap-l"></div>
+    <div data-in="1.0" data-anim="pop"><span class="gt" style="font-size:120px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="url jak" data-in="1.5" data-anim="pop" style="background:var(--gt-red);color:#fff">getirtrend.com/restoran-ol</div>
+    <div class="gap"></div>
+    <div class="p" data-in="2.1" style="color:#5d6e67;font-weight:700">Restoranını ücretsiz ekle</div>
+  </div>
+</div>
+<script>window.DEFAULT_DURS = [22.5, 5.5];</script>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, k) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], k))).join(',')})`; };
+  // sky keyframes: [time, top, bottom]
+  const SKY = [[0, '#ffb39a', '#ffe6b0'], [2.2, '#7cc4f2', '#cfeafc'], [5, '#4fb0f0', '#bfe4fb'], [10.8, '#4fb0f0', '#bfe4fb'],
+               [11.8, '#ff8a5c', '#ffd27a'], [14.5, '#8a4fa8', '#ff9a6b'], [16.8, '#3b2d6b', '#c4607a'], [17.8, '#0d1838', '#2a3466'], [30, '#0d1838', '#2a3466']];
+  function skyAt(t) {
+    for (let i = 0; i < SKY.length - 1; i++) { const [a, t1, b1] = SKY[i], [b, t2, b2] = SKY[i + 1];
+      if (t <= b) { const k = clamp((t - a) / (b - a)); return [mix(t1, t2, k), mix(b1, b2, k)]; } }
+    return [SKY.at(-1)[1], SKY.at(-1)[2]];
+  }
+  // decor
+  $('stars').innerHTML = Array.from({ length: 50 }, (_, i) => `<div class="star" style="left:${(i * 197) % 1060}px;top:${(i * 131) % 900}px"></div>`).join('');
+  $('clouds').innerHTML = [0, 1, 2].map(i => `<div class="cloud" style="top:${260 + i * 160}px"></div>`).join('');
+  $('city').innerHTML = [[0, 380], [150, 470], [300, 330], [460, 520], [620, 360], [780, 440], [930, 400]].map(([x, h]) => `<div class="city" style="left:${x}px;top:${1380 - h - 450}px;height:${h + 450}px"></div>`).join('');
+  $('dashes').innerHTML = Array.from({ length: 6 }, (_, i) => `<div class="dash" style="left:${i * 200 + 30}px"></div>`).join('');
+  const ORD = [6.2, 7.8, 9.4, 12.0, 13.2, 14.4, 15.6];
+  $('couriers').innerHTML = ORD.map((_, i) => `<div class="courier" id="cr${i}" style="opacity:0">🛵</div>`).join('');
+  const CH = [[0, '07:58', '08:25', '☀️ Sabah: dükkân açılıyor'], [5, '12:20', '12:50', '🛵 Öğle: siparişler getirtrend\'den geliyor'],
+              [11, '19:00', '19:45', '🔥 Akşam: mutfak tam gaz'], [17, '22:00', '22:20', '💰 Gece: günün hesabı kasada']];
+  const toMin = s => +s.slice(0, 2) * 60 + +s.slice(3);
+  HOOKS.day = (lt) => {
+    const [top, bot] = skyAt(lt);
+    $('sky').style.background = `linear-gradient(${top}, ${bot})`;
+    // sun arc during day, moon at night
+    const sp = clamp(lt / 16.5), ang = Math.PI * (1 - sp);
+    $('sun').style.left = (440 + 420 * Math.cos(ang)) + 'px'; $('sun').style.top = (560 - 380 * Math.sin(ang)) + 'px';
+    const night = clamp((lt - 16.3) / 1.4);
+    $('sun').style.opacity = 1 - night;
+    $('moon').style.opacity = night; $('moon').style.left = '760px'; $('moon').style.top = (300 - 60 * night) + 'px';
+    $('stars').style.opacity = night;
+    [...$('stars').children].forEach((s, i) => s.style.opacity = 0.4 + 0.6 * Math.abs(Math.sin(lt * 2 + i)));
+    [...$('clouds').children].forEach((c, i) => { c.style.left = (((lt * (14 + i * 6) + i * 420) % 1500) - 300) + 'px'; c.style.opacity = 0.9 * (1 - night * .8); });
+    $('city').style.filter = `brightness(${1 - 0.55 * night})`;
+    const evening = clamp((lt - 11.6) / 1.5);
+    $('winIn').style.opacity = evening;
+    document.querySelectorAll('.lampP b').forEach(b => b.style.opacity = clamp((lt - 15.5) / 1));
+    document.querySelectorAll('.lampP i').forEach(b => b.style.background = lt > 15.5 ? '#ffd36b' : '#555');
+    // shutter opens in the morning
+    const sh = easeOut((lt - 0.8) / 1.8);
+    $('shutter').style.transform = `scaleY(${1 - sh})`;
+    $('openSign').textContent = lt > 2.8 ? 'AÇIK' : 'KAPALI'; $('openSign').style.color = lt > 2.8 ? '#0f7a55' : '#c0392b';
+    // clock + caption per chapter
+    let ch = CH[0]; CH.forEach(c => { if (lt >= c[0]) ch = c; });
+    const nextT = (CH[CH.indexOf(ch) + 1] || [22.5])[0], k = clamp((lt - ch[0]) / (nextT - ch[0]));
+    const m = Math.round(lerp(toMin(ch[1]), toMin(ch[2]), k));
+    $('clk').textContent = String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    const ck = easeOut((lt - ch[0] - 0.2) / 0.5);
+    $('cap').textContent = ch[3]; $('cap').style.opacity = ck; $('cap').style.transform = `translateY(${(1 - ck) * 40}px)`;
+    // orders: bubble + courier leaves the shop
+    let bub = 0;
+    ORD.forEach((a, i) => {
+      if (lt > a && lt < a + 1.0) bub = Math.max(bub, Math.min(clamp((lt - a) / 0.15), clamp((a + 1.0 - lt) / 0.2)));
+      const c = $('cr' + i), p = (lt - a - 0.5) / 2.2;
+      c.style.opacity = p > 0 && p < 1 ? 1 : 0;
+      c.style.left = (700 + p * 700) + 'px';
+      c.style.top = (1430 + Math.sin(lt * 18 + i) * 4) + 'px';
+    });
+    $('bubble').style.opacity = bub; $('bubble').style.transform = `scale(${0.7 + 0.3 * bub})`;
+    // till at night
+    const tk = easeOut((lt - 18.6) / 0.5);
+    $('till').style.opacity = tk; $('till').style.transform = `translateX(-50%) scale(${0.7 + 0.3 * back(clamp((lt - 18.6) / 0.6))})`;
+    const total = Math.round(4860 * easeOut((lt - 18.8) / 1.6));
+    $('tillN').textContent = '₺ ' + total.toLocaleString('tr-TR');
+    $('tillC').textContent = `${Math.round(14 * easeOut((lt - 18.8) / 1.6))} sipariş · doğrudan kasanızda`;
+  };
+</script>
+</body>
+</html>

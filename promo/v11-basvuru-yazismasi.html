@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Başvuru Yazışması</title><link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="chat.css">
+<style>
+  #out { background: var(--gt-blush); color: var(--gt-ink); }
+  #out .photos { display: flex; gap: 22px; }
+  #out .photos img { width: 300px; height: 300px; border-radius: 34px; object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,.25); border: 8px solid #fff; }
+</style></head>
+<body data-music="chill" data-dots="off">
+<div id="stage">
+  <div class="scene" id="chat" data-static="1"></div>
+  <div class="scene" id="out" data-dur="5.6" data-sfx="whoosh:0;success:0.5">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:128px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="h2 jak" data-in="0.5">Sorunuz mu var?<br><span style="color:var(--gt-red)">Yazın, yardımcı olalım</span></div>
+    <div class="gap"></div>
+    <div class="photos" data-in="0.9" data-anim="up">
+      <img src="assets/lahmacun2.jpg" style="transform:rotate(-4deg)"><img src="assets/pide.jpg" style="transform:translateY(-24px)"><img src="assets/cigkofte.jpg" style="transform:rotate(4deg)">
+    </div>
+    <div class="gap"></div>
+    <div class="url jak" data-in="1.3" data-anim="pop" style="background:var(--gt-ink);color:#fff">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btn jak" data-in="1.8" data-anim="pop" id="cta" style="background:var(--gt-red);color:#fff;box-shadow:0 24px 60px rgba(215,53,31,.4)">Hemen Başvur →</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+window.CHAT = {
+  name: 'getirtrend Restoran', sub: 'işletme hesabı', avatar: 'assets/logo-mark.svg', clockStart: 11 * 60 + 5, end: 25.6,
+  msgs: [
+    { s: 'R', t: 1.7, ty: 0.3, text: "Merhaba, restoranımı getirtrend'e eklemek istiyorum 🙂" },
+    { s: 'L', t: 3.2, text: 'Merhaba, hoş geldiniz! 🙌 Başvuru ücretsiz, birkaç dakika sürüyor.' },
+    { s: 'L', t: 4.7, text: '1️⃣ Hesabınızı ve restoranınızı tek formda açın\n2️⃣ Onay beklerken menünüzü ve bölgelerinizi hazırlayın\n3️⃣ Onaylanınca siparişler başlasın' },
+    { s: 'R', t: 7.1, ty: 6.0, text: 'Menüyü ben mi yükleyeceğim?' },
+    { s: 'L', t: 8.5, text: 'Menünüz resimleriyle sizin yerinize yüklenir 📸' },
+    { s: 'R', t: 10.0, ty: 9.0, text: 'Siparişler bana nasıl gelecek?' },
+    { s: 'L', t: 11.5, text: 'Sesli uyarıyla panelinize, telefonunuza ve AlfaPOS kasanıza düşer. Kilit ekranında bile zil çalar 🔔' },
+    { s: 'L', t: 12.6, img: 'assets/ui/lock.jpg', h: 700, zoom: [13.0, 15.0] },
+    { s: 'R', t: 16.6, ty: 15.5, text: 'Ödemeyi kim alıyor?' },
+    { s: 'L', t: 18.0, text: 'Ödemeyi kapıda siz alırsınız; nakit ya da kendi POS’unuzla 👍' },
+    { s: 'L', t: 19.3, link: true, text: 'Başvuru formu burada 👇' },
+    { s: 'R', t: 21.6, ty: 20.4, text: 'Harika, hemen başvuruyorum 🙏' },
+    { s: 'L', t: 23.0, text: 'Hayırlı işler dileriz! 🤝' },
+  ],
+};
+</script>
+<script src="chat.js"></script>
+<script>
+  window.DEFAULT_DURS = [CHAT.end, 5.6];
+  HOOKS.out = (lt) => { if (lt > 2.4) document.getElementById('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

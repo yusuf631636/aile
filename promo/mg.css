@@ -1,0 +1,19 @@
+/* 15-second motion-graphics ads (v19–v21): orange / navy / white, spring + ease-in-out motion. */
+:root { --or: #FF6B1A; --or2: #FF8A3D; --nv: #0B1B3F; --nv2: #13285A; --wh: #ffffff; }
+#stage { background: var(--nv); color: #fff; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+.scene { padding: 0 70px; }
+.hk { font-weight: 800; font-size: 118px; line-height: 1.02; letter-spacing: -5px; text-align: center; }
+.hk em { font-style: normal; color: var(--or); }
+.t2 { font-weight: 800; font-size: 74px; line-height: 1.08; letter-spacing: -2.5px; text-align: center; }
+.t2 em { font-style: normal; color: var(--or); }
+.ben { display: flex; align-items: center; gap: 34px; width: 940px; background: #fff; color: var(--nv); border-radius: 44px; padding: 44px 44px; margin: 26px 0;
+  box-shadow: 0 24px 60px rgba(11,27,63,.25); font-weight: 800; font-size: 66px; letter-spacing: -2px; text-align: left; }
+.ben .ic { flex: none; font-size: 84px; color: #fff; background: var(--or); border-radius: 30px; padding: 20px; width: 1.55em; height: 1.55em; }
+.ben small { display: block; font-size: 34px; font-weight: 600; letter-spacing: -.5px; color: #5a6785; margin-top: 4px; }
+.foot { position: absolute; left: 0; right: 0; bottom: 120px; text-align: center; font-size: 30px; font-weight: 600; opacity: .75; }
+.brandw { font-weight: 800; font-size: 170px; letter-spacing: -8px; line-height: 1; }
+.brandw span { color: var(--or); }
+.cta { background: var(--or); color: #fff; font-weight: 800; font-size: 68px; padding: 40px 84px; border-radius: 999px; box-shadow: 0 0 0 0 rgba(255,107,26,.6); letter-spacing: -1.5px; }
+.url2 { font-weight: 700; font-size: 46px; opacity: .9; letter-spacing: -.5px; }
+.bgfx { position: absolute; inset: 0; }
+.shard { position: absolute; background: var(--or); opacity: .14; transform-origin: center; }

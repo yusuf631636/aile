@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Mutfaktan</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="ad.css">
+<style>
+  #stage { background: #140c09; color: #fff; }
+  .step { position: absolute; top: 120px; left: 70px; display: flex; align-items: center; gap: 22px; font-weight: 800; font-size: 40px; color: #fff; }
+  .step b { width: 84px; height: 84px; border-radius: 50%; background: var(--gt-red); display: flex; align-items: center; justify-content: center; font-size: 44px; }
+  .bottomcap { position: absolute; left: 70px; right: 70px; bottom: 230px; }
+  .notif2 { position: absolute; left: 60px; right: 60px; top: 330px; background: rgba(250,250,250,.96); color: #111; border-radius: 40px; padding: 30px 32px; display: flex; gap: 26px;
+    align-items: center; box-shadow: 0 30px 80px rgba(0,0,0,.45); text-align: left; }
+  .notif2 img { width: 110px; height: 110px; border-radius: 26px; }
+  .notif2 .h { font-size: 30px; color: #555; display: flex; justify-content: space-between; } .notif2 .h b { color: #111; }
+  .notif2 .t { font-size: 44px; font-weight: 800; } .notif2 .s { font-size: 34px; color: #333; }
+  .map { position: relative; width: 940px; height: 940px; border-radius: 50px; overflow: hidden; background: #f3efe8; box-shadow: 0 40px 100px rgba(0,0,0,.5); }
+  .road2 { position: absolute; background: #fff; box-shadow: 0 0 0 3px #e2ddd3; }
+  .pin { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 64px; color: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+  .eta { position: absolute; left: 30px; right: 30px; bottom: 30px; background: #fff; border-radius: 30px; padding: 26px 30px; display: flex; align-items: center; gap: 24px; color: #111; box-shadow: 0 10px 30px rgba(0,0,0,.15); text-align: left; }
+</style></head>
+<body data-music="drama" data-switch="0" data-dots="off">
+<div id="stage">
+  <div class="scene" id="k1" data-static="1" data-dur="4.0" data-sfx="ding:0.8;ding:1.9" data-voice="Akşam yoğunluğu başladı. Telefon çaldı: yeni sipariş!">
+    <div class="bgp" id="k1bg" style="background-image:url(assets/izgara.jpg)"></div><div class="shade"></div>
+    <div class="step" data-in="0.1"><b>1</b>Sipariş geldi</div>
+    <div class="notif2" id="nt" style="opacity:0"><img src="assets/logo-mark.svg"><div style="flex:1"><div class="h"><b>getirtrend</b><span>şimdi</span></div><div class="t">🔔 Yeni sipariş · 360 TL</div><div class="s">2× Lahmacun, 1× Ayran · Kapıda nakit</div></div></div>
+    <div class="bottomcap"><div class="cap w" data-in="1.0">Telefon çaldı:<br><em>yeni sipariş!</em></div></div>
+  </div>
+
+  <div class="scene" id="k2" data-static="1" data-dur="4.2" data-sfx="whoosh:0" data-voice="Fiş, mutfak yazıcısından kendiliğinden çıktı.">
+    <div class="bgp" style="background-image:url(assets/lahmacun3.jpg);filter:blur(10px) brightness(.5)"></div>
+    <div class="step" data-in="0.1"><b>2</b>Fiş çıktı</div>
+    <div class="printer" data-in="0.2" data-anim="pop" style="margin-top:-200px"></div>
+    <div id="rw" style="height:0;overflow:hidden;margin-top:-30px;position:relative;z-index:2">
+      <div class="rcpt"><div class="in">
+        <div class="c"><span class="gt" style="font-size:44px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+        <div class="c" style="margin-top:10px">PAKET SERVİS ADİSYONU</div><hr>
+        <div class="row"><span>2× Lahmacun</span><span>204,00</span></div>
+        <div class="row"><span>1× Ayran</span><span>25,00</span></div><hr>
+        <div class="row" style="font-weight:700;font-size:36px"><span>TOPLAM</span><span>229,00 TL</span></div>
+      </div></div>
+    </div>
+    <div class="bottomcap"><div class="cap w" data-in="0.9">Fiş <em>mutfak yazıcısından</em><br>kendiliğinden çıktı</div></div>
+  </div>
+
+  <div class="scene" id="k3" data-static="1" data-dur="3.6" data-sfx="whoosh:0;pop:1.2" data-voice="Usta hazırladı.">
+    <div class="bgp" id="k3bg" style="background-image:url(assets/lahmacun.jpg)"></div><div class="shade"></div>
+    <div class="step" data-in="0.1"><b>3</b>Hazırlandı</div>
+    <div class="bottomcap"><div class="cap w" data-in="0.6">Sıcacık<br><em>hazırlandı</em> ✓</div></div>
+  </div>
+
+  <div class="scene" id="k4" data-static="1" data-dur="4.8" data-sfx="whoosh:0;success:3.8" data-voice="Kurye yola çıktı. Müşteri siparişini canlı takip ediyor.">
+    <div class="bgp" style="background-image:url(assets/adana.jpg);filter:blur(12px) brightness(.45)"></div>
+    <div class="step" data-in="0.1"><b>4</b>Yolda</div>
+    <div class="map" data-in="0.2" data-anim="pop" id="map">
+      <div class="road2" style="left:0;right:0;top:300px;height:46px"></div><div class="road2" style="left:0;right:0;top:640px;height:46px"></div>
+      <div class="road2" style="top:0;bottom:0;left:220px;width:46px"></div><div class="road2" style="top:0;bottom:0;left:640px;width:46px"></div>
+      <div style="position:absolute;left:300px;top:380px;width:280px;height:200px;border-radius:30px;background:#dfe9d6"></div>
+      <svg width="940" height="940" style="position:absolute;inset:0"><path id="route" d="M243 160 L243 323 L663 323 L663 663 L800 663" fill="none" stroke="#D7351F" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1400" stroke-dashoffset="1400"/></svg>
+      <div class="pin" style="left:243px;top:160px;background:#221D19" data-ic="store"></div>
+      <div class="pin" style="left:800px;top:663px;background:#0f7a55" data-ic="home"></div>
+      <div class="pin" id="bike" style="background:#D7351F;width:110px;height:110px" data-ic="bike"></div>
+      <div class="eta"><img src="assets/logo-mark.svg" style="width:80px;height:80px;border-radius:20px"><div style="flex:1"><div style="font-size:34px;font-weight:800">Siparişin yolda</div><div style="font-size:28px;color:#555" id="etaT">Tahmini varış 12 dk</div></div></div>
+    </div>
+    <div class="bottomcap" style="bottom:90px"><div class="cap w" data-in="0.8" style="font-size:66px">Müşteri <em>canlı takip</em> ediyor</div></div>
+  </div>
+
+  <div class="scene" id="k5" data-static="1" data-dur="4.0" data-sfx="cash:0.9" data-voice="Teslim edildi. Ödemeyi kapıda siz aldınız.">
+    <div class="bgp" id="k5bg" style="background-image:url(assets/kebap.jpg)"></div><div class="shade"></div>
+    <div class="step" data-in="0.1"><b>5</b>Teslim edildi</div>
+    <div class="bottomcap"><div class="cap w" data-in="0.5">Ödemeyi <em>kapıda</em><br>siz aldınız 💰</div></div>
+  </div>
+
+  <div class="scene" id="k6" data-dur="6.4" data-sfx="whoosh:0;success:0.6" data-voice="Restoranınızı getirtrend'e ekleyin. Başvuru ücretsiz.">
+    <div class="bgp" style="background:var(--gt-blush)"></div>
+    <div data-in="0.1" data-anim="pop" data-d="0.7" style="position:relative"><span class="gt" style="font-size:130px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="cap" data-in="0.5" style="color:var(--gt-ink)">Mutfağınız hazır mı?<br><em>Siparişler hazır.</em></div>
+    <div class="gap-l"></div>
+    <div class="urlb" data-in="1.2" data-anim="pop" style="position:relative">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btnr" data-in="1.7" data-anim="pop" id="cta" style="position:relative">Başvuru Ücretsiz →</div>
+  </div>
+</div>
+<script>window.DEFAULT_DURS = [4.0, 4.2, 3.6, 4.8, 4.0, 6.4];</script>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  HOOKS.k1 = (lt) => {
+    $('k1bg').style.transform = `scale(${1.05 + 0.08 * lt / 4})`;
+    const k = easeOut((lt - 0.7) / 0.4); $('nt').style.opacity = k;
+    $('nt').style.transform = `translateY(${(1 - k) * -300}px) rotate(${(lt > 0.8 && lt < 2.6) ? Math.sin(lt * 50) * 1.2 : 0}deg)`;
+  };
+  HOOKS.k2 = (lt) => { $('rw').style.height = (easeOut(clamp((lt - 0.7) / 2.2)) * 560) + 'px'; };
+  HOOKS.k3 = (lt) => { $('k3bg').style.transform = `scale(${1.15 - 0.1 * lt / 3.6}) rotate(${-1 + lt * .3}deg)`; };
+  HOOKS.k4 = (lt) => {
+    const p = easeOut(clamp((lt - 0.8) / 3.0)), path = $('route'), L = path.getTotalLength();
+    path.style.strokeDashoffset = 1400 - p * 1400;
+    const pt = path.getPointAtLength(p * L); $('bike').style.left = pt.x + 'px'; $('bike').style.top = pt.y + 'px';
+    $('etaT').textContent = p >= 1 ? 'Teslim edildi ✓' : `Tahmini varış ${Math.max(1, Math.round(12 * (1 - p)))} dk`;
+  };
+  HOOKS.k5 = (lt) => { $('k5bg').style.transform = `scale(${1.05 + 0.08 * lt / 4})`; };
+  HOOKS.k6 = (lt) => { if (lt > 2.4) $('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

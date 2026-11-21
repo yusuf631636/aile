@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Hesap Makinesi (B)</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="mg.css">
+<style>
+  .col { width: 440px; border-radius: 44px; padding: 40px 30px; text-align: center; position: relative; }
+  .col h4 { margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -1px; }
+  .col .amt { font-size: 92px; font-weight: 800; letter-spacing: -4px; margin: 24px 0 10px; white-space: nowrap; }
+  .col .tag { display: inline-block; font-size: 34px; font-weight: 800; padding: 10px 22px; border-radius: 999px; }
+  .bar { height: 30px; border-radius: 15px; margin-top: 26px; background: rgba(255,255,255,.15); overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 15px; }
+</style></head>
+<body data-music="pop" data-dots="off">
+<div id="stage">
+  <div class="scene" id="h1" data-static="1" data-dur="3.2" data-sfx="whoosh:0;pop:0.3">
+    <div class="hk" id="q" style="font-size:112px"><em>1.000 TL'lik</em><br>siparişten<br>eline ne<br>kalıyor?</div>
+  </div>
+  <div class="scene" id="h2" data-static="1" data-dur="7.0" data-sfx="whoosh:0;cash:4.6">
+    <div class="bgfx" style="background:linear-gradient(160deg,#fff,#FFF1E8)"></div>
+    <div class="t2" style="color:var(--nv);position:relative" id="h2t">Aynı sipariş,<br><em>farklı kazanç</em></div>
+    <div style="height:60px"></div>
+    <div style="display:flex;gap:30px;position:relative">
+      <div class="col" id="c1" style="background:var(--nv);color:#fff">
+        <h4>Komisyonlu<br>platform</h4>
+        <div class="amt" id="a1">1.000 TL</div>
+        <span class="tag" style="background:#3a2230;color:#ff8f8f" id="t1">−%30 komisyon</span>
+        <div class="bar"><i id="r1" style="background:#ff6b6b;width:100%"></i></div>
+      </div>
+      <div class="col" id="c2" style="background:var(--or);color:#fff">
+        <h4><span class="gt inv" style="font-size:44px"><img src="assets/logo-mark.svg"><span>getir<b style="color:#fff">trend</b></span></span><br>&nbsp;</h4>
+        <div class="amt" id="a2">1.000 TL</div>
+        <span class="tag" style="background:#fff;color:var(--or)">%0 komisyon*</span>
+        <div class="bar"><i id="r2" style="background:#fff;width:100%"></i></div>
+      </div>
+    </div>
+    <div style="height:60px"></div>
+    <div class="t2" id="diff" style="color:var(--nv);position:relative;font-size:64px">Fark: <em id="dv">+300 TL</em> cebinde</div>
+    <div class="foot" style="color:var(--nv)">Örnek hesap: %30 komisyon. *İlk etapta komisyon alınmaz.</div>
+  </div>
+  <div class="scene" id="h3" data-static="1" data-dur="5.0" data-sfx="whoosh:0;success:0.5">
+    <div class="bgfx" style="background:radial-gradient(80% 60% at 50% 40%, var(--nv2), var(--nv))"></div>
+    <div class="t2" id="h3t" style="position:relative">Kazancın <em>tamamı</em><br>senin olsun</div>
+    <div style="height:60px"></div>
+    <div class="brandw" id="bw" style="position:relative;font-size:150px">getir<span>trend</span></div>
+    <div style="height:80px"></div>
+    <div class="cta" id="cta" style="position:relative">Hemen Ücretsiz Katıl →</div>
+    <div style="height:46px"></div>
+    <div class="url2" id="u" style="position:relative">getirtrend.com/restoran-ol</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const spring = k => k <= 0 ? 0 : 1 - Math.exp(-6 * k) * Math.cos(11 * k);
+  const eio = k => (k = clamp(k), k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+  const tl = n => n.toLocaleString('tr-TR') + ' TL';
+  window.DEFAULT_DURS = [3.2, 7.0, 5.0];
+  HOOKS.h1 = (lt) => {
+    const k = clamp((lt - 0.1) / 0.6); $('q').style.transform = `scale(${0.3 + 0.7 * spring(k)}) rotate(${(1 - spring(k)) * -8}deg)`; $('q').style.opacity = clamp(k * 3);
+  };
+  HOOKS.h2 = (lt) => {
+    $('h2t').style.opacity = eio(lt / 0.5);
+    [['c1', 0.4, -1], ['c2', 0.7, 1]].forEach(([id, a, d]) => { const k = clamp((lt - a) / 0.6);
+      $(id).style.opacity = clamp(k * 3); $(id).style.transform = `translateY(${(1 - spring(k)) * 400}px) rotate(${(1 - spring(k)) * 6 * d}deg)`; });
+    const p = eio((lt - 1.6) / 2.0);
+    $('a1').textContent = tl(Math.round(1000 - 300 * p)); $('r1').style.width = (100 - 30 * p) + '%';
+    $('t1').style.transform = `scale(${1 + 0.15 * Math.sin(clamp((lt - 1.6) / 2) * Math.PI)})`;
+    $('c1').style.filter = `saturate(${1 - 0.5 * p})`;
+    const g = clamp((lt - 3.8) / 0.8); $('c2').style.boxShadow = `0 0 ${60 * g}px rgba(255,107,26,${0.7 * g})`;
+    $('c2').style.transform += ` scale(${1 + 0.05 * spring(g)})`;
+    const k = clamp((lt - 4.4) / 0.6); $('diff').style.opacity = clamp(k * 3); $('diff').style.transform = `scale(${spring(k)})`;
+  };
+  HOOKS.h3 = (lt) => {
+    $('h3t').style.opacity = eio(lt / 0.4);
+    const k2 = clamp((lt - 0.3) / 0.6); $('bw').style.transform = `scale(${spring(k2)})`;
+    const k3 = clamp((lt - 0.8) / 0.6), c = $('cta'), beat = lt > 1.4 ? (lt - 1.4) % 0.9 / 0.9 : 0;
+    c.style.opacity = clamp(k3 * 3); c.style.transform = `scale(${spring(k3) * (1 + 0.07 * Math.max(0, Math.sin(beat * Math.PI)))})`;
+    c.style.boxShadow = lt > 1.4 ? `0 0 0 ${beat * 46}px rgba(255,107,26,${0.55 * (1 - beat)})` : 'none';
+    $('u').style.opacity = eio((lt - 1.3) / 0.5);
+  };
+</script>
+</body>
+</html>

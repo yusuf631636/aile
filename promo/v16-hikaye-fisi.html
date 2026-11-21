@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Hikâye Fişi</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  #stage { background: #3b2618; }
+  .scene { padding: 0; }
+  .wood { position: absolute; inset: 0;
+    background: repeating-linear-gradient(92deg, rgba(0,0,0,.0) 0 38px, rgba(0,0,0,.08) 38px 40px, rgba(255,255,255,.03) 40px 90px),
+                linear-gradient(160deg, #6b4428, #3d2516 60%, #2a190f); }
+  .glow { position: absolute; left: -200px; top: -300px; width: 1400px; height: 1200px; background: radial-gradient(rgba(255,214,150,.35), transparent 60%); }
+  #world { position: absolute; left: 0; top: 0; width: 1080px; transform-origin: 540px 0; }
+  .printer { position: absolute; left: 60px; top: 110px; width: 960px; height: 230px; border-radius: 46px; background: linear-gradient(#45454d, #26262b);
+    box-shadow: 0 30px 70px rgba(0,0,0,.55), inset 0 3px 0 rgba(255,255,255,.12); z-index: 3; }
+  .printer .slot { position: absolute; left: 90px; right: 90px; bottom: 34px; height: 18px; border-radius: 9px; background: #0b0b0d; }
+  .printer .led { position: absolute; right: 70px; top: 50px; width: 22px; height: 22px; border-radius: 50%; background: #33e07a; box-shadow: 0 0 18px #33e07a; }
+  .printer .brand { position: absolute; left: 70px; top: 40px; opacity: .9; }
+  .paper { position: absolute; left: 130px; top: 318px; width: 820px; background: #fbfaf6; color: #151515; font-family: 'JetBrains Mono', monospace;
+    font-size: 38px; line-height: 1.35; padding: 0 44px; box-shadow: 0 30px 60px rgba(0,0,0,.45); z-index: 2; }
+  .paper::after { content: ""; position: absolute; left: 0; right: 0; bottom: -18px; height: 18px;
+    background: linear-gradient(-45deg, transparent 12px, #fbfaf6 0) 0 0/24px 18px repeat-x, linear-gradient(45deg, transparent 12px, #fbfaf6 0) 12px 0/24px 18px repeat-x; }
+  .ln { overflow: hidden; height: 0; }
+  .ln > div { padding: 6px 0; }
+  .r { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
+  .r .t { font-weight: 700; }
+  .r .fill { flex: 1; border-bottom: 4px dotted #9a9a9a; transform: translateY(-8px); min-width: 30px; }
+  .r .ic { font-size: 44px; }
+  .c { text-align: center; }
+  .dash { border-top: 4px dashed #8a8a8a; margin: 10px 0; }
+  .dbl { border-top: 4px double #222; border-bottom: 4px solid #222; height: 10px; margin: 12px 0; }
+  .invbar { background: #151515; color: #fbfaf6; text-align: center; font-weight: 800; font-size: 64px; padding: 18px 0 !important; letter-spacing: 2px; margin: 8px -44px; }
+  .big { text-align: center; font-weight: 800; font-size: 76px; line-height: 1.1; }
+  .pol { position: absolute; width: 380px; transform-origin: center; background: #fff; padding: 20px 20px 70px; box-shadow: 0 30px 60px rgba(0,0,0,.5); z-index: 4; opacity: 0; }
+  .pol img { width: 340px; height: 340px; object-fit: cover; display: block; }
+  .pol span { position: absolute; left: 0; right: 0; bottom: 16px; text-align: center; font: 700 34px 'Plus Jakarta Sans'; color: #333; }
+  #out { background: var(--gt-red); color: #fff; }
+  #out .q { font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 104px; line-height: 1.02; letter-spacing: -4px; }
+</style></head>
+<body data-music="acoustic" data-dots="off">
+<div id="stage">
+  <div class="scene" id="rc" data-static="1" data-dur="23.6">
+    <div class="wood"></div><div class="glow"></div>
+    <div id="world">
+      <div class="printer"><div class="brand"><span class="gt inv" style="font-size:52px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div><div class="led" id="led"></div><div class="slot"></div></div>
+      <div class="paper" id="paper"></div>
+    </div>
+    <div class="pol" id="pol1" style="left:40px;top:1500px"><img src="assets/lahmacun.jpg"><span>Usta hazırladı</span></div>
+    <div class="pol" id="pol2" style="left:640px;top:1540px"><img src="assets/kebap.jpg"><span>Afiyet olsun!</span></div>
+  </div>
+
+  <div class="scene" id="out" data-dur="5.6" data-sfx="whoosh:0;success:0.6">
+    <div data-in="0.1" data-anim="pop" style="background:#fff;border-radius:50px;padding:34px 50px"><span class="gt" style="font-size:110px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="q" data-in="0.5">Sizin fişiniz<br>ne zaman çıkacak?</div>
+    <div class="gap-l"></div>
+    <div data-in="1.2" data-anim="pop" style="background:#221D19;color:#fff;font:800 54px 'Plus Jakarta Sans';padding:30px 50px;border-radius:26px">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div data-in="1.7" data-anim="pop" id="cta" style="background:#fff;color:#D7351F;font:800 60px 'Plus Jakarta Sans';padding:32px 76px;border-radius:999px">Ücretsiz Başvur →</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const row = (t, txt, icn, bold) => `<div class="r"><span class="t">${t}</span><span${bold ? ' style="font-weight:800"' : ''}>${txt}</span><span class="fill"></span>${icn ? ic(icn) : ''}</div>`;
+  const kv = (k, v) => `<div class="r"><span class="t">${k}</span><span class="fill"></span><span style="font-weight:800">${v}</span></div>`;
+  const bars = Array.from({ length: 46 }, (_, i) => `<span style="display:inline-block;width:${[4, 8, 4, 12, 6][(i * 7) % 5]}px;height:120px;background:#151515;margin-right:${[4, 6, 8][(i * 5) % 3]}px"></span>`).join('');
+  // [time, html, sound]
+  const L = [
+    [0.3, `<div class="c" style="padding-top:28px"><span class="gt" style="font-size:66px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>`, 'print'],
+    [0.9, `<div class="c" style="font-weight:800">HİKÂYE FİŞİ · #0001</div>`, 'print'],
+    [1.4, `<div class="c">Bursa · Cuma · 20:45</div>`, 'print'],
+    [1.8, `<div class="dash"></div>`, ''],
+    [2.4, row('20:45', 'Müşteri acıktı', 'smile'), 'print'],
+    [3.3, row('20:46', "getirtrend'i açtı", 'smartphone'), 'print'],
+    [4.2, row('20:46', 'Restoranınızı seçti', 'store'), 'print'],
+    [5.1, row('20:47', '3 dokunuşla sipariş', 'check-circle'), 'print'],
+    [5.8, `<div class="dash"></div>`, ''],
+    [6.5, `<div class="invbar">${ic('bell-ring')} ZİL ÇALDI!</div>`, 'ding'],
+    [7.6, row('20:47', "AlfaPOS'a düştü", 'monitor'), 'print'],
+    [8.5, row('20:48', 'Fiş yazıcıdan çıktı', 'printer'), 'print'],
+    [9.4, row('20:58', 'Usta hazırladı', 'chef-hat'), 'print'],
+    [10.3, row('21:00', 'Kurye yola çıktı', 'bike'), 'print'],
+    [11.2, row('21:12', 'Teslim edildi', 'package-check'), 'print'],
+    [12.0, `<div class="dash"></div>`, ''],
+    [12.7, kv('SİPARİŞ', '2 Lahmacun, Ayran'), 'print'],
+    [13.4, kv('ÖDEME', 'Kapıda, size'), 'print'],
+    [14.1, kv('BAŞVURU', 'ÜCRETSİZ'), 'print'],
+    [14.8, kv('MENÜ YÜKLEME', 'BİZDEN'), 'print'],
+    [15.5, `<div class="dbl"></div>`, ''],
+    [16.2, `<div class="c" style="font-weight:800;font-size:44px">TOPLAM</div><div class="big">DOLU BİR<br>MUTFAK</div>`, 'cash'],
+    [17.4, `<div class="dbl"></div>`, ''],
+    [18.1, `<div class="c" style="padding-top:14px">${bars}</div>`, 'print'],
+    [18.9, `<div class="c" style="font-weight:800">getirtrend.com/restoran-ol</div>`, 'print'],
+    [19.6, `<div class="c" style="padding-bottom:40px">Teşekkür ederiz, hayırlı işler!</div>`, 'print'],
+  ];
+  $('paper').innerHTML = L.map((l, i) => `<div class="ln" id="l${i}"><div>${l[1]}</div></div>`).join('');
+  const sc = $('rc');
+  sc.dataset.sfx = L.filter(l => l[2]).map(l => `${l[2]}:${l[0]}`).concat(['pop:9.6', 'pop:11.4', 'tear:20.6']).join(';');
+  window.DEFAULT_DURS = [23.6, 5.6];
+  HOOKS.rc = (lt) => {
+    let h = 0;
+    L.forEach((l, i) => {
+      const el = $('l' + i), k = clamp((lt - l[0]) / 0.25);
+      const full = el.firstElementChild.offsetHeight;
+      el.style.height = (k * full) + 'px'; h += k * full;
+    });
+    $('led').style.opacity = L.some(l => lt > l[0] && lt < l[0] + 0.3) ? 1 : 0.35;
+    // camera follows the newest printed line, then pulls back to show the whole receipt
+    const follow = Math.max(0, 318 + h - 1450);
+    const pull = easeOut(clamp((lt - 20.8) / 1.6));
+    const total = 318 + h + 40, fitScale = Math.min(1, 1880 / total);
+    const sc2 = 1 + (fitScale - 1) * pull, ty = -follow * (1 - pull) + 20 * pull;
+    const ring = lt > 6.5 && lt < 7.3 ? Math.sin(lt * 70) * 6 : 0;
+    $('world').style.transform = `translate(${ring}px, ${ty}px) scale(${sc2})`;
+    // tear: paper drops a little and tilts when torn
+    const tear = easeOut(clamp((lt - 20.6) / 0.4));
+    $('paper').style.transform = `translateY(${tear * 30}px) rotate(${tear * -1.5}deg)`;
+    [[$('pol1'), 9.5, -8], [$('pol2'), 11.3, 7]].forEach(([p, a, r]) => {
+      const k = clamp((lt - a) / 0.35), out = clamp((lt - 20.5) / 0.6);
+      p.style.opacity = Math.min(k * 2, 1 - out);
+      p.style.transform = `translateY(${(1 - easeOut(k)) * -200}px) rotate(${r + (1 - k) * 10}deg) scale(${1.4 - 0.4 * easeOut(k)})`;
+    });
+  };
+  HOOKS.out = (lt) => { if (lt > 2.4) $('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

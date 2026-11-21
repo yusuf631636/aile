@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Retro Oyun</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  #stage { background: #07060c; color: #fff; }
+  .scene { padding: 0; font-family: 'Press Start 2P', monospace; }
+  .px { font-family: 'Press Start 2P', monospace; letter-spacing: 0; line-height: 1.5; }
+  .crt { position: absolute; inset: 0; pointer-events: none; z-index: 50;
+    background: repeating-linear-gradient(rgba(0,0,0,.28) 0 3px, transparent 3px 6px), radial-gradient(120% 90% at 50% 50%, transparent 60%, rgba(0,0,0,.6)); }
+  .grid { position: absolute; left: 0; right: 0; bottom: 0; height: 700px; perspective: 400px; overflow: hidden; }
+  .grid i { position: absolute; left: -50%; right: -50%; bottom: 0; height: 1400px; transform: rotateX(70deg); transform-origin: bottom;
+    background: linear-gradient(#ff2d75 3px, transparent 3px) 0 0/100% 70px, linear-gradient(90deg, #ff2d75 3px, transparent 3px) 0 0/90px 100%; opacity: .55; }
+  .sun { position: absolute; left: 290px; top: 820px; width: 500px; height: 500px; border-radius: 50%;
+    background: linear-gradient(#ffd400, #ff2d75 70%); -webkit-mask: repeating-linear-gradient(transparent 0 26px, #000 26px 60px); opacity: .9; }
+  .hud { position: absolute; top: 70px; left: 50px; right: 50px; display: flex; justify-content: space-between; font-size: 30px; color: #ffd400; z-index: 10; }
+  .hud b { color: #fff; font-weight: 400; }
+  .banner { position: absolute; left: 40px; right: 40px; top: 560px; text-align: center; font-size: 46px; line-height: 1.6; color: #22e4ff;
+    text-shadow: 0 0 20px #22e4ff; z-index: 12; opacity: 0; background: rgba(7,6,12,.85); padding: 30px 10px; border: 6px solid #22e4ff; }
+  .item { position: absolute; width: 150px; height: 150px; image-rendering: pixelated; border: 6px solid #fff; z-index: 6; }
+  .plus { position: absolute; font-size: 40px; color: #ffd400; z-index: 11; text-shadow: 0 0 12px #ffd400; }
+  #rider { position: absolute; top: 1430px; width: 260px; height: 196px; image-rendering: pixelated; z-index: 7; }
+  .blink { animation: none; }
+  .title { font-size: 92px; line-height: 1.3; color: #fff; text-shadow: 6px 6px 0 #D7351F; }
+  .menuopt { font-size: 44px; line-height: 2; text-align: left; }
+  .thumb { width: 240px; height: 240px; image-rendering: pixelated; border: 6px solid #fff; }
+</style></head>
+<body data-music="chip" data-dots="off">
+<div id="stage">
+  <div class="scene" id="g1" data-static="1" data-dur="2.6" data-sfx="coin:1.6">
+    <div class="sun" style="top:1180px"></div><div class="grid"><i></i></div>
+    <canvas id="logoPx" width="20" height="20" style="width:260px;height:260px;image-rendering:pixelated" data-in="0.1" data-anim="pop"></canvas>
+    <div class="gap"></div>
+    <div class="title px" data-in="0.3">getir<span style="color:#ff6a52">trend</span></div>
+    <div class="gap-s"></div>
+    <div class="px" style="font-size:40px;color:#22e4ff" data-in="0.6">RESTORAN OYUNU</div>
+    <div class="gap-l"></div>
+    <div class="px" id="press" style="font-size:40px;color:#ffd400">PRESS START</div>
+  </div>
+
+  <div class="scene" id="g2" data-static="1" data-dur="15.6">
+    <div class="sun" style="top:1000px;opacity:.5"></div><div class="grid"><i id="gridI"></i></div>
+    <div class="hud px"><span>SKOR <b id="score">000000</b></span><span>SİPARİŞ <b id="cnt">0</b></span><span>SEVİYE <b id="lvl">1</b></span></div>
+    <div id="items"></div>
+    <canvas id="rider" width="26" height="20"></canvas>
+    <div class="banner px" id="ban"></div>
+  </div>
+
+  <div class="scene" id="g3" data-static="1" data-dur="7.0" data-sfx="levelup:0.2;coin:3.0">
+    <div class="sun" style="top:1150px;opacity:.6"></div><div class="grid"><i></i></div>
+    <div class="px" style="font-size:66px;color:#ffd400;text-shadow:0 0 24px #ffd400" data-in="0.1" data-anim="pop">YÜKSEK SKOR!</div>
+    <div class="gap"></div>
+    <div class="px" style="font-size:110px" id="hs">000000</div>
+    <div class="gap"></div>
+    <div style="display:flex;gap:30px" data-in="0.6" data-anim="up"><canvas class="thumb" id="t1" width="24" height="24"></canvas><canvas class="thumb" id="t2" width="24" height="24"></canvas><canvas class="thumb" id="t3" width="24" height="24"></canvas></div>
+    <div class="gap"></div>
+    <div class="menuopt px" data-in="1.4">
+      <div>SİPARİŞ ...... <span style="color:#22e4ff">18</span></div>
+      <div>MUTFAK ....... <span style="color:#22e4ff">DOLU</span></div>
+      <div>KASA ......... <span style="color:#22e4ff">ALFAPOS</span></div>
+    </div>
+  </div>
+
+  <div class="scene" id="g4" data-static="1" data-dur="6.4" data-sfx="levelup:0.1">
+    <div class="sun" style="top:1250px;opacity:.6"></div><div class="grid"><i></i></div>
+    <div class="px" style="font-size:72px;color:#fff;text-shadow:6px 6px 0 #D7351F" data-in="0.1">YENİ OYUN?</div>
+    <div class="gap-l"></div>
+    <div class="menuopt px">
+      <div data-in="0.6" id="opt1" style="color:#ffd400">▶ RESTORANINI EKLE</div>
+      <div data-in="0.9" style="color:#666">&nbsp;&nbsp;SESSİZ DÜKKAN</div>
+    </div>
+    <div class="gap-l"></div>
+    <div class="px" data-in="1.5" style="font-size:34px;color:#22e4ff;background:#111;border:5px solid #22e4ff;padding:28px 30px">getirtrend.com/restoran-ol</div>
+    <div class="gap"></div>
+    <div class="px" id="free" style="font-size:38px;color:#ffd400" data-in="2.0">BAŞVURU ÜCRETSİZ</div>
+    <div class="gap-l"></div>
+    <div data-in="2.6" data-anim="pop" style="background:#fff;border-radius:40px;padding:22px 36px"><span class="gt" style="font-size:64px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+  </div>
+  <div class="crt"></div>
+</div>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  // real food photos -> tiny canvases shown with pixelated scaling (8-bit look)
+  const FOODS = ['lahmacun', 'pide', 'kebap', 'durum', 'baklava', 'adana', 'lahmacun2', 'pizza', 'cigkofte'];
+  const imgs = {};
+  FOODS.forEach(f => { const im = new Image(); im.src = `assets/${f}.jpg`; imgs[f] = im; document.body.appendChild(Object.assign(im, { style: 'display:none' })); });
+  const pix = (cv, im) => { const c = cv.getContext('2d'); c.imageSmoothingEnabled = true; c.drawImage(im, 0, 0, cv.width, cv.height); };
+  // pixel courier sprite: scooter + rider (char map)
+  const SPR = [
+    '..........RRRR............',
+    '.........RRRRRR...........',
+    '.........RSSSSR...........',
+    '.........SSSSSS...........',
+    '..........SSSS.....YYYYY..',
+    '.........RRRRRR....YWWWY..',
+    '........RRRRRRRR...YWWWY..',
+    '.......RRRRRRRRR...YYYYY..',
+    '.......RR.RRRRRR...YYYYY..',
+    '..........RRRRRRRRRRRRRR..',
+    '.........KKKKKKKKKRRRRRR..',
+    '........KKKKKKKKKKKRRRRR..',
+    '...RRRRRRRRRRRRRRRRRRRRR..',
+    '..RRRRRRRRRRRRRRRRRRRRRRR.',
+    '..RRRRRRRRRRRRRRRRRRRRRRR.',
+    '...KKKK...........KKKK....',
+    '..KKGGKK.........KKGGKK...',
+    '..KGGGGK.........KGGGGK...',
+    '..KKGGKK.........KKGGKK...',
+    '...KKKK...........KKKK....'];
+  const COL = { R: '#D7351F', S: '#f2c49b', Y: '#FFB21E', W: '#fff', K: '#1a1a1a', G: '#888' };
+  (() => { const c = $('rider').getContext('2d'); SPR.forEach((r, y) => [...r].forEach((ch, x) => { if (COL[ch]) { c.fillStyle = COL[ch]; c.fillRect(x, y, 1, 1); } })); })();
+  // falling orders: [drop time, x, food]
+  const DROPS = [];
+  for (let i = 0; i < 18; i++) {
+    const t = 0.6 + i * (i < 6 ? 0.85 : i < 12 ? 0.7 : 0.55);
+    DROPS.push([t, 120 + ((i * 337) % 760), FOODS[i % FOODS.length]]);
+  }
+  const FALL = 1.15, CATCH_Y = 1350;
+  $('items').innerHTML = DROPS.map((d, i) => `<canvas class="item" id="it${i}" width="16" height="16"></canvas><div class="plus px" id="pl${i}" style="opacity:0">+100</div>`).join('');
+  const BANNERS = [[5.0, 'SEVİYE 2<br>TESLİMAT BÖLGESİ<br>AÇILDI!'], [9.0, 'SEVİYE 3<br>ALFAPOS\'A<br>BAĞLANDI!'], [12.6, 'BONUS!<br>MENÜ YÜKLEME<br>BİZDEN']];
+  const sc = $('g2');
+  sc.dataset.sfx = DROPS.map(d => `coin:${(d[0] + FALL).toFixed(2)}`).concat(BANNERS.map(b => `levelup:${b[0]}`)).join(';');
+  window.DEFAULT_DURS = [...document.querySelectorAll('.scene')].map(s => +s.dataset.dur);
+  let drawn = false;
+  function ensureDrawn() {
+    if (drawn) return; drawn = true;
+    DROPS.forEach((d, i) => pix($('it' + i), imgs[d[2]]));
+    pix($('t1'), imgs.lahmacun); pix($('t2'), imgs.pide); pix($('t3'), imgs.kebap);
+    const lc = $('logoPx').getContext('2d'); const lm = new Image(); lm.src = 'assets/logo-mark.svg';
+    lc.drawImage(document.querySelector('img[data-logo]') || lm, 0, 0, 20, 20);
+  }
+  // preload logo for pixelation
+  const LOGO = new Image(); LOGO.src = 'assets/logo-mark.svg'; LOGO.setAttribute('data-logo', ''); LOGO.style.display = 'none'; document.body.appendChild(LOGO);
+  HOOKS.g1 = (lt) => { ensureDrawn(); $('press').style.opacity = (lt < 1.6 ? Math.floor(lt * 3) % 2 : 1) ? 1 : 0; if (lt > 1.6) $('press').textContent = 'START!'; };
+  HOOKS.g2 = (lt) => {
+    ensureDrawn();
+    $('gridI').style.backgroundPosition = `0 ${(lt * 280) % 70}px, 0 0`;
+    let score = 0, n = 0, target = 540;
+    DROPS.forEach((d, i) => {
+      const k = (lt - d[0]) / FALL, it = $('it' + i), pl = $('pl' + i);
+      it.style.left = (d[1] - 75) + 'px';
+      it.style.top = (180 + clamp(k) * (CATCH_Y - 180)) + 'px';
+      it.style.opacity = k > 0 && k < 1 ? 1 : 0;
+      it.style.transform = `rotate(${Math.floor(lt * 8 + i) % 2 ? 6 : -6}deg)`;
+      if (k >= 1) { score += 100; n++; }
+      const pk = clamp((k - 1) / 0.5); pl.style.opacity = k >= 1 && pk < 1 ? 1 : 0;
+      pl.style.left = (d[1] - 60) + 'px'; pl.style.top = (CATCH_Y - 60 - pk * 120) + 'px';
+    });
+    // rider moves towards the next item that is about to land
+    const next = DROPS.find(d => lt < d[0] + FALL) || DROPS[DROPS.length - 1];
+    const prev = [...DROPS].reverse().find(d => lt >= d[0] + FALL);
+    const from = prev ? prev[1] : 540, tStart = prev ? prev[0] + FALL : 0, tEnd = next[0] + FALL;
+    const x = from + (next[1] - from) * easeOut(clamp((lt - tStart) / Math.max(0.2, (tEnd - tStart) * 0.8)));
+    $('rider').style.left = (x - 130) + 'px';
+    $('rider').style.transform = `scaleX(${next[1] < from ? -1 : 1}) translateY(${Math.floor(lt * 10) % 2 ? -4 : 0}px)`;
+    $('score').textContent = String(score).padStart(6, '0'); $('cnt').textContent = n;
+    let lv = 1; BANNERS.forEach((b, j) => { if (lt >= b[0]) lv = j < 2 ? j + 2 : 3; });
+    $('lvl').textContent = lv;
+    const ban = $('ban'), cur = BANNERS.find(b => lt >= b[0] && lt < b[0] + 1.8);
+    ban.style.opacity = cur && Math.floor((lt - cur[0]) * 6) % 4 !== 3 ? 1 : 0; if (cur) ban.innerHTML = cur[1];
+  };
+  HOOKS.g3 = (lt) => { ensureDrawn(); $('hs').textContent = String(Math.round(1800 * easeOut(clamp(lt / 1.6)))).padStart(6, '0'); };
+  HOOKS.g4 = (lt) => { $('opt1').style.opacity = lt < 0.6 ? 0 : (Math.floor(lt * 3) % 2 ? 1 : 0.35); };
+</script>
+</body>
+</html>

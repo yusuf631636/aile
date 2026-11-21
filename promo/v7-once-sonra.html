@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>GetirTrend – Önce / Sonra</title><link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  :root { --pink: #ff2d75; --cyan: #22e4ff; --yel: #ffd400; }
+  #stage { background: #07070d; }
+  .neon { color: #fff; text-shadow: 0 0 10px var(--c, var(--pink)), 0 0 30px var(--c, var(--pink)), 0 0 60px var(--c, var(--pink)); }
+  .lbl { position: absolute; top: 120px; left: 0; right: 0; text-align: center; font-weight: 900; font-size: 120px; letter-spacing: 12px; }
+  .cap { position: absolute; bottom: 210px; left: 60px; right: 60px; text-align: center; font-weight: 800; font-size: 72px; line-height: 1.15; letter-spacing: -1.5px; }
+  /* illustrated shop */
+  .shop { position: absolute; left: 90px; top: 380px; width: 900px; height: 1150px; border-radius: 40px; overflow: hidden; }
+  .shop .wall { position: absolute; inset: 0; background: linear-gradient(#2a2a35, #1b1b24); }
+  .shop .board { position: absolute; left: 60px; top: 230px; width: 480px; height: 300px; border-radius: 18px; background: #1d2a24; border: 10px solid #5b4632;
+    color: #e8efe9; font: 700 36px 'Inter'; padding: 24px 30px; line-height: 1.4; white-space: nowrap; text-align: left; }
+  .shop .clockW { position: absolute; right: 90px; top: 260px; width: 200px; height: 200px; border-radius: 50%; background: #e9e6df; border: 10px solid #444; }
+  .shop .hand { position: absolute; left: 50%; top: 50%; width: 8px; background: #222; border-radius: 4px; transform-origin: 50% 100%; }
+  .shop .lamp { position: absolute; top: 0; width: 6px; height: 90px; background: #555; }
+  .shop .bulb { position: absolute; top: 80px; width: 90px; height: 60px; margin-left: -42px; border-radius: 0 0 50px 50px; background: #444; }
+  .shop .glow { position: absolute; top: 60px; width: 600px; height: 600px; margin-left: -297px; border-radius: 50%;
+    background: radial-gradient(rgba(255,200,90,.45), transparent 60%); opacity: 0; }
+  .shop .counter { position: absolute; left: 0; right: 0; bottom: 0; height: 430px; background: linear-gradient(#6b4a2f, #4a321f); border-top: 18px solid #8a6544; }
+  .shop .phone2 { position: absolute; left: 110px; bottom: 360px; width: 150px; height: 270px; border-radius: 26px; background: #0d0d12; border: 6px solid #333;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; font-weight: 800; font-size: 26px; text-align: center; }
+  .shop .phone2 b { font-size: 70px; display: block; }
+  .shop .printer { position: absolute; right: 120px; bottom: 360px; width: 300px; height: 130px; border-radius: 20px; background: #2b2b33; border: 4px solid #444; }
+  .shop .paper { position: absolute; right: 150px; bottom: 490px; width: 240px; background: #fff; color: #111; font: 700 22px 'JetBrains Mono', monospace;
+    padding: 0 16px; overflow: hidden; height: 0; text-align: left; box-shadow: 0 6px 18px rgba(0,0,0,.3); }
+  .shop .paper div { margin-top: 10px; white-space: nowrap; }
+  .gray { filter: grayscale(1) brightness(.62) contrast(.95); }
+  .split { position: absolute; left: 0; right: 0; height: 960px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+  .row { display: flex; align-items: center; gap: 30px; font-size: 64px; font-weight: 800; }
+  .row i { font-style: normal; font-size: 90px; }
+  .btnN { border: 6px solid var(--yel); color: var(--yel); font-weight: 900; font-size: 64px; padding: 34px 80px; border-radius: 999px;
+    box-shadow: 0 0 30px var(--yel), inset 0 0 30px rgba(255,212,0,.4); text-shadow: 0 0 20px var(--yel); }
+  .urlN { font-weight: 800; font-size: 56px; color: #fff; padding: 28px 50px; border-radius: 24px; border: 3px solid var(--cyan); box-shadow: 0 0 30px rgba(34,228,255,.6); }
+</style></head>
+<body data-music="drama" data-switch="6.0" data-dots="off">
+<div id="stage">
+  <div class="scene" id="f1" data-static="1" data-dur="4.0" data-sfx="">
+    <div class="lbl neon" style="--c:#8a8aa0;color:#bbb" data-in="0.1">ÖNCE</div>
+    <div class="shop gray" id="shopA" data-in="0" data-anim="fade"></div>
+    <div class="cap" style="color:#aab" data-in="0.8">Akşam 20:00…<br>Dükkân bomboş 😔</div>
+  </div>
+
+  <div class="scene" id="f2" data-dur="2.0" data-sfx="whoosh:1.6">
+    <div class="h1 neon" id="taki" style="font-size:190px">Ta ki…</div>
+    <div class="gap-l"></div>
+    <div data-in="1.0" data-anim="pop" style="filter:drop-shadow(0 0 30px rgba(215,53,31,.9))"><span class="gt inv" style="font-size:120px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+  </div>
+
+  <div class="scene" id="f3" data-static="1" data-dur="5.6" data-sfx="pop:0;ding:1.2;ding:2.3;ding:3.4;cash:4.6">
+    <div class="lbl neon" style="--c:var(--cyan)" data-in="0.05" data-anim="pop">SONRA</div>
+    <div class="shop" id="shopB"></div>
+    <div class="cap neon" style="--c:var(--pink)" data-in="0.5">getirtrend'e katıldı,<br><span style="color:var(--yel)">siparişler yağdı!</span></div>
+    <div class="flashW" id="flash" style="position:absolute;inset:0;background:#fff;opacity:0"></div>
+  </div>
+
+  <div class="scene" id="f4" data-dur="5.0" data-sfx="whoosh:0;pop:0.6;pop:1.1;pop:2.4;pop:2.9">
+    <div class="split" style="top:0;background:#15151c">
+      <div class="h1" style="color:#77778a;letter-spacing:10px;font-size:90px" data-in="0.1">ÖNCE</div>
+      <div class="row" style="color:#99a" data-in="0.6" data-anim="left"><i style="filter:grayscale(1)">📵</i>Sessiz telefon</div>
+      <div class="row" style="color:#99a" data-in="1.1" data-anim="left"><i style="filter:grayscale(1)">🪑</i>Boş masalar</div>
+    </div>
+    <div class="split" style="top:960px;background:linear-gradient(#1a0820,#0a1a28)">
+      <div class="h1 neon" style="--c:var(--cyan);letter-spacing:10px;font-size:90px" data-in="1.8">SONRA</div>
+      <div class="row neon" style="--c:var(--pink)" data-in="2.4" data-anim="right"><i>🔔</i>Siparişler peş peşe</div>
+      <div class="row neon" style="--c:var(--yel)" data-in="2.9" data-anim="right"><i>💰</i>Doğrudan kasaya</div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:952px;height:16px;background:var(--yel);box-shadow:0 0 30px var(--yel)" data-in="1.6" data-anim="fade"></div>
+  </div>
+
+  <div class="scene" id="f5" data-dur="5.6" data-sfx="whoosh:0;success:0.6">
+    <div class="h1 neon" style="--c:var(--pink);font-size:150px" data-in="0.1" data-anim="pop">Sıra sende.</div>
+    <div class="gap"></div>
+    <div class="h2" data-in="0.6" style="color:#ddd">Restoranını <span style="color:var(--yel)">ücretsiz</span> ekle</div>
+    <div class="gap-l"></div>
+    <div class="urlN" data-in="1.2" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap-l"></div>
+    <div class="btnN" data-in="1.8" data-anim="pop" id="ctaN">Hemen Başvur →</div>
+    <div class="gap-l"></div>
+    <div data-in="2.4" data-anim="pop"><span class="gt inv" style="font-size:96px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+  </div>
+</div>
+<script>window.DEFAULT_DURS = [4, 2, 5.6, 5, 5.6];</script>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const shopHTML = (id) => `
+    <div class="wall"></div>
+    <div class="board"><div style="color:#ffd36b">MENÜ</div><div style="display:flex;justify-content:space-between"><span>Lahmacun</span><span>120</span></div><div style="display:flex;justify-content:space-between"><span>Kıymalı Pide</span><span>210</span></div><div style="display:flex;justify-content:space-between"><span>Ayran</span><span>30</span></div></div>
+    <div class="clockW"><div class="hand" id="${id}h" style="height:70px;margin:-70px 0 0 -4px"></div><div class="hand" id="${id}m" style="height:90px;margin:-90px 0 0 -4px;width:6px"></div></div>
+    ${[180, 450, 720].map(x => `<div class="lamp" style="left:${x}px"></div><div class="bulb" style="left:${x}px"></div><div class="glow" style="left:${x}px"></div>`).join('')}
+    <div class="counter"></div>
+    <div class="phone2" id="${id}p"><img src="assets/logo-mark.svg" style="width:56px;height:56px;border-radius:14px;margin-bottom:8px"><b id="${id}n">0</b>sipariş</div>
+    <div class="printer"></div><div class="paper" id="${id}r">
+      <div style="text-align:center">GETİRTREND</div><div>SİPARİŞ #1024</div><div>2× Lahmacun  240</div><div>1× Ayran      30</div><div>Teslimat      90</div><div>-------------------</div><div>TOPLAM    ₺ 360</div></div>`;
+  $('shopA').innerHTML = shopHTML('a'); $('shopB').innerHTML = shopHTML('b');
+  function clockAt(id, minutes) {
+    $(id + 'm').style.transform = `rotate(${minutes * 6}deg)`; $(id + 'h').style.transform = `rotate(${(8 * 60 + minutes) * .5}deg)`;
+  }
+  HOOKS.f1 = (lt) => { clockAt('a', lt * 12); };
+  HOOKS.f2 = (lt) => {
+    const el = $('taki'), g = lt > 0.6 ? Math.sin(lt * 40) * 8 : 0;
+    el.style.textShadow = `${g}px 0 0 #ff2d75, ${-g}px 0 0 #22e4ff, 0 0 40px #ff2d75`;
+    el.style.opacity = lt < 0.3 ? lt / 0.3 : (Math.floor(lt * 14) % 5 === 0 && lt > 1 ? 0.3 : 1);
+    el.style.transform = `scale(${1 + 0.08 * lt})`;
+  };
+  HOOKS.f3 = (lt) => {
+    clockAt('b', 30 + lt * 6);
+    $('flash').style.opacity = 0.8 * clamp(1 - lt / 0.3);
+    const shop = $('shopB');
+    shop.querySelector('.wall').style.background = 'linear-gradient(#3b2a4a,#1d1730)';
+    shop.querySelectorAll('.bulb').forEach(b => { b.style.background = '#ffd36b'; b.style.boxShadow = '0 0 50px #ffcc55'; });
+    shop.querySelectorAll('.glow').forEach((g, i) => g.style.opacity = 0.8 + 0.2 * Math.sin(lt * 3 + i));
+    const times = [1.2, 2.3, 3.4], n = times.filter(a => lt >= a).length;
+    const ph = $('bp'); $('bn').textContent = n;
+    const ringing = times.some(a => lt > a && lt < a + 0.7);
+    ph.style.color = '#fff'; ph.style.borderColor = ringing ? '#ffd400' : '#22e4ff';
+    ph.style.boxShadow = `0 0 ${ringing ? 50 : 20}px ${ringing ? '#ffd400' : '#22e4ff'}`;
+    ph.style.transform = ringing ? `rotate(${Math.sin(lt * 50) * 5}deg)` : 'none';
+    $('br').style.height = (easeOut((lt - 1.3) / 2.6) * 290) + 'px';
+  };
+  HOOKS.f5 = (lt) => {
+    const b = $('ctaN'); if (lt > 2.4) b.style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`;
+    b.style.opacity = lt > 1.8 && Math.floor(lt * 10) % 17 === 0 ? 0.6 : b.style.opacity;
+  };
+</script>
+</body>
+</html>

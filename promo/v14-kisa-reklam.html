@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Kısa Reklam</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="ad.css">
+<style>
+  #shot { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+  .big { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 170px; letter-spacing: -8px; line-height: .92; position: relative; }
+  .mid { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 100px; letter-spacing: -4px; line-height: 1; position: relative; }
+  .tagR { display: inline-block; background: var(--gt-red); color: #fff; padding: 6px 34px 16px; border-radius: 26px; transform: rotate(-2deg); }
+  .tagW { display: inline-block; background: #fff; color: var(--gt-red); padding: 6px 34px 16px; border-radius: 26px; transform: rotate(2deg); }
+  .full { position: absolute; inset: -40px; background-size: cover; background-position: center; }
+  .flashK { position: absolute; inset: 0; background: #fff; pointer-events: none; }
+</style></head>
+<body data-music="pop" data-dots="off">
+<div id="stage">
+  <div class="scene" id="mx" data-static="1" data-dur="16" data-sfx="" data-voice="Restoranın mı var? Siparişler telefonuna, kasana. getirtrend'e ücretsiz katıl.">
+    <div id="shot"></div>
+    <div class="flashK" id="fl" style="opacity:0"></div>
+  </div>
+</div>
+<script>window.DEFAULT_DURS = [16];</script>
+<script src="engine.js"></script>
+<script>
+  const B = 60 / 124; // beat length, matches the pop track
+  const R = 'var(--gt-red)', W = '#fff', I = 'var(--gt-ink)';
+  const photo = (img, word) => `<div class="full" style="background-image:url(assets/${img}.jpg)"></div><div class="shade"></div><div class="big" style="color:#fff;margin-top:900px"><span class="tagR">${word}</span></div>`;
+  // [beats, background, color, html, sfx]
+  const SHOTS = [
+    [2, W, I, `<div class="big">Restoranın</div><div class="big"><span class="tagR">mı var?</span></div>`, 'whoosh'],
+    [1, I, W, photo('lahmacun2', 'LAHMACUN'), 'pop'],
+    [1, I, W, photo('pide', 'PİDE'), 'pop'],
+    [1, I, W, photo('kebap', 'KEBAP'), 'pop'],
+    [1, I, W, photo('durum', 'DÜRÜM'), 'pop'],
+    [2, R, W, `<div class="mid">Siparişler</div><div class="big"><span class="tagW">telefonuna</span></div>`, 'whoosh'],
+    [3, W, I, `<div class="ph" style="transform:scale(.92)"><div class="isl"></div><div class="scr"><img src="assets/ui/lock.jpg" style="position:absolute;left:0;top:0;width:596px"></div></div>`, 'ding'],
+    [2, I, W, `<div class="mid">Fiş yazıcıdan,</div><div class="big"><span class="tagR">kasana</span></div>`, 'cash'],
+    [2, I, W, `<div class="rcpt" style="zoom:1.35;transform:rotate(-3deg)"><div class="in"><div class="c"><span class="gt" style="font-size:44px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div><div class="c" style="margin-top:8px">PAKET SERVİS ADİSYONU</div><hr><div class="row"><span>2× Lahmacun</span><span>204,00</span></div><div class="row"><span>1× Ayran</span><span>25,00</span></div><hr><div class="row" style="font-weight:700;font-size:36px"><span>TOPLAM</span><span>229,00 TL</span></div></div></div>`, 'pop'],
+    [2, R, W, `<div style="background:#fff;border-radius:60px;padding:46px 64px;transform:rotate(-2deg);box-shadow:0 30px 80px rgba(0,0,0,.25)"><span class="gt" style="font-size:140px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>`, 'pop'],
+    [16, W, I, `<div class="mid">Restoranını</div><div class="big" style="font-size:140px"><span class="tagR">ücretsiz ekle</span></div><div style="height:90px"></div><div class="urlb">getirtrend.com/restoran-ol</div><div style="height:50px"></div><div class="btnr" id="bt">Hemen Başvur →</div>`, 'success'],
+  ];
+  let acc = 0; const cues = [];
+  SHOTS.forEach(s => { s.start = acc * B; s.end = (acc + s[0]) * B; cues.push(`${s[4]}:${s.start.toFixed(3)}`); acc += s[0]; });
+  cues.push(`ding:${(SHOTS[6].start + B).toFixed(3)}`);
+  const sc = document.getElementById('mx'); sc.dataset.sfx = cues.join(';');
+  sc.dataset.dur = String(+(SHOTS[10].start + 5.2).toFixed(2));
+  window.DEFAULT_DURS = [+sc.dataset.dur];
+  let cur = -1;
+  HOOKS.mx = (lt) => {
+    let i = SHOTS.findIndex(s => lt >= s.start && lt < s.end); if (i < 0) i = SHOTS.length - 1;
+    const s = SHOTS[i], sh = document.getElementById('shot');
+    if (i !== cur) { cur = i; sh.style.background = s[1]; sh.style.color = s[2]; sh.innerHTML = s[3]; }
+    const k = lt - s.start, beatPh = (lt % B) / B;
+    const punch = 1 + 0.25 * Math.pow(1 - clamp(k / 0.16), 2), pulse = 1 + 0.025 * Math.pow(1 - beatPh, 4);
+    [...sh.children].forEach((c, j) => {
+      if (c.classList.contains('full')) { c.style.transform = `scale(${1.12 - 0.08 * clamp(k / (s.end - s.start))})`; return; }
+      if (c.classList.contains('shade')) return;
+      c.style.transform = `translateY(${(1 - clamp(k / 0.16)) * (j % 2 ? 50 : -50)}px) scale(${punch * pulse})`;
+      c.style.opacity = clamp(k / 0.06);
+    });
+    document.getElementById('fl').style.opacity = 0.45 * clamp(1 - k / 0.08);
+    const bt = document.getElementById('bt'); if (bt && k > 1) bt.style.transform = `scale(${1 + 0.04 * Math.sin(k * 7)})`;
+  };
+</script>
+</body>
+</html>
