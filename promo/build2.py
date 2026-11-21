@@ -75,12 +75,14 @@ for page in PAGES:
     run(sys.executable, str(HERE / "music2.py"), body.get("data-music", "pop"), f"{total:.3f}", str(music),
         body.get("data-switch", "0"), capture_output=True)
 
-    duck = "[mu][vo1]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[md]" if vo.any() else "[mu]anull[md]"
+    has_vo = bool(vo.any())
+    # with narration: music sits far below the voice and ducks hard while someone speaks
+    duck = "[mu][vo1]sidechaincompress=threshold=0.01:ratio=20:attack=10:release=600:makeup=1[md]" if has_vo else "[mu]anull[md]"
     filt = ";".join([
-        "[1:a]aresample=44100,volume=0.9[mu]",
-        "[3:a]aresample=44100,asplit=2[vo1][vo2]" if vo.any() else "[3:a]aresample=44100[vo2]",
+        f"[1:a]aresample=44100,volume={0.32 if has_vo else 0.9}[mu]",
+        ("[3:a]aresample=44100,highpass=f=100,equalizer=f=2500:t=q:w=1.2:g=4,volume=2.4,asplit=2[vo1][vo2]") if has_vo else "[3:a]aresample=44100[vo2]",
         duck,
-        "[2:a]aresample=44100,volume=0.9[fx]",
+        f"[2:a]aresample=44100,volume={0.5 if has_vo else 0.9}[fx]",
         "[md][fx][vo2]amix=inputs=3:normalize=0,alimiter=limit=0.9,loudnorm=I=-14:TP=-1.2:LRA=10[aout]",
     ])
     out = HERE / f"getirtrend-{name}.mp4"
