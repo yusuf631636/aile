@@ -125,6 +125,36 @@ elif STYLE == "chip":
         if b >= 1:
             mel = [c[2] + 12, c[2] + 12, c[1] + 12, c[2] + 12, c[0] + 24, c[2] + 12, c[1] + 12, c[0] + 12]
             for i, p in enumerate(mel): note(t0 + i * .5, 0, p, .4, 80)
+elif STYLE == "house":
+    bpm = 122
+    prog(0, 0); prog(1, 38); prog(2, 89); prog(3, 4)
+    P = [("A3", "min7"), ("D3", "min7"), ("G3", "maj"), ("C3", "maj7")]
+    bars = int(DUR * bpm / 240) + 2
+    for b in range(bars):
+        root, kind = P[b % 4]; c = chord(root, kind); t0 = b * 4
+        for i in range(4): note(t0 + i, DR, KICK, .25, 112); note(t0 + i + .5, DR, OHAT, .2, 62)
+        note(t0 + 1, DR, CLAP, .2, 88); note(t0 + 3, DR, CLAP, .2, 88)
+        for i in range(16): note(t0 + i * .25, DR, HAT, .1, 30 + 18 * (i % 2))
+        for i in (0.5, 1.5, 2.5, 3.5): note(t0 + i, 1, c[0] - 24, .4, 100)
+        for s0 in (0, 0.75, 1.5, 2.5, 3.25):  # offbeat piano stabs
+            for p in c: note(t0 + s0, 0, p + 12, .3, 70)
+        for p in c: note(t0, 2, p, 4, 40)
+        if b >= 2 and b % 2: [note(t0 + i * .5, 3, c[i % len(c)] + 24, .4, 50) for i in range(8)]
+elif STYLE == "groove":
+    bpm = 108
+    prog(0, 4); prog(1, 36); prog(2, 27); prog(3, 61)
+    P = [("E3", "min7"), ("A3", "min7"), ("D3", "maj"), ("G3", "maj7")]
+    bars = int(DUR * bpm / 240) + 2
+    for b in range(bars):
+        root, kind = P[b % 4]; c = chord(root, kind); t0 = b * 4
+        note(t0, DR, KICK, .25, 110); note(t0 + 1.75, DR, KICK, .2, 90); note(t0 + 2.5, DR, KICK, .2, 100)
+        note(t0 + 1, DR, SNARE, .2, 100); note(t0 + 3, DR, SNARE, .2, 100)
+        for i in range(8): note(t0 + i * .5, DR, HAT, .1, 55 + 20 * (i % 2 == 0))
+        for i, (d, o) in enumerate([(0, 0), (.75, 12), (1.5, 0), (2, 7), (2.75, 12), (3.5, 10)]): note(t0 + d, 1, c[0] - 24 + o, .3, 105)
+        for s0 in (0.5, 1.5, 2.5, 3.5):  # muted guitar skank
+            for p in c: note(t0 + s0, 2, p + 12, .12, 60)
+        for p in c: note(t0, 0, p, 1.8, 55); note(t0 + 2, 0, p, 1.8, 45)
+        if b % 4 == 3: [note(t0 + 3 + i * .25, 3, c[0] + 12 + i * 2, .2, 75) for i in range(4)]
 else:
     raise SystemExit("unknown style " + STYLE)
 

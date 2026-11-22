@@ -74,4 +74,10 @@ c = np.zeros(int(SR * 1.0))
 for i, f in enumerate((523, 659, 784, 1047, 1319)):
     x = sq(f, .18); s0 = int(SR * i * .1); c[s0:s0 + len(x)] += x
 save("levelup", c * .5)
+# split-flap board: burst of tiny clicks
+c = np.zeros(int(SR * .6))
+for i in range(14):
+    t = tt(.012); s0 = int(SR * (i * .035 + rng.random() * .01))
+    c[s0:s0 + len(t)] += rng.standard_normal(len(t)) * np.exp(-t * 400) * (0.6 + 0.4 * rng.random())
+save("flap", c * .8)
 print("sfx ok")

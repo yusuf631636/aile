@@ -16,7 +16,7 @@ HERE = Path(__file__).resolve().parent
 SR = 44100
 WORK = Path(sys.argv[1]); WORK.mkdir(parents=True, exist_ok=True)
 PAGES = [Path(p) for p in sys.argv[2:]]
-SFX_GAIN = {"ding": .5, "cash": .55, "success": .45, "tap": .45, "pop": .4, "whoosh": .3, "print": .35, "tear": .5, "coin": .3, "levelup": .35}
+SFX_GAIN = {"ding": .5, "cash": .55, "success": .45, "tap": .45, "pop": .4, "whoosh": .3, "print": .35, "tear": .5, "coin": .3, "levelup": .35, "flap": .45}
 VOICE_DIR = os.environ.get("VOICE_DIR")
 
 
