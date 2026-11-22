@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Tek Panel</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  /* SaaS-style product film: glass dashboard widgets assemble in 3D space. Sample data only. */
+  #stage { background: #0E0F13; color: #fff; font-family: 'Inter', sans-serif; }
+  .scene { padding: 0; }
+  .glow1 { position: absolute; width: 900px; height: 900px; left: -300px; top: 200px; border-radius: 50%; background: radial-gradient(rgba(215,53,31,.45), transparent 65%); filter: blur(30px); }
+  .glow2 { position: absolute; width: 800px; height: 800px; right: -300px; top: 1100px; border-radius: 50%; background: radial-gradient(rgba(255,178,30,.28), transparent 65%); filter: blur(30px); }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.04) 2px, transparent 2px); background-size: 90px 90px; }
+  .space { position: absolute; inset: 0; perspective: 1800px; }
+  .board { position: absolute; left: 60px; top: 330px; width: 960px; height: 1300px; transform-style: preserve-3d; }
+  .w { position: absolute; background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.12); border-radius: 36px; backdrop-filter: blur(20px);
+    box-shadow: 0 30px 80px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.08); padding: 34px; text-align: left; }
+  .w h5 { margin: 0; font: 600 26px 'Inter'; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.55); }
+  .w .big { font: 800 92px 'Plus Jakarta Sans'; letter-spacing: -4px; margin-top: 10px; }
+  .w .delta { display: inline-block; font: 700 28px 'Inter'; color: #4ade80; background: rgba(74,222,128,.12); padding: 6px 16px; border-radius: 999px; margin-top: 8px; }
+  .ord { display: flex; align-items: center; gap: 22px; padding: 18px 0; border-bottom: 2px solid rgba(255,255,255,.07); font: 600 32px 'Inter'; }
+  .ord .ic { width: 64px; height: 64px; border-radius: 18px; background: rgba(215,53,31,.2); color: #ff7a5c; padding: 14px; flex: none; }
+  .ord span { flex: 1; } .ord b { font: 700 30px 'Inter'; padding: 6px 16px; border-radius: 999px; }
+  .bars { display: flex; align-items: flex-end; gap: 14px; height: 200px; margin-top: 26px; }
+  .bars i { flex: 1; border-radius: 10px 10px 4px 4px; background: linear-gradient(#D7351F, #ff8a5c); }
+  .cap { position: absolute; left: 60px; right: 60px; top: 110px; font: 800 84px/1.02 'Plus Jakarta Sans'; letter-spacing: -3.5px; text-align: left; }
+  .cap .lt { font-family: 'Inter'; font-weight: 300; color: rgba(255,255,255,.75); display: block; }
+  .demo { position: absolute; right: 60px; bottom: 70px; font: 500 24px 'Inter'; color: rgba(255,255,255,.4); }
+  .ctaW { border: 3px solid rgba(255,255,255,.85); border-radius: 999px; padding: 26px 50px; font: 700 42px 'Plus Jakarta Sans'; letter-spacing: -1px; white-space: nowrap; }
+</style></head>
+<body data-music="corporate" data-dots="off">
+<div id="stage">
+  <div class="scene" id="d" data-static="1" data-dur="15.6" data-sfx="whoosh:0;pop:1.2;pop:1.6;pop:2.0;ding:5.4;ding:6.6;cash:10.2;whoosh:12.6">
+    <div class="grid"></div><div class="glow1" id="g1"></div><div class="glow2" id="g2"></div>
+    <div class="cap" id="cap"></div>
+    <div class="space"><div class="board" id="bd">
+      <div class="w" id="wA" style="left:0;top:0;width:460px;height:300px"><h5>Bugün sipariş</h5><div class="big" id="vA">0</div><span class="delta">↑ dünden fazla</span></div>
+      <div class="w" id="wB" style="left:500px;top:0;width:460px;height:300px"><h5>Bugün ciro</h5><div class="big" id="vB">0 ₺</div><span class="delta">Kapıda + online</span></div>
+      <div class="w" id="wC" style="left:0;top:340px;width:960px;height:500px"><h5>Canlı siparişler</h5><div id="orders"></div></div>
+      <div class="w" id="wD" style="left:0;top:880px;width:960px;height:400px"><h5>Haftalık satış</h5><div class="bars" id="bars"></div></div>
+    </div></div>
+    <div class="demo">Örnek ekran · temsili veriler</div>
+  </div>
+  <div class="scene" id="e" data-static="1" data-dur="5.4" data-sfx="success:0.4">
+    <div class="grid"></div><div class="glow1" style="top:500px;left:-200px"></div>
+    <div id="l1" style="position:absolute;top:560px;left:0;right:0;text-align:center"><span class="gt inv" style="font-size:140px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div id="l2" style="position:absolute;top:780px;left:0;right:0;text-align:center;font:300 58px 'Inter';letter-spacing:-1.5px;color:rgba(255,255,255,.85)">Sipariş, stok, hakediş.<br><b style="font-family:'Plus Jakarta Sans';font-weight:800;color:#fff">Tek panelde.</b></div>
+    <div id="l3" style="position:absolute;top:1060px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:28px">
+      <div class="ctaW">Restoran → getirtrend.com/restoran-ol</div>
+      <div class="ctaW" style="background:#fff;color:#0E0F13">Mağaza → getirtrend.com/satici-ol</div>
+    </div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const eio = k => (k = clamp(k), k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+  const spring = k => k <= 0 ? 0 : 1 - Math.exp(-6 * k) * Math.cos(10 * k);
+  const O = [['utensils', '2× Lahmacun, Ayran', 'Yeni', '#D7351F', 5.4], ['package', 'Fiş Yazıcı · Kargo', 'Hazır', '#2563eb', 6.6],
+             ['bike', 'Adana Dürüm', 'Yolda', '#b45309', 7.8], ['check-circle', 'Gül Buketi', 'Teslim', '#15803d', 9.0]];
+  $('orders').innerHTML = O.map((o, i) => `<div class="ord" id="o${i}">${ic(o[0])}<span>${o[1]}</span><b style="background:${o[3]}33;color:${o[3] === '#D7351F' ? '#ff7a5c' : o[3] === '#2563eb' ? '#93b4ff' : o[3] === '#b45309' ? '#fbbf24' : '#4ade80'}">${o[2]}</b></div>`).join('');
+  const HB = [42, 55, 48, 66, 72, 88, 100];
+  $('bars').innerHTML = HB.map(() => '<i></i>').join('');
+  const CAP = [[0, 'Restoran ya da mağaza:', 'işin tek ekranda.'], [4.6, 'Siparişler', 'anında düşer.'], [9.6, 'Hakediş', 'şeffaf, IBAN’a.'], [12.6, 'Hepsi', 'getirtrend’de.']];
+  window.DEFAULT_DURS = [15.6, 5.4];
+  let ci = -1;
+  HOOKS.d = (lt) => {
+    $('g1').style.transform = `translate(${Math.sin(lt * .4) * 80}px, ${Math.cos(lt * .3) * 60}px)`;
+    $('g2').style.transform = `translate(${Math.cos(lt * .35) * 70}px, ${Math.sin(lt * .4) * 60}px)`;
+    // board tilts in 3D and settles, then slowly drifts; final zoom-out
+    const settle = eio(lt / 1.6), out = eio((lt - 12.6) / 1.4);
+    $('bd').style.transform = `rotateX(${(1 - settle) * 35 + 6 * (1 - out) + Math.sin(lt * .5) * 1.5}deg) rotateY(${(1 - settle) * -25 + Math.sin(lt * .4) * 3}deg) translateZ(${(1 - settle) * -400 - out * 300}px)`;
+    [['wA', 0.9], ['wB', 1.2], ['wC', 1.6], ['wD', 2.0]].forEach(([id, a]) => { const k = clamp((lt - a) / 0.8);
+      $(id).style.opacity = clamp(k * 2); $(id).style.transform = `translateZ(${(1 - spring(k)) * 300}px) translateY(${(1 - spring(k)) * 60}px)`; });
+    const n = O.filter(o => lt >= o[4]).length;
+    $('vA').textContent = String(Math.round(23 * eio((lt - 1.2) / 3)) + n);
+    $('vB').textContent = Math.round(8450 * eio((lt - 1.2) / 3) + 910 * eio((lt - 10.2) / 0.8)).toLocaleString('tr-TR') + ' ₺';
+    O.forEach((o, i) => { const k = clamp((lt - o[4]) / 0.5), el = $('o' + i);
+      el.style.opacity = k; el.style.transform = `translateX(${(1 - spring(k)) * -120}px)`;
+      el.style.background = lt > o[4] && lt < o[4] + 1 ? `rgba(215,53,31,${0.18 * (1 - (lt - o[4]))})` : 'transparent'; });
+    [...$('bars').children].forEach((b, i) => { b.style.height = (HB[i] * eio((lt - 2.4 - i * 0.12) / 0.9)) + '%'; });
+    let c = 0; CAP.forEach((x, i) => { if (lt >= x[0]) c = i; });
+    if (c !== ci) { ci = c; $('cap').innerHTML = `<span class="lt">${CAP[c][1]}</span>${CAP[c][2]}`; }
+    const k = lt - CAP[c][0], ce = eio(k / 0.6), co = c < CAP.length - 1 ? 1 - eio((k - (CAP[c + 1][0] - CAP[c][0]) + 0.3) / 0.3) : 1;
+    $('cap').style.opacity = Math.min(ce, co); $('cap').style.clipPath = `inset(0 0 ${(1 - ce) * 100}% 0)`; $('cap').style.transform = `translateY(${(1 - ce) * 40}px)`;
+  };
+  HOOKS.e = (lt) => {
+    const a = eio(lt / 0.8); $('l1').style.opacity = a; $('l1').style.transform = `scale(${0.95 + 0.05 * a})`;
+    const b = eio((lt - 0.5) / 0.7); $('l2').style.opacity = b; $('l2').style.transform = `translateY(${(1 - b) * 30}px)`;
+    const c = eio((lt - 1.0) / 0.7); $('l3').style.opacity = c; $('l3').style.transform = `translateY(${(1 - c) * 30}px)`;
+  };
+</script>
+</body>
+</html>

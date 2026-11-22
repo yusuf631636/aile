@@ -1,0 +1,14 @@
+/* "Pro" brand-film look (v25–v27): editorial grid, light/bold type contrast, clip-path reveals, slow camera. */
+#stage { background: #F5F1EB; color: #1d1a17; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+.scene { padding: 0; }
+.topbar { position: absolute; left: 70px; right: 70px; top: 90px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+.topbar .idx { font: 500 30px 'Inter'; letter-spacing: 3px; opacity: .6; }
+.rule { position: absolute; left: 70px; right: 70px; top: 170px; height: 2px; background: rgba(29,26,23,.15); transform-origin: left; }
+.frame { position: absolute; left: 70px; right: 70px; top: 220px; height: 1140px; border-radius: 30px; overflow: hidden; background: #ddd; }
+.frame .img { position: absolute; inset: 0; background-size: cover; background-position: center; will-change: transform; }
+.label { position: absolute; text-align: left; left: 70px; top: 1425px; font: 700 30px 'Inter'; letter-spacing: 4px; color: #D7351F; text-transform: uppercase; }
+.hline { position: absolute; text-align: left; color: #1d1a17; left: 70px; right: 70px; top: 1485px; font-size: 84px; line-height: 1.04; letter-spacing: -3px; }
+.hline .lt { font-family: 'Inter'; font-weight: 300; display: block; }
+.hline .bd { font-family: 'Plus Jakarta Sans'; font-weight: 800; display: block; }
+.fn { position: absolute; left: 70px; bottom: 80px; font: 400 26px 'Inter'; opacity: .55; }
+.pillo { border: 3px solid #1d1a17; border-radius: 999px; padding: 26px 56px; font: 700 44px 'Plus Jakarta Sans'; letter-spacing: -1px; }

@@ -155,6 +155,23 @@ elif STYLE == "groove":
             for p in c: note(t0 + s0, 2, p + 12, .12, 60)
         for p in c: note(t0, 0, p, 1.8, 55); note(t0 + 2, 0, p, 1.8, 45)
         if b % 4 == 3: [note(t0 + 3 + i * .25, 3, c[0] + 12 + i * 2, .2, 75) for i in range(4)]
+elif STYLE == "corporate":
+    bpm = 100
+    prog(0, 0); prog(1, 48); prog(2, 45); prog(3, 33); prog(4, 89)
+    P = [("C3", "maj"), ("G3", "maj"), ("A3", "min"), ("F3", "maj")]
+    bars = int(DUR * bpm / 240) + 2
+    for b in range(bars):
+        root, kind = P[b % 4]; c = chord(root, kind); t0 = b * 4
+        arp = [c[0], c[1], c[2], c[1] + 12, c[2] + 12, c[1] + 12, c[2], c[1]]
+        for i, p in enumerate(arp): note(t0 + i * .5, 0, p + 12, .6, 62 if i % 2 else 72)  # piano arpeggio
+        for p in c: note(t0, 1, p, 4, 42)                                                  # string pad
+        for p in c: note(t0, 4, p - 12, 4, 30)
+        note(t0, 3, c[0] - 24, 2, 80); note(t0 + 2, 3, c[2] - 24, 2, 72)                   # bass
+        if b >= 2:
+            note(t0, DR, KICK, .2, 78); note(t0 + 2, DR, KICK, .2, 70); note(t0 + 2.5, DR, KICK, .2, 60)
+            note(t0 + 1, DR, CLAP, .2, 50); note(t0 + 3, DR, CLAP, .2, 50)
+            for i in range(8): note(t0 + i * .5, DR, SHAKER, .1, 30 + 12 * (i % 2))
+        if b >= 4: [note(t0 + i, 2, c[i % 3] + 24, .3, 45) for i in range(4)]             # pizzicato lift
 else:
     raise SystemExit("unknown style " + STYLE)
 
