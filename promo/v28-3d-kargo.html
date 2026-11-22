@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – 3D Kargo</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  /* Real-time 3D (three.js, PBR + soft shadows): order → products drop into a box → box sealed with
+     getirtrend tape and label → shipped. Product faces use real product photos from the store pages. */
+  #stage { background: #EDE8E1; color: #1d1a17; }
+  .scene { padding: 0; }
+  #gl { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+  .ov { position: absolute; left: 70px; right: 70px; top: 150px; text-align: left; z-index: 5; }
+  .ov .lt { display: block; font: 300 78px/1.04 'Inter'; letter-spacing: -2.5px; }
+  .ov .bd { display: block; font: 800 96px/1.0 'Plus Jakarta Sans'; letter-spacing: -4px; }
+  .ov .bd i { font-style: normal; color: #D7351F; }
+  .tb { position: absolute; left: 70px; right: 70px; top: 70px; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+  .tb span.k { font: 600 28px 'Inter'; letter-spacing: 4px; opacity: .55; }
+  .chipb { position: absolute; left: 70px; bottom: 120px; z-index: 5; font: 600 34px 'Inter'; background: rgba(255,255,255,.75); border-radius: 999px; padding: 16px 30px; }
+  #end { background: #1d1a17; color: #fff; }
+  .row2 { display: flex; gap: 22px; margin-top: 50px; }
+  .row2 div { border: 2px solid rgba(255,255,255,.25); border-radius: 28px; padding: 26px 30px; width: 300px; text-align: left; }
+  .row2 b { display: block; font: 800 60px 'Plus Jakarta Sans'; letter-spacing: -2px; color: #FFB21E; }
+  .row2 span { font: 500 28px 'Inter'; opacity: .8; }
+</style></head>
+<body data-music="house" data-dots="off">
+<div id="stage">
+  <div class="scene" id="k" data-static="1" data-dur="16.4" data-sfx="ding:0.9;whoosh:3.2;pop:4.1;pop:5.0;pop:5.9;whoosh:8.0;tear:9.4;pop:10.2;whoosh:11.4;success:14.2">
+    <canvas id="gl" width="1080" height="1920"></canvas>
+    <div class="tb"><span class="gt" style="font-size:44px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span><span class="k">PAZARYERİ</span></div>
+    <div class="ov" id="ov"></div>
+    <div class="chipb" id="chip"></div>
+  </div>
+  <div class="scene" id="end" data-static="1" data-dur="5.2" data-sfx="success:0.4">
+    <div data-in="0.1" data-anim="pop"><span class="gt inv" style="font-size:130px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div data-in="0.5" style="font:300 62px 'Inter';letter-spacing:-2px;margin-top:40px">Mağazanı aç.</div>
+    <div data-in="0.7" style="font:800 92px 'Plus Jakarta Sans';letter-spacing:-4px">Satışa <span style="color:#FFB21E">başla.</span></div>
+    <div class="row2" data-in="1.0" data-anim="up"><div><b>0 TL</b><span>Başvuru ve aylık ücret</span></div><div><b>%10</b><span>Yalnız satış olunca</span></div><div><b>1 gün</b><span>Başvuru yanıtı</span></div></div>
+    <div data-in="1.5" data-anim="pop" style="margin-top:70px;background:#fff;color:#1d1a17;font:800 54px 'Plus Jakarta Sans';padding:30px 60px;border-radius:999px">getirtrend.com/satici-ol</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script type="module">
+import * as THREE from './vendor/three.module.js';
+import { RoundedBoxGeometry } from './vendor/RoundedBoxGeometry.js';
+import { RoomEnvironment } from './vendor/RoomEnvironment.js';
+window.READY = false;
+const $ = id => document.getElementById(id);
+const C = (a) => Math.max(0, Math.min(1, a));
+const eio = k => (k = C(k), k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const eo = k => 1 - Math.pow(1 - C(k), 3);
+const bounce = x => { x = C(x); const n = 7.5625, d = 2.75;
+  if (x < 1 / d) return n * x * x; if (x < 2 / d) return n * (x -= 1.5 / d) * x + .75; if (x < 2.5 / d) return n * (x -= 2.25 / d) * x + .9375; return n * (x -= 2.625 / d) * x + .984375; };
+
+const renderer = new THREE.WebGLRenderer({ canvas: $('gl'), antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(1080, 1920, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#EDE8E1');
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const cam = new THREE.PerspectiveCamera(30, 1080 / 1920, 0.1, 100);
+
+const key = new THREE.DirectionalLight('#fff4e6', 2.2); key.position.set(3, 7, 4); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.camera.left = -4; key.shadow.camera.right = 4; key.shadow.camera.top = 4; key.shadow.camera.bottom = -4; key.shadow.radius = 6; key.shadow.bias = -0.0005;
+scene.add(key); scene.add(new THREE.HemisphereLight('#ffffff', '#d8cfc4', 0.5));
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({ color: '#E7E1D8', roughness: 0.95 }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+
+// ---------- textures ----------
+const loadImg = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.onerror = () => r(null); i.src = src; });
+const logo = await loadImg('assets/logo-mark.svg');
+await document.fonts.ready; await Promise.all([...document.fonts].map(f => f.load().catch(() => {})));
+const tex = (cv) => { const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+const canvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+function rr(g, x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
+
+// phone screen (redrawn when the order state changes)
+const scr = canvas(540, 1120), sg = scr.getContext('2d'), scrTex = tex(scr);
+function drawScreen(state) {
+  const gr = sg.createLinearGradient(0, 0, 0, 1120); gr.addColorStop(0, '#2b1b16'); gr.addColorStop(1, '#0f0b0a');
+  sg.fillStyle = gr; sg.fillRect(0, 0, 540, 1120);
+  sg.fillStyle = '#fff'; sg.textAlign = 'center';
+  sg.font = '600 30px Inter'; sg.fillText('Pazartesi 14:26', 270, 160);
+  sg.font = '700 150px Inter'; sg.fillText('14:26', 270, 310);
+  const cards = state === 'done'
+    ? [['Teslim edildi ✓', 'Hakediş IBAN’ına aktarılacak'], ['Kargoya verildi', 'Takip no paylaşıldı'], ['Yeni sipariş · 1.890 TL', 'Fiş Yazıcı, POS, Kettle']]
+    : state === 'order' ? [['Yeni sipariş · 1.890 TL', 'Fiş Yazıcı, POS, Kettle']] : [];
+  cards.forEach((c, i) => {
+    const y = 420 + i * 170; sg.fillStyle = 'rgba(245,242,238,.95)'; rr(sg, 30, y, 480, 145, 34); sg.fill();
+    if (logo) sg.drawImage(logo, 56, y + 30, 82, 82);
+    sg.textAlign = 'left'; sg.fillStyle = '#1d1a17'; sg.font = '600 22px Inter'; sg.fillText('getirtrend', 160, y + 48);
+    sg.font = '800 30px "Plus Jakarta Sans"'; sg.fillText(c[0], 160, y + 88); sg.font = '500 23px Inter'; sg.fillStyle = '#555'; sg.fillText(c[1], 160, y + 120);
+    sg.textAlign = 'center';
+  });
+  scrTex.needsUpdate = true;
+}
+// tape
+const tp = canvas(1024, 128), tg = tp.getContext('2d');
+tg.fillStyle = '#D7351F'; tg.fillRect(0, 0, 1024, 128); tg.fillStyle = '#fff'; tg.font = '800 64px "Plus Jakarta Sans"';
+for (let x = 20; x < 1024; x += 360) tg.fillText('getirtrend', x, 86);
+const tapeTex = tex(tp);
+// shipping label
+const lb = canvas(600, 420), lg = lb.getContext('2d');
+lg.fillStyle = '#fff'; lg.fillRect(0, 0, 600, 420); lg.strokeStyle = '#1d1a17'; lg.lineWidth = 6; lg.strokeRect(14, 14, 572, 392);
+if (logo) lg.drawImage(logo, 36, 34, 70, 70);
+lg.fillStyle = '#1d1a17'; lg.font = '800 44px "Plus Jakarta Sans"'; lg.fillText('getirtrend', 120, 84);
+lg.font = '600 30px Inter'; lg.fillText('Sipariş #2047', 40, 150); lg.fillText('Alıcı: Nilüfer / Bursa', 40, 192);
+for (let x = 40, i = 0; x < 560; i++) { const w = [4, 8, 3, 12, 5][(i * 7) % 5]; lg.fillRect(x, 230, w, 130); x += w + [5, 7, 4][(i * 3) % 3]; }
+const labelTex = tex(lb);
+// products: real photos on the front of retail boxes
+const prodSrc = [['assets/prod/p2.jpg', '#ffffff'], ['assets/prod/p1.jpg', '#ffffff'], ['assets/prod/p10.jpg', '#ffffff']];
+const prodImgs = await Promise.all(prodSrc.map(p => loadImg(p[0])));
+
+// ---------- objects ----------
+const shadowAll = o => o.traverse(m => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
+// phone
+const phone = new THREE.Group();
+const body = new THREE.Mesh(new RoundedBoxGeometry(0.78, 1.6, 0.08, 6, 0.09), new THREE.MeshStandardMaterial({ color: '#16171b', metalness: 0.6, roughness: 0.3 }));
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.72, 1.5), new THREE.MeshStandardMaterial({ map: scrTex, emissive: '#ffffff', emissiveMap: scrTex, emissiveIntensity: 0.9, roughness: 0.2 }));
+screen.position.z = 0.041; phone.add(body, screen); shadowAll(phone); scene.add(phone);
+// box (open top) with hinged flaps
+const W = 1.7, H = 0.58, D = 1.25, T = 0.035;
+const kraft = new THREE.MeshStandardMaterial({ color: '#C79A63', roughness: 0.85 });
+const kraftIn = new THREE.MeshStandardMaterial({ color: '#B4874F', roughness: 0.9 });
+const box = new THREE.Group();
+const wall = (w, h, d, x, y, z) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), [kraft, kraft, kraft, kraft, kraft, kraftIn]); m.position.set(x, y, z); box.add(m); return m; };
+wall(W, T, D, 0, T / 2, 0); wall(W, H, T, 0, H / 2, D / 2); wall(W, H, T, 0, H / 2, -D / 2); wall(T, H, D, W / 2, H / 2, 0); wall(T, H, D, -W / 2, H / 2, 0);
+const flap = (len, wid, axis) => { const piv = new THREE.Group(); const m = new THREE.Mesh(new THREE.BoxGeometry(axis === 'x' ? wid : T, len, axis === 'x' ? T : wid), kraft); m.position.y = len / 2; piv.add(m); box.add(piv); return piv; };
+const fF = flap(D / 2, W, 'x'); fF.position.set(0, H, D / 2);
+const fB = flap(D / 2, W, 'x'); fB.position.set(0, H, -D / 2);
+const fL = flap(W * 0.32, D, 'z'); fL.position.set(-W / 2, H, 0);
+const fR = flap(W * 0.32, D, 'z'); fR.position.set(W / 2, H, 0);
+const tape = new THREE.Mesh(new THREE.BoxGeometry(W + 0.02, 0.006, 0.22), new THREE.MeshStandardMaterial({ map: tapeTex, roughness: 0.4 }));
+tape.position.set(0, H + T + 0.004, 0); box.add(tape);
+const label = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.42), new THREE.MeshStandardMaterial({ map: labelTex, roughness: 0.6 }));
+label.rotation.x = -Math.PI / 2; label.position.set(0.42, H + T + 0.012, 0.3); box.add(label);
+shadowAll(box); scene.add(box);
+// retail product boxes
+const prods = prodImgs.map((im, i) => {
+  const c = canvas(512, 512), g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, 512, 512);
+  if (im) { const s = Math.min(460 / im.width, 460 / im.height); g.drawImage(im, 256 - im.width * s / 2, 256 - im.height * s / 2, im.width * s, im.height * s); }
+  const side = new THREE.MeshStandardMaterial({ color: ['#D7351F', '#1d1a17', '#FFB21E'][i], roughness: 0.5 });
+  const front = new THREE.MeshStandardMaterial({ map: tex(c), roughness: 0.45 });
+  const m = new THREE.Mesh(new RoundedBoxGeometry(0.5, 0.5, 0.38, 4, 0.03), [side, side, side, side, front, side]);
+  shadowAll(m); scene.add(m); return m;
+});
+const slots = [[-0.48, 0.28, 0.12], [0.05, 0.28, -0.15], [0.55, 0.28, 0.16]];
+
+// ---------- timeline ----------
+const OV = [[0.2, 'Bir bildirim:', '<i>yeni sipariş.</i>'], [3.2, 'Ürünlerin', 'kutuda.'], [7.8, 'Bantla,', '<i>etiketle.</i>'], [11.2, 'Kargoyu', 'sen yönet.'], [13.9, 'Teslim edildi.', 'Hakediş <i>IBAN</i>’ında.']];
+const CHIP = [[0.2, '🔔 Siparişler telefonunda'], [3.2, '📦 Stok ve sipariş tek panelde'], [7.8, '🏷️ Kargo etiketi hazır'], [11.2, '🚚 Ücreti ve ücretsiz kargo sınırını sen belirle'], [13.9, '💳 Şeffaf hakediş']];
+let ovI = -1, chI = -1, scrState = '';
+function frame(t) {
+  // camera: slow orbit + push-in
+  const a = -0.35 + 0.5 * eio(t / 16.4) + 0.04 * Math.sin(t * 0.6);
+  const r = 7.6 - 0.6 * eio((t - 3) / 6) + 0.9 * eio((t - 11) / 2.5);
+  const tgtY = t < 3 ? 1.0 : 0.6;
+  const top = eio((t - 3) / 1) * (1 - eio((t - 10.8) / 1));
+  cam.position.set(Math.sin(a) * r, 3.6 + 1.8 * top + 0.4 * Math.sin(t * 0.3), Math.cos(a) * r);
+  cam.lookAt(0, tgtY - 0.3 * eio((t - 2.6) / 1) + 0.6 * eio((t - 13.6) / 0.9), 0);
+  // phone: rises, buzzes, then steps aside; comes back at the end
+  const st = t < 0.9 ? 'idle' : t < 13.9 ? 'order' : 'done';
+  if (st !== scrState) { scrState = st; drawScreen(st); }
+  const away = eio((t - 2.8) / 0.9), back = eio((t - 13.6) / 0.9);
+  const buzz = (t > 0.9 && t < 1.8) ? Math.sin(t * 80) * 0.03 : 0;
+  phone.position.set(-2.2 * away + 2.2 * back * away + buzz, 0.8 + 0.55 * eo(t / 0.8) - 0.6 * away * (1 - back) - 0.35 * back, 0.4 - 1.2 * away * (1 - back) + 0.6 * back);
+  phone.rotation.set(-0.12, 0.25 * Math.sin(t * 0.5) - 0.6 * away * (1 - back), buzz * 2);
+  phone.scale.setScalar(0.6 + 0.4 * eo(t / 0.8) - 0.25 * away * (1 - back));
+  // box: slides in at 3s, ships out at 11.5s, phone returns for the final beat
+  const bin = eio((t - 2.9) / 0.9), bout = eio((t - 11.6) / 1.6);
+  box.position.set(3.2 * (1 - bin) + 4.2 * bout, 0, 0); box.rotation.y = -0.2 * (1 - bin) + 0.35 * bout;
+  box.visible = t > 2.85;
+  // products drop in with a bounce
+  prods.forEach((p, i) => {
+    const k = (t - (4.0 + i * 0.9)) / 0.8, s = slots[i];
+    p.visible = t > 3.9 + i * 0.9 && bout < 0.99;
+    const y = s[1] + 3.2 * (1 - bounce(k));
+    p.position.set(box.position.x + s[0], y, s[2]); p.rotation.set(0, box.rotation.y + (1 - bounce(k)) * 1.2 + i * 0.15 - 0.15, (1 - bounce(k)) * 0.4);
+  });
+  // flaps: open → closed (sides first)
+  const cs = eio((t - 8.0) / 0.7), cf = eio((t - 8.6) / 0.8);
+  fL.rotation.z = 0.55 * (1 - cs) - (Math.PI / 2) * cs;
+  fR.rotation.z = -fL.rotation.z;
+  fF.rotation.x = 0.5 * (1 - cf) - (Math.PI / 2 - 0.02) * cf;
+  fB.rotation.x = -fF.rotation.x;
+  tape.visible = t > 9.3; tape.scale.x = eio((t - 9.3) / 0.6) || 0.001;
+  label.visible = t > 10.1; const lk = eo((t - 10.1) / 0.3); label.scale.setScalar(1.6 - 0.6 * lk); label.position.y = H + T + 0.012 + 0.4 * (1 - lk);
+  renderer.render(scene, cam);
+  // overlays
+  let oi = 0; OV.forEach((o, i) => { if (t >= o[0]) oi = i; });
+  if (oi !== ovI) { ovI = oi; $('ov').innerHTML = `<span class="lt">${OV[oi][1]}</span><span class="bd">${OV[oi][2]}</span>`; }
+  const k = t - OV[oi][0], nxt = oi < OV.length - 1 ? OV[oi + 1][0] - OV[oi][0] : 99;
+  const ein = eio(k / 0.6), eout = 1 - eio((k - nxt + 0.3) / 0.3);
+  $('ov').style.opacity = Math.min(ein, eout); $('ov').style.clipPath = `inset(0 0 ${(1 - ein) * 100}% 0)`; $('ov').style.transform = `translateY(${(1 - ein) * 40}px)`;
+  let ci = 0; CHIP.forEach((c, i) => { if (t >= c[0]) ci = i; });
+  if (ci !== chI) { chI = ci; $('chip').textContent = CHIP[ci][1]; }
+  $('chip').style.opacity = Math.min(eio((t - CHIP[ci][0] - 0.3) / 0.4), eout);
+}
+HOOKS.k = (lt) => frame(lt);
+window.DEFAULT_DURS = [16.4, 5.2];
+drawScreen('idle'); frame(0);
+window.READY = true;
+</script>
+</body>
+</html>
