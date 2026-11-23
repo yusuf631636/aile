@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><link rel="stylesheet" href="../assets/brand.css">
+<style>
+ html,body{margin:0;background:transparent} body{width:1080px;height:1920px;position:relative;overflow:hidden;font-family:'Plus Jakarta Sans'}
+ #bg{position:absolute;inset:0;background:#120D0B}
+ #bg::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 40% at 50% 28%,rgba(215,53,31,.42),transparent 70%),radial-gradient(60% 35% at 85% 95%,rgba(255,178,30,.15),transparent 70%)}
+ .bezel{position:absolute;left:196px;top:418px;width:688px;height:1430px;border-radius:92px;box-sizing:border-box;border:24px solid #0b0b0d;box-shadow:0 0 0 4px #33302d,0 50px 120px rgba(0,0,0,.6)}
+ .isl{position:absolute;left:465px;top:452px;width:150px;height:44px;border-radius:24px;background:#000}
+ #mask{position:absolute;left:220px;top:442px;width:640px;height:1382px;border-radius:70px;background:#fff}
+ .cap{position:absolute;left:70px;right:70px;top:150px;color:#fff}
+ .cap .a{display:block;font:300 68px/1.05 'Inter';letter-spacing:-2px;color:rgba(255,255,255,.85)}
+ .cap .b{display:block;font:800 92px/1 'Plus Jakarta Sans';letter-spacing:-4px;color:#FF6A4D}
+ .tg{position:absolute;top:70px;left:70px}
+ #end{position:absolute;inset:0;background:#120D0B;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center}
+ #end::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 45% at 50% 40%,rgba(215,53,31,.4),transparent 70%)}
+ #end *{position:relative}
+</style></head><body>
+<div id="L"></div>
+<script>
+ const q = new URLSearchParams(location.search), L = document.getElementById('L'), k = q.get('k');
+ const tag = '<div class="tg"><span class="gt inv" style="font-size:46px"><img src="../assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>';
+ if (k === 'bg') L.innerHTML = '<div id="bg"></div>' + tag;
+ if (k === 'mask') { document.body.style.background = '#000'; L.innerHTML = '<div id="mask"></div>'; }
+ if (k === 'bezel') L.innerHTML = '<div class="bezel"></div><div class="isl"></div>';
+ if (k === 'cap') L.innerHTML = `<div class="cap"><span class="a">${q.get('a')}</span><span class="b">${q.get('b')}</span></div>`;
+ if (k === 'end') L.innerHTML = `<div id="end"><span class="gt inv" style="font-size:120px"><img src="../assets/logo-mark.svg"><span>getir<b>trend</b></span></span>
+   <div style="font:300 66px Inter;letter-spacing:-2px;margin-top:50px">${q.get('a')}</div><div style="font:800 104px 'Plus Jakarta Sans';letter-spacing:-4px;color:#FF6A4D">${q.get('b')}</div>
+   <div style="font:600 36px Inter;opacity:.75;margin-top:36px">${q.get('s')}</div>
+   <div style="margin-top:70px;background:#D7351F;font:800 58px 'Plus Jakarta Sans';padding:32px 66px;border-radius:999px;box-shadow:0 20px 60px rgba(215,53,31,.5)">${q.get('u')}</div></div>`;
+</script></body></html>
