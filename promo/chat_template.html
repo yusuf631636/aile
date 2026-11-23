@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>{{title}}</title><link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="chat.css">
+<style>
+  #out { background: var(--gt-blush); color: var(--gt-ink); }
+  #out .photos { display: flex; gap: 22px; }
+  #out .photos img { width: 300px; height: 300px; border-radius: 34px; object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,.25); border: 8px solid #fff; }
+</style></head>
+<body data-music="{{music}}" data-dots="off">
+<div id="stage">
+  <div class="scene" id="chat" data-static="1"></div>
+  <div class="scene" id="out" data-dur="5.6" data-sfx="whoosh:0;success:0.5">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:128px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="h2 jak" data-in="0.5">{{line1}}<br><span style="color:var(--gt-red)">{{line2}}</span></div>
+    <div class="gap"></div>
+    <div class="photos" data-in="0.9" data-anim="up">
+      <img src="assets/{{p1}}.jpg" style="transform:rotate(-4deg)"><img src="assets/{{p2}}.jpg" style="transform:translateY(-24px)"><img src="assets/{{p3}}.jpg" style="transform:rotate(4deg)">
+    </div>
+    <div class="gap"></div>
+    <div class="url jak" data-in="1.3" data-anim="pop" style="background:var(--gt-ink);color:#fff">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btn jak" data-in="1.8" data-anim="pop" id="cta" style="background:var(--gt-red);color:#fff;box-shadow:0 24px 60px rgba(215,53,31,.4)">{{btn}}</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+window.CHAT = {{chat}};
+</script>
+<script src="chat.js"></script>
+<script>
+  window.DEFAULT_DURS = [CHAT.end, 5.6];
+  HOOKS.out = (lt) => { if (lt > 2.4) document.getElementById('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

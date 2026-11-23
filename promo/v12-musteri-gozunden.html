@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Müşteri Gözünden</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="ad.css"></head>
+<body data-music="pop" data-dots="off">
+<div id="stage">
+  <div class="scene" id="a1" data-static="1" data-dur="3.6" data-sfx="whoosh:0" data-voice="Akşam oldu. Müşteriniz acıktı.">
+    <div class="bgp" id="a1bg" style="background-image:url(assets/lahmacun2.jpg)"></div><div class="shade"></div>
+    <div class="kick" data-in="0.2" data-anim="pop">20:45</div>
+    <div class="gap"></div>
+    <div class="cap w" data-in="0.5" style="font-size:120px;letter-spacing:-4px">Akşam oldu.<br><em>Müşteriniz acıktı.</em></div>
+  </div>
+
+  <div class="scene" id="a2" data-dur="4.4" data-sfx="whoosh:0" data-voice="Telefonundan getirtrend'i açtı.">
+    <div class="cap" data-in="0.1">Telefonundan<br><em>getirtrend'i</em> açtı</div>
+    <div class="gap-s"></div>
+    <div class="ph" data-in="0.2" data-anim="rise" data-d="0.7"><div class="isl"></div><div class="scr"><img class="full" id="homeImg" src="assets/ui/home.jpg"></div></div>
+  </div>
+
+  <div class="scene" id="a3" data-dur="4.4" data-sfx="whoosh:0" data-voice="Mahallesindeki restoranı seçti.">
+    <div class="cap" data-in="0.1">Mahallesindeki<br><em>restoranı</em> seçti</div>
+    <div class="gap-s"></div>
+    <div class="ph"><div class="isl"></div><div class="scr"><img class="full" id="restImg" src="assets/ui/rest.jpg"></div></div>
+  </div>
+
+  <div class="scene" id="a4" data-dur="4.0" data-sfx="tap:1.3;success:1.5" data-voice="Üç dokunuşla sipariş verdi.">
+    <div class="cap" data-in="0.1"><em>Üç dokunuşla</em><br>sipariş verdi</div>
+    <div class="gap-s"></div>
+    <div class="ph"><div class="isl"></div><div class="scr">
+      <img class="full" src="assets/ui/menu-before.jpg"><img class="full" id="after" src="assets/ui/menu-after.jpg" style="opacity:0">
+      <div class="tapc" id="tap" style="left:212px;top:382px"></div></div></div>
+  </div>
+
+  <div class="scene" id="a5" data-dur="4.2" data-sfx="ding:0.5;ding:1.6" data-voice="Sipariş, restoranınıza zille düştü. Kilit ekranında bile.">
+    <div class="cap" data-in="0.1">Sipariş restoranınıza<br><em>zille</em> düştü 🔔</div>
+    <div class="gap-s"></div>
+    <div class="ph" id="ringPh"><div class="isl"></div><div class="scr"><img class="full" src="assets/ui/lock.jpg"></div></div>
+  </div>
+
+  <div class="scene" id="a6" data-dur="4.6" data-sfx="cash:3.4" data-voice="AlfaPOS kasanıza geçti, fiş yazıcıdan çıktı.">
+    <div class="cap" data-in="0.1"><em>AlfaPOS</em> kasanıza geçti,<br>fiş yazıcıdan çıktı</div>
+    <div class="gap"></div>
+    <div class="printer" data-in="0.2" data-anim="pop"></div>
+    <div id="rwrap" style="height:0;overflow:hidden;margin-top:-30px;position:relative;z-index:2">
+      <div class="rcpt"><div class="in">
+        <div class="c"><span class="gt" style="font-size:44px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+        <div class="c" style="margin-top:10px">PAKET SERVİS ADİSYONU</div><hr>
+        <div class="row"><span>Sipariş</span><span>#1047</span></div><div class="row"><span>Saat</span><span>20:47</span></div><hr>
+        <div class="row"><span>1× Kaşarlı Lahmacun</span><span>122,40</span></div>
+        <div class="row"><span>1× Lahmacun</span><span>102,00</span></div>
+        <div class="row"><span>1× Ayran (20 cl)</span><span>25,00</span></div><hr>
+        <div class="row" style="font-weight:700;font-size:36px"><span>TOPLAM</span><span>249,40 TL</span></div>
+        <div class="row"><span>Ödeme</span><span>Kapıda nakit</span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="scene" id="a7" data-dur="6.4" data-sfx="whoosh:0;success:0.6" data-voice="Sıradaki sipariş sizin olsun. Restoranınızı getirtrend'e ücretsiz ekleyin.">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:130px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="cap" data-in="0.5">Sıradaki sipariş<br><em>sizin olsun</em></div>
+    <div class="gap"></div>
+    <div style="display:flex;gap:22px" data-in="0.9" data-anim="up">
+      <img class="photo" src="assets/pide.jpg" style="width:290px;height:290px;transform:rotate(-4deg);border:8px solid #fff">
+      <img class="photo" src="assets/adana.jpg" style="width:290px;height:290px;transform:translateY(-22px);border:8px solid #fff">
+      <img class="photo" src="assets/baklava.jpg" style="width:290px;height:290px;transform:rotate(4deg);border:8px solid #fff">
+    </div>
+    <div class="gap"></div>
+    <div class="urlb" data-in="1.3" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btnr" data-in="1.8" data-anim="pop" id="cta">Ücretsiz Başvur →</div>
+  </div>
+</div>
+<script>window.DEFAULT_DURS = [3.6, 4.4, 4.4, 4.0, 4.2, 4.6, 6.4];</script>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id), K = 596 / 390; // screenshot css px -> screen px
+  HOOKS.a1 = (lt) => { $('a1bg').style.transform = `scale(${1.05 + 0.08 * lt / 3.6})`; };
+  HOOKS.a2 = (lt) => { $('homeImg').style.transform = `translateY(${-easeOut(clamp((lt - 1.0) / 3.0)) * 1350 * K}px)`; };
+  HOOKS.a3 = (lt) => { $('restImg').style.transform = `translateY(${-easeOut(clamp((lt - 0.8) / 3.0)) * 980 * K}px)`; };
+  HOOKS.a4 = (lt) => {
+    const t = $('tap'), k = clamp((lt - 0.7) / 0.6), pr = clamp((lt - 1.3) / 0.25);
+    t.style.opacity = lt < 1.3 ? easeOut(k) : 1 - pr; t.style.transform = `translate(${(1 - easeOut(k)) * 120}px, ${(1 - easeOut(k)) * 200}px) scale(${lt < 1.3 ? 1 : 1 - .3 * Math.sin(pr * Math.PI)})`;
+    $('after').style.opacity = clamp((lt - 1.35) / 0.15);
+  };
+  HOOKS.a5 = (lt) => { const r = (lt > 0.5 && lt < 1.3) || (lt > 1.6 && lt < 2.4); $('ringPh').style.transform = r ? `rotate(${Math.sin(lt * 60) * 2.2}deg)` : 'none'; };
+  HOOKS.a6 = (lt) => { $('rwrap').style.height = (easeOut(clamp((lt - 0.7) / 2.4)) * 840) + 'px'; };
+  HOOKS.a7 = (lt) => { if (lt > 2.4) $('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

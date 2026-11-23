@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Gerçekçi Reklam</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css"><link rel="stylesheet" href="ad.css">
+<style>
+  /* Photo-real ad built from AI-generated stills (assets/ai/1..6.jpg). */
+  #stage { background: #000; color: #fff; }
+  .scene { padding: 0; }
+  .shot { position: absolute; inset: 0; background-size: cover; background-position: center; will-change: transform; }
+  .grade { position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,0) 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.78)); }
+  .grain { position: absolute; inset: -50%; opacity: .07; background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 3px 3px; }
+  .sub { position: absolute; left: 60px; right: 60px; bottom: 240px; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;
+    font-size: 84px; line-height: 1.08; letter-spacing: -2.5px; color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,.6); }
+  .sub em { font-style: normal; color: #FFB21E; }
+  .small { display: block; font-size: 46px; letter-spacing: -1px; font-weight: 700; margin-top: 18px; opacity: .95; }
+  .corner { position: absolute; top: 80px; left: 60px; z-index: 5; }
+  .notif { position: absolute; left: 50px; right: 50px; top: 300px; background: rgba(250,250,250,.97); color: #111; border-radius: 42px; padding: 30px 32px;
+    display: flex; gap: 26px; align-items: center; box-shadow: 0 30px 80px rgba(0,0,0,.5); text-align: left; z-index: 6; }
+  .notif img { width: 112px; height: 112px; border-radius: 26px; }
+  .notif .h { font-size: 30px; color: #555; display: flex; justify-content: space-between; } .notif .h b { color: #111; }
+  .notif .t { font-size: 46px; font-weight: 800; } .notif .s { font-size: 34px; color: #333; }
+  .flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 8; }
+</style></head>
+<body data-music="drama" data-switch="4.0" data-dots="off">
+<div id="stage">
+  <div class="scene" id="r1" data-static="1" data-dur="4.0" data-sfx="">
+    <div class="shot" id="i1" style="background-image:url(assets/ai/1.jpg)"></div><div class="grade"></div><div class="grain"></div>
+    <div class="sub" data-in="0.6">Akşam 20:00.<br><em>Dükkân sessiz…</em></div>
+  </div>
+  <div class="scene" id="r2" data-static="1" data-dur="3.6" data-sfx="ding:0.5;ding:1.5">
+    <div class="shot" id="i2" style="background-image:url(assets/ai/2.jpg)"></div><div class="grade"></div><div class="grain"></div>
+    <div class="notif" id="nt" style="opacity:0"><img src="assets/logo-mark.svg"><div style="flex:1"><div class="h"><b>getirtrend</b><span>şimdi</span></div><div class="t">🔔 Yeni sipariş · 360 TL</div><div class="s">2× Lahmacun, 1× Ayran · Kapıda nakit</div></div></div>
+    <div class="sub" data-in="0.9">Ta ki…<br><em>zil çalana kadar</em> 🔔</div>
+    <div class="flash" id="fl"></div>
+  </div>
+  <div class="scene" id="r3" data-static="1" data-dur="2.4" data-sfx="whoosh:0">
+    <div class="shot" id="i3a" style="background-image:url(assets/ai/3a.jpg);background-position:42% center"></div><div class="grade"></div><div class="grain"></div>
+    <div class="sub" data-in="0.3">Sipariş <em>getirtrend'den</em><br>geldi!</div>
+  </div>
+  <div class="scene" id="r4" data-static="1" data-dur="2.4" data-sfx="pop:0.4">
+    <div class="shot" id="i3b" style="background-image:url(assets/ai/3b.jpg);background-position:72% center"></div><div class="grade"></div><div class="grain"></div>
+    <div class="sub" data-in="0.3">“Usta!<br><em>İki lahmacun!</em>”</div>
+  </div>
+  <div class="scene" id="r5" data-static="1" data-dur="3.2" data-sfx="whoosh:0">
+    <div class="shot" id="i4" style="background-image:url(assets/ai/4.jpg)"></div><div class="grade"></div><div class="grain"></div>
+    <div class="sub" data-in="0.4">Fırından <em>sıcacık</em></div>
+  </div>
+  <div class="scene" id="r6" data-static="1" data-dur="3.4" data-sfx="print:0.4;print:0.7;print:1.0;cash:1.6">
+    <div class="shot" id="i5" style="background-image:url(assets/ai/5.jpg)"></div><div class="grade"></div><div class="grain"></div>
+    <div class="sub" data-in="0.4"><em>AlfaPOS</em> kasanıza düştü,<br>fiş yazıcıdan çıktı</div>
+  </div>
+  <div class="scene" id="r7" data-static="1" data-dur="3.8" data-sfx="success:0.6">
+    <div class="shot" id="i6" style="background-image:url(assets/ai/6.jpg)"></div><div class="grade"></div><div class="grain"></div>
+    <div class="sub" data-in="0.4"><em>Afiyet olsun!</em><span class="small">Ödemeyi kapıda siz aldınız</span></div>
+  </div>
+  <div class="scene" id="r8" data-dur="5.6" data-sfx="whoosh:0;success:0.6" style="background:var(--gt-blush);color:var(--gt-ink)">
+    <div data-in="0.1" data-anim="pop" data-d="0.7"><span class="gt" style="font-size:136px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div class="gap"></div>
+    <div class="cap" data-in="0.5">Sıradaki sipariş<br><em>sizin olsun</em></div>
+    <div class="gap-l"></div>
+    <div class="urlb" data-in="1.1" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap-s"></div>
+    <div class="btnr" data-in="1.6" data-anim="pop" id="cta">Ücretsiz Başvur →</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  window.DEFAULT_DURS = [...document.querySelectorAll('.scene')].map(s => +s.dataset.dur);
+  const kb = (id, lt, d, s0, s1, x = 0, y = 0) => { const k = clamp(lt / d); $(id).style.transform = `scale(${s0 + (s1 - s0) * k}) translate(${x * k}px, ${y * k}px)`; };
+  HOOKS.r1 = (lt) => kb('i1', lt, 4.0, 1.04, 1.16, 0, -20);
+  HOOKS.r2 = (lt) => {
+    const ring = (lt > 0.5 && lt < 1.2) || (lt > 1.5 && lt < 2.2);
+    $('i2').style.transform = `scale(${1.08 + 0.04 * clamp(lt / 3.6)}) translate(${ring ? Math.sin(lt * 70) * 8 : 0}px, 0)`;
+    const k = easeOut((lt - 0.45) / 0.35); $('nt').style.opacity = k; $('nt').style.transform = `translateY(${(1 - k) * -260}px)`;
+    $('fl').style.opacity = 0.5 * clamp(1 - Math.abs(lt - 0.5) / 0.12);
+  };
+  HOOKS.r3 = (lt) => kb('i3a', lt, 2.4, 1.02, 1.12);
+  HOOKS.r4 = (lt) => kb('i3b', lt, 2.4, 1.12, 1.02);
+  HOOKS.r5 = (lt) => kb('i4', lt, 3.2, 1.0, 1.18, 0, 30);
+  HOOKS.r6 = (lt) => kb('i5', lt, 3.4, 1.15, 1.03);
+  HOOKS.r7 = (lt) => kb('i6', lt, 3.8, 1.03, 1.15, 0, -30);
+  HOOKS.r8 = (lt) => { if (lt > 2.2) $('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.2) * 7)})`; };
+</script>
+</body>
+</html>

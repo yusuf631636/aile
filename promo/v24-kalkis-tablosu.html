@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – Sipariş Tablosu</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  /* Split-flap "departures board": each order row flips letter by letter into place. */
+  #stage { background: #111214; color: #fff; }
+  .scene { padding: 0; }
+  .board { position: absolute; left: 40px; right: 40px; top: 300px; background: #1b1c20; border-radius: 30px; padding: 30px 24px 36px; box-shadow: inset 0 0 0 3px #2a2b31, 0 40px 80px rgba(0,0,0,.6); }
+  .hdr { display: flex; justify-content: space-between; font: 700 30px 'JetBrains Mono'; color: #FFB21E; padding: 0 10px 18px; letter-spacing: 2px; }
+  .row { display: flex; gap: 6px; margin: 18px 0; align-items: center; }
+  .cell { width: 52px; height: 104px; background: #26272d; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+    font: 700 54px 'JetBrains Mono'; color: #f2f2f2; box-shadow: inset 0 -2px 0 rgba(0,0,0,.4); }
+  .cell::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: #111214; }
+  .cell.st { color: #55e08a; } .cell.yo { color: #FFB21E; } .cell.rd { color: #ff7a5c; }
+  .gap6 { width: 18px; }
+  .ttl { position: absolute; left: 60px; right: 60px; top: 110px; text-align: center; font: 800 76px/1.05 'Plus Jakarta Sans'; letter-spacing: -3px; }
+  .ttl em { font-style: normal; color: #FFB21E; }
+  .bottom { position: absolute; left: 0; right: 0; bottom: 170px; text-align: center; }
+  #cta2 { background: #F4EFE8; color: #221D19; }
+  .choice { width: 920px; border-radius: 40px; padding: 40px 44px; text-align: left; margin: 18px 0; box-shadow: 0 24px 60px rgba(0,0,0,.15); }
+  .choice h3 { margin: 0; font: 800 64px 'Plus Jakarta Sans'; letter-spacing: -2.5px; }
+  .choice p { margin: 8px 0 0; font: 600 36px 'Plus Jakarta Sans'; opacity: .85; }
+  .choice .u { display: inline-block; margin-top: 18px; font: 800 40px 'Plus Jakarta Sans'; padding: 14px 28px; border-radius: 999px; }
+</style></head>
+<body data-music="chill" data-dots="off">
+<div id="stage">
+  <div class="scene" id="b" data-static="1" data-dur="12.6">
+    <div class="ttl" id="ttl">Şu an <em>getirtrend</em>'de</div>
+    <div class="board"><div class="hdr"><span>SİPARİŞ</span><span>DURUM</span></div><div id="rows"></div></div>
+    <div class="bottom"><span class="gt inv" style="font-size:56px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+  </div>
+  <div class="scene" id="cta2" data-dur="6.6" data-sfx="whoosh:0;success:0.8">
+    <div data-in="0.1" data-anim="pop"><span class="gt" style="font-size:110px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div style="height:30px"></div>
+    <div data-in="0.4" style="font:800 74px/1.05 'Plus Jakarta Sans';letter-spacing:-3px;text-align:center">Sıradaki satır<br><span style="color:#D7351F">senin olsun</span></div>
+    <div style="height:40px"></div>
+    <div class="choice" data-in="0.8" data-anim="left" style="background:#D7351F;color:#fff">
+      <h3>Restoranın mı var?</h3><p>İlk etapta komisyon yok · Siparişler AlfaPOS kasana</p><span class="u" style="background:#fff;color:#D7351F">getirtrend.com/restoran-ol</span></div>
+    <div class="choice" data-in="1.2" data-anim="right" style="background:#221D19;color:#fff">
+      <h3>Mağazan mı var?</h3><p>Aylık ücret yok · Yalnız satışta %10 komisyon</p><span class="u" style="background:#FFB21E;color:#221D19">getirtrend.com/satici-ol</span></div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const COLS = 17, CH = ' ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ0123456789→·';
+  // [item (10 chars max), status, colour class, time the row starts flipping]
+  const R = [
+    ['LAHMACUN', 'YOLDA', 'yo', 0.5], ['GÜL BUKETİ', 'KARGODA', 'yo', 1.6], ['ADANA DÜRÜM', 'HAZIR', 'st', 2.7],
+    ['FİŞ YAZICI', 'TESLİM', 'st', 3.8], ['KIYMA PİDE', 'FIRINDA', 'rd', 4.9], ['TERAZİ', 'KARGODA', 'yo', 6.0],
+    ['BAKLAVA', 'YOLDA', 'yo', 7.1], ['POS CİHAZI', 'TESLİM', 'st', 8.2],
+  ];
+  const pad = (s, n) => (s + ' '.repeat(n)).slice(0, n);
+  $('rows').innerHTML = R.map((r, i) => `<div class="row">${[...pad(r[0], 11)].map((_, j) => `<div class="cell" id="c${i}_${j}"></div>`).join('')}<div class="gap6"></div>${[...pad(r[1], 7)].map((_, j) => `<div class="cell ${r[2]}" id="s${i}_${j}"></div>`).join('')}</div>`).join('');
+  document.querySelectorAll('.row').forEach(r => { r.style.transformOrigin = 'center'; });
+  const sc = $('b'); sc.dataset.sfx = R.map(r => `flap:${r[3]}`).join(';');
+  window.DEFAULT_DURS = [12.6, 6.6];
+  // each cell cycles through characters before settling (letter-by-letter stagger)
+  function flip(el, target, t0, lt, j) {
+    const start = t0 + j * 0.03, end = start + 0.35 + (j % 3) * 0.05;
+    if (lt < start) { el.textContent = ''; return; }
+    if (lt >= end) { el.textContent = target; el.style.transform = 'none'; return; }
+    const n = Math.floor((lt - start) * 40 + j * 7) % CH.length; el.textContent = CH[n];
+    el.style.transform = `scaleY(${0.6 + 0.4 * Math.abs(Math.cos((lt - start) * 40))})`;
+  }
+  HOOKS.b = (lt) => {
+    R.forEach((r, i) => {
+      [...pad(r[0], 11)].forEach((c, j) => flip($(`c${i}_${j}`), c, r[3], lt, j));
+      [...pad(r[1], 7)].forEach((c, j) => flip($(`s${i}_${j}`), c, r[3] + 0.25, lt, j));
+    });
+    $('ttl').style.opacity = easeOut(clamp(lt / 0.5));
+  };
+  HOOKS.cta2 = (lt) => {};
+</script>
+</body>
+</html>

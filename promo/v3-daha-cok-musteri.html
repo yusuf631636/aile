@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>GetirTrend – Daha Çok Müşteri</title><link rel="stylesheet" href="engine.css"></head>
+<body>
+<div id="stage">
+  <div class="blob" style="width:760px;height:760px;background:#1fbf86"></div>
+  <div class="blob" style="width:620px;height:620px;background:#ffb020"></div>
+  <div class="blob" style="width:420px;height:420px;background:#3dd6ff"></div>
+  <div class="vignette"></div>
+
+  <div class="scene" id="c1" data-voice="Daha fazla müşteriye ulaşmak ister misiniz?">
+    <div class="brand" data-in="0">Getir<span>Trend</span></div>
+    <div style="font-size:220px" data-in="0.1" data-anim="pop">🍽️</div>
+    <div class="gap"></div>
+    <div class="h1" data-in="0.4">Daha fazla<br><span class="hl">müşteriye</span><br>ulaşın</div>
+  </div>
+
+  <div class="scene" id="c2" data-voice="Getir Trend ile, çevrenizdeki müşteriler menünüzü kolayca bulsun.">
+    <div class="brand">Getir<span>Trend</span></div>
+    <div class="h2" data-in="0.1">Çevrenizdeki müşteriler<br><span class="hl">sizi kolayca bulsun</span></div>
+    <div class="gap"></div>
+    <div style="position:relative;width:900px;height:900px" id="radar">
+      <div class="ring" style="position:absolute;inset:0;border-radius:50%;border:3px solid rgba(255,255,255,.18)"></div>
+      <div class="ring" style="position:absolute;inset:150px;border-radius:50%;border:3px solid rgba(255,255,255,.22)"></div>
+      <div class="ring" style="position:absolute;inset:300px;border-radius:50%;border:3px solid rgba(255,255,255,.28)"></div>
+      <div id="wave" style="position:absolute;left:50%;top:50%;width:0;height:0;border-radius:50%;border:6px solid #ffb020"></div>
+      <div data-in="0.3" data-anim="pop" style="position:absolute;left:330px;top:330px;width:240px;height:240px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:130px;box-shadow:0 20px 60px rgba(0,0,0,.35)">👨‍🍳</div>
+      <div id="pins"></div>
+    </div>
+  </div>
+
+  <div class="scene" id="c3" data-voice="Siparişler anında gelsin, doğrudan kasanıza düşsün.">
+    <div class="brand">Getir<span>Trend</span></div>
+    <div class="h2" data-in="0.1">Siparişler <span class="hl">anında</span><br>kasanıza düşsün</div>
+    <div class="gap"></div>
+    <div style="position:relative;width:860px;height:900px" id="stack"></div>
+  </div>
+
+  <div class="scene" id="c4" data-voice="Kayıt ücretsiz. Kurulumu çok kolay.">
+    <div class="brand">Getir<span>Trend</span></div>
+    <div class="card" style="width:860px;display:flex;align-items:center;gap:36px" data-in="0.1" data-anim="left">
+      <div style="font-size:120px">✅</div><div><div style="font-size:66px;font-weight:900;letter-spacing:-2px">Kayıt ücretsiz</div><div style="font-size:38px;color:#5d6e67;font-weight:600">Restoranını hemen ekle</div></div>
+    </div>
+    <div class="gap"></div>
+    <div class="card" style="width:860px;display:flex;align-items:center;gap:36px" data-in="1.0" data-anim="right">
+      <div style="font-size:120px">⚡</div><div><div style="font-size:66px;font-weight:900;letter-spacing:-2px">Kurulum kolay</div><div style="font-size:38px;color:#5d6e67;font-weight:600">Menünü yükle, satışa başla</div></div>
+    </div>
+    <div class="gap"></div>
+    <div class="card" style="width:860px;display:flex;align-items:center;gap:36px" data-in="1.8" data-anim="left">
+      <div style="font-size:120px">💰</div><div><div style="font-size:66px;font-weight:900;letter-spacing:-2px">Doğrudan kasana</div><div style="font-size:38px;color:#5d6e67;font-weight:600">Siparişler sana gelsin</div></div>
+    </div>
+  </div>
+
+  <div class="scene" id="c5" data-voice="Restoranınızı şimdi ekleyin. Getir Trend nokta kom, bölü, restoran ol. Hayırlı işler.">
+    <div class="logo" data-in="0.1" data-anim="pop" data-d="0.8">Getir<span>Trend</span></div>
+    <div class="gap"></div>
+    <div class="h2" data-in="0.5">Restoranınızı<br><span class="hl">şimdi</span> ekleyin</div>
+    <div class="gap-l"></div>
+    <div class="url" data-in="1.2" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap"></div>
+    <div class="btn" data-in="1.8" data-anim="pop" id="cta3">Ücretsiz Başvur →</div>
+    <div class="gap-l"></div>
+    <div class="p" data-in="3.4">Hayırlı işler 🤝</div>
+  </div>
+
+  <div class="progress"></div>
+</div>
+<script>window.DEFAULT_DURS = [3.4, 5, 4.4, 4, 6.5];</script>
+<script src="engine.js"></script>
+<script>
+  const pinsEl = document.getElementById('pins');
+  const pins = [[120, 160], [700, 110], [790, 520], [610, 760], [170, 690], [60, 420], [420, 40], [400, 820], [760, 300]];
+  pins.forEach(([x, y]) => pinsEl.insertAdjacentHTML('beforeend',
+    `<div style="position:absolute;left:${x}px;top:${y}px;width:90px;height:90px;border-radius:50%;background:#ffb020;display:flex;align-items:center;justify-content:center;font-size:52px;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0">🙂</div>`));
+  HOOKS.c2 = (lt) => {
+    const w = document.getElementById('wave'), k = ((lt - 0.6) % 1.4) / 1.4;
+    const s = lt > 0.6 ? 900 * k : 0;
+    Object.assign(w.style, { width: s + 'px', height: s + 'px', marginLeft: -s / 2 + 'px', marginTop: -s / 2 + 'px', opacity: 1 - k });
+    [...pinsEl.children].forEach((p, i) => {
+      const kk = clamp((lt - 1.0 - i * 0.22) / 0.4);
+      p.style.opacity = kk; p.style.transform = `scale(${0.4 + 0.6 * back(kk)}) translateY(${Math.sin(lt * 2 + i) * 6}px)`;
+    });
+  };
+  const stack = document.getElementById('stack');
+  const orders = [['🛵', 'Yeni sipariş · ₺ 360', '2× Lahmacun, 1× Ayran'], ['🛵', 'Yeni sipariş · ₺ 420', '2× Kıymalı Pide'],
+                  ['🛵', 'Yeni sipariş · ₺ 270', 'Tavuk Döner, Sütlaç'], ['🛵', 'Yeni sipariş · ₺ 515', 'Karışık Pizza, Kola'],
+                  ['🛵', 'Yeni sipariş · ₺ 190', 'Mercimek Çorbası, Pilav']];
+  orders.forEach(([i, b, s]) => stack.insertAdjacentHTML('beforeend',
+    `<div class="notif" style="left:0;right:0;top:0;padding:30px 34px;border-radius:36px"><i style="width:100px;height:100px;font-size:60px">${i}</i><div><b style="font-size:40px">${b}</b><span style="font-size:32px">${s}</span></div></div>`));
+  HOOKS.c3 = (lt) => {
+    const n = orders.length;
+    [...stack.children].forEach((el, i) => {
+      const k = easeOut((lt - 0.5 - i * 0.55) / 0.45);
+      const above = clamp((lt - 0.5) / 0.55) ; // how many arrived
+      const arrived = Math.max(0, Math.min(n, (lt - 0.5) / 0.55));
+      const slot = arrived - 1 - i; // newest on top
+      el.style.opacity = k;
+      el.style.top = (Math.max(0, slot) * 175 + (1 - k) * -120) + 'px';
+      el.style.zIndex = 10 + i;
+    });
+  };
+  HOOKS.c5 = (lt) => { if (lt > 2.4) document.getElementById('cta3').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.4) * 7)})`; };
+</script>
+</body>
+</html>

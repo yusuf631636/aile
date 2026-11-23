@@ -1,0 +1,11 @@
+@import url(fonts.css);
+/* GetirTrend brand (from getirtrend.com): red #D7351F, ink #221D19, amber #FFB21E, blush #FCEFED */
+:root { --gt-red: #D7351F; --gt-ink: #221D19; --gt-amber: #FFB21E; --gt-blush: #FCEFED; --gt-red-300: #EB9A8F; }
+.gt { display: inline-flex; align-items: center; gap: .22em; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; font-weight: 800;
+  letter-spacing: -.045em; line-height: 1; color: var(--gt-ink); white-space: nowrap; }
+.gt img { height: 1.12em; width: 1.12em; border-radius: .28em; }
+.gt b { font-weight: 800; color: var(--gt-red); }
+.gt.inv { color: #fff; } .gt.inv b { color: var(--gt-red-300); }
+.jak { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+.photo { border-radius: 36px; object-fit: cover; box-shadow: 0 24px 60px rgba(0,0,0,.35); display: block; }
+.ic { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; vertical-align: -0.12em; }

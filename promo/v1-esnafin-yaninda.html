@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>GetirTrend – Esnafın Yanında</title><link rel="stylesheet" href="engine.css"></head>
+<body>
+<div id="stage">
+  <div class="blob" style="width:760px;height:760px;background:#1fbf86"></div>
+  <div class="blob" style="width:620px;height:620px;background:#ffb020"></div>
+  <div class="vignette"></div>
+
+  <div class="scene" id="a1" data-voice="Merhaba esnaf dostum, hayırlı akşamlar.">
+    <div class="logo" data-in="0.1" data-anim="pop" data-d="0.8">Getir<span>Trend</span></div>
+    <div class="gap-l"></div>
+    <div class="h2" data-in="0.7">Merhaba<br>esnaf dostum 🙏</div>
+    <div class="gap-s"></div>
+    <div class="p" data-in="1.2">Hayırlı akşamlar</div>
+  </div>
+
+  <div class="scene" id="a2" data-voice="Mahallenin en sevilen lezzetleri, artık Getir Trend'de buluşuyor.">
+    <div class="kicker" data-in="0.1">Tüm lezzetler bir arada</div>
+    <div class="gap-s"></div>
+    <div class="h2" data-in="0.35">Mahallenin lezzetleri<br><span class="hl">GetirTrend'de</span> buluşuyor</div>
+    <div style="position:relative;width:1080px;height:860px" id="chips">
+      <div class="chip" data-in="0.8"  data-anim="pop" style="left:90px;top:80px"><i>🫓</i>Lahmacun</div>
+      <div class="chip" data-in="1.0"  data-anim="pop" style="left:560px;top:150px"><i>🍕</i>Pide</div>
+      <div class="chip" data-in="1.2"  data-anim="pop" style="left:150px;top:300px"><i>🥙</i>Döner</div>
+      <div class="chip" data-in="1.4"  data-anim="pop" style="left:600px;top:390px"><i>🍔</i>Burger</div>
+      <div class="chip" data-in="1.6"  data-anim="pop" style="left:110px;top:530px"><i>🍢</i>Kebap</div>
+      <div class="chip" data-in="1.8"  data-anim="pop" style="left:540px;top:630px"><i>🍰</i>Tatlı</div>
+      <div class="chip" data-in="2.0"  data-anim="pop" style="left:330px;top:740px"><i>☕</i>Çay & Kahve</div>
+    </div>
+  </div>
+
+  <div class="scene" id="a3" data-voice="Siparişler, doğrudan kasanıza düşer.">
+    <div class="h2" data-in="0.1">Siparişler<br><span class="hl">doğrudan kasanıza</span><br>düşer</div>
+    <div class="gap"></div>
+    <div class="card" style="width:780px" data-in="0.5" data-anim="up">
+      <div class="tag">🔔 Yeni sipariş</div>
+      <div style="font-size:46px;font-weight:800;margin-top:22px">2× Lahmacun · 1× Ayran</div>
+      <div style="display:flex;justify-content:space-between;font-size:40px;font-weight:600;margin-top:16px;color:#5d6e67"><span>Masa yok, paket</span><span>12 dk</span></div>
+    </div>
+    <div class="gap"></div>
+    <div style="position:relative;width:440px;height:330px" data-in="0.9">
+      <div id="coins"></div>
+      <svg viewBox="0 0 440 240" width="440" height="240" style="position:absolute;left:0;bottom:0">
+        <rect x="10" y="40" width="420" height="190" rx="30" fill="#fff"/>
+        <rect x="40" y="70" width="360" height="64" rx="14" fill="#e6f6ef"/>
+        <text x="220" y="116" text-anchor="middle" font-family="Inter" font-weight="900" font-size="42" fill="#0f7a55" id="till">₺ 0</text>
+        <rect x="150" y="18" width="140" height="24" rx="8" fill="#ffd27a"/>
+        <g fill="#cfe0d9"><circle cx="100" cy="185" r="15"/><circle cx="160" cy="185" r="15"/><circle cx="220" cy="185" r="15"/><circle cx="280" cy="185" r="15"/><circle cx="340" cy="185" r="15"/></g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="scene" id="a4" data-voice="Restoranınızı hemen, ücretsiz ekleyin. Getir Trend nokta kom, bölü, restoran ol.">
+    <div class="kicker" data-in="0.1">Kayıt ücretsiz</div>
+    <div class="gap-s"></div>
+    <div class="h1" data-in="0.3">Restoranınızı<br><span class="hl">hemen</span> ekleyin</div>
+    <div class="gap-l"></div>
+    <div class="url" data-in="1.4" data-anim="pop">getirtrend.com/restoran-ol</div>
+    <div class="gap"></div>
+    <div class="btn" data-in="2.0" data-anim="pop" id="cta1">Ücretsiz Başvur →</div>
+  </div>
+
+  <div class="scene" id="a5" data-voice="Getir Trend. Hayırlı işler.">
+    <div class="logo" data-in="0.1" data-anim="pop" data-d="0.8">Getir<span>Trend</span></div>
+    <div class="gap"></div>
+    <div class="h2" data-in="0.7">Hayırlı işler 🤝</div>
+    <div class="gap-l"></div>
+    <div class="pill ghost" data-in="1.1">getirtrend.com/restoran-ol</div>
+  </div>
+
+  <div class="progress"></div>
+</div>
+<script>window.DEFAULT_DURS = [3.4, 4.6, 4, 6, 3.5];</script>
+<script src="engine.js"></script>
+<script>
+  HOOKS.a2 = (lt) => document.querySelectorAll('#chips .chip').forEach((c, i) => {
+    c.style.translate = `0 ${Math.sin(lt * 1.6 + i) * 12}px`;
+  });
+  const coins = document.getElementById('coins');
+  for (let i = 0; i < 4; i++) coins.insertAdjacentHTML('beforeend',
+    `<div style="position:absolute;width:96px;height:96px;border-radius:50%;background:#ffb020;border:8px solid #ffd27a;color:#7a4b00;font:900 48px Inter;display:flex;align-items:center;justify-content:center">₺</div>`);
+  HOOKS.a3 = (lt) => {
+    [...coins.children].forEach((c, i) => {
+      const k = clamp((lt - 1.3 - i * 0.3) / 0.5), e = easeOut(k);
+      c.style.left = (172 + (i % 2 ? 36 : -36)) + 'px';
+      c.style.top = (-300 + e * 300) + 'px';
+      c.style.opacity = k > 0 && k < 1 ? 1 : 0;
+    });
+    document.getElementById('till').textContent = '₺ ' + Math.round(360 * easeOut((lt - 1.3) / 1.6));
+  };
+  HOOKS.a4 = (lt) => { if (lt > 2.6) document.getElementById('cta1').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.6) * 7)})`; };
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+/* Shared pieces for the ad-style promo videos (v12–v14): real screenshots in a phone, receipt, photo backdrops. */
+#stage { background: var(--gt-blush); color: var(--gt-ink); font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+.scene { padding: 0 70px; }
+.bgp { position: absolute; inset: -60px; background-size: cover; background-position: center; }
+.shade { position: absolute; inset: 0; background: linear-gradient(rgba(20,10,8,.55), rgba(20,10,8,.15) 40%, rgba(20,10,8,.75)); }
+.cap { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; font-weight: 800; font-size: 78px; line-height: 1.08; letter-spacing: -2.5px; text-align: center; position: relative; }
+.cap em { font-style: normal; color: var(--gt-red); }
+.cap.w { color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,.45); } .cap.w em { color: #FFB21E; }
+.kick { display: inline-block; background: var(--gt-red); color: #fff; font-weight: 800; font-size: 38px; padding: 12px 30px; border-radius: 999px; position: relative; }
+/* phone with a real screenshot */
+.ph { position: relative; width: 640px; border-radius: 86px; background: #111; padding: 22px; box-shadow: 0 50px 120px rgba(0,0,0,.45), inset 0 0 0 4px #333; flex: none; }
+.ph .scr { position: relative; width: 596px; height: 1014px; border-radius: 66px; overflow: hidden; background: #fff; }
+.ph .scr img.full { position: absolute; left: 0; top: 0; width: 596px; }
+.ph .isl { position: absolute; top: 18px; left: 50%; width: 180px; height: 50px; margin-left: -90px; background: #000; border-radius: 30px; z-index: 5; }
+.tapc { position: absolute; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; background: rgba(215,53,31,.35); border: 6px solid rgba(255,255,255,.95);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35); z-index: 9; opacity: 0; }
+/* thermal receipt */
+.rcpt { width: 560px; background: #fdfdfb; color: #111; font-family: 'JetBrains Mono', monospace; font-size: 30px; line-height: 1.45; padding: 0 34px;
+  box-shadow: 0 30px 70px rgba(0,0,0,.35); overflow: hidden; position: relative; text-align: left;
+  -webkit-mask: linear-gradient(#000, #000) top/100% calc(100% - 14px) no-repeat, radial-gradient(circle at 10px 14px, transparent 9px, #000 10px) bottom/20px 14px repeat-x; }
+.rcpt .in { padding: 34px 0 40px; }
+.rcpt .row { display: flex; justify-content: space-between; }
+.rcpt .c { text-align: center; } .rcpt hr { border: 0; border-top: 3px dashed #999; margin: 14px 0; }
+.printer { width: 660px; height: 150px; border-radius: 30px; background: linear-gradient(#3a3a40, #222226); box-shadow: 0 20px 50px rgba(0,0,0,.4); position: relative; z-index: 3; }
+.printer::after { content: ""; position: absolute; left: 40px; right: 40px; bottom: 24px; height: 12px; border-radius: 6px; background: #0c0c0e; }
+.urlb { background: var(--gt-ink); color: #fff; font-weight: 800; font-size: 54px; padding: 30px 50px; border-radius: 26px; letter-spacing: -1px; }
+.btnr { background: var(--gt-red); color: #fff; font-weight: 800; font-size: 60px; padding: 34px 76px; border-radius: 999px; box-shadow: 0 24px 60px rgba(215,53,31,.45); }

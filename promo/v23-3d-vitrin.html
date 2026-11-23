@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="UTF-8"><title>getirtrend – 3D Vitrin</title>
+<link rel="stylesheet" href="engine.css"><link rel="stylesheet" href="assets/brand.css">
+<style>
+  /* Real store products on a rotating 3D showcase under a spotlight; rotation snaps on the beat. */
+  #stage { background: radial-gradient(120% 70% at 50% 30%, #262b38, #0b0d12 70%); color: #fff; }
+  .scene { padding: 0; }
+  .spot { position: absolute; left: 140px; top: -200px; width: 800px; height: 1700px; background: radial-gradient(50% 60% at 50% 0%, rgba(255,240,220,.28), transparent 70%);
+    clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%); }
+  .floor { position: absolute; left: -200px; right: -200px; top: 1320px; height: 700px; background: radial-gradient(50% 40% at 50% 10%, rgba(255,255,255,.12), transparent 70%); }
+  .ring3d { position: absolute; left: 540px; top: 960px; width: 0; height: 0; perspective: 1500px; }
+  .rot { position: absolute; transform-style: preserve-3d; }
+  .card { position: absolute; width: 330px; height: 440px; margin: -220px 0 0 -165px; border-radius: 34px; background: #fff; color: #111; overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,.45); backface-visibility: hidden; }
+  .card img { width: 330px; height: 330px; object-fit: contain; background: #fff; display: block; }
+  .card b { display: block; text-align: center; font: 800 32px 'Plus Jakarta Sans'; letter-spacing: -1px; padding-top: 18px; }
+  .head { position: absolute; left: 60px; right: 60px; top: 230px; text-align: center; font: 800 92px/1.04 'Plus Jakarta Sans'; letter-spacing: -4px; }
+  .head em { font-style: normal; color: #FF7A5C; }
+  .pill { position: absolute; left: 50%; bottom: 170px; transform: translateX(-50%); background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.25); border-radius: 999px; padding: 18px 36px; white-space: nowrap; }
+  .chip { display: inline-block; font: 700 34px 'Plus Jakarta Sans'; color: #fff; background: #D7351F; padding: 10px 24px; border-radius: 999px; }
+  #out { background: #F5F2EE; color: #221D19; }
+  .ok { display: flex; align-items: center; gap: 22px; font: 800 52px 'Plus Jakarta Sans'; letter-spacing: -1.5px; margin: 14px 0; }
+  .ok .ic { font-size: 56px; color: #fff; background: #D7351F; border-radius: 18px; padding: 10px; width: 1.4em; height: 1.4em; }
+</style></head>
+<body data-music="groove" data-dots="off">
+<div id="stage">
+  <div class="scene" id="v" data-static="1" data-dur="13.4">
+    <div class="spot"></div><div class="floor"></div>
+    <div class="head" id="head"></div>
+    <div class="ring3d"><div class="rot" id="rot"></div></div>
+    <div class="pill"><span class="gt inv" style="font-size:46px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span> <span style="font:700 36px 'Plus Jakarta Sans';color:#fff;opacity:.85;vertical-align:middle">&nbsp;Pazaryeri</span></div>
+  </div>
+  <div class="scene" id="out" data-dur="6.4" data-sfx="whoosh:0;success:0.6">
+    <div data-in="0.1" data-anim="pop"><span class="gt" style="font-size:120px"><img src="assets/logo-mark.svg"><span>getir<b>trend</b></span></span></div>
+    <div style="height:20px"></div>
+    <div data-in="0.4" style="font:800 80px/1.05 'Plus Jakarta Sans';letter-spacing:-3px;text-align:center">Mağazanı aç,<br><span style="color:#D7351F">satışa başla</span></div>
+    <div style="height:50px"></div>
+    <div class="ok" data-in="0.8" data-anim="left" data-ic="badge-check">Başvuru ve aylık ücret 0 TL</div>
+    <div class="ok" data-in="1.1" data-anim="left" data-ic="percent">Yalnız satışta %10 komisyon</div>
+    <div class="ok" data-in="1.4" data-anim="left" data-ic="clock">1 gün içinde başvuru yanıtı</div>
+    <div style="height:60px"></div>
+    <div data-in="1.9" data-anim="pop" id="cta" style="background:#221D19;color:#fff;font:800 56px 'Plus Jakarta Sans';padding:32px 64px;border-radius:999px">getirtrend.com/satici-ol</div>
+  </div>
+</div>
+<script src="engine.js"></script>
+<script src="assets/icons.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  const B = 60 / 108;
+  const P = [['p1', 'POS Terminali'], ['p2', 'Fiş Yazıcı'], ['p3', 'Terazi'], ['p4', 'Çiçek Buketi'], ['p5', 'Monitör'],
+             ['p6', 'Dokunmatik Kasa'], ['p8', 'Vantilatör'], ['p9', 'Dikey Süpürge'], ['p10', 'Kettle'], ['p12', 'Etiket Yazıcı']];
+  const N = P.length, R = 440;
+  $('rot').innerHTML = P.map(([f, n], i) => `<div class="card" id="cd${i}" style="transform:rotateY(${i * 360 / N}deg) translateZ(${R}px)"><img src="assets/prod/${f}.jpg"><b>${n}</b></div>`).join('');
+  const H = [
+    ['Mağazan mı var?', ''],
+    ['Ürünlerin', '<em>vitrinde</em>'],
+    ['Aylık ücret', '<em>yok</em>'],
+    ['Yalnız satışta', '<em>%10</em> komisyon'],
+    ['Kargo', '<em>senin kontrolünde</em>'],
+    ['Siparişler', '<em>telefonunda</em>'],
+  ];
+  const HL = 13.4 / H.length;
+  const sc = $('v');
+  sc.dataset.sfx = H.map((_, i) => `whoosh:${(i * HL).toFixed(2)}`).join(';');
+  window.DEFAULT_DURS = [13.4, 6.4];
+  let cur = -1;
+  HOOKS.v = (lt) => {
+    // rotate one card every 2 beats, easing between positions
+    const step = lt / (2 * B), base = Math.floor(step), f = easeOut(clamp((step - base) / 0.45));
+    const ang = -(base + f) * 360 / N + Math.sin(lt * 0.8) * 2;
+    $('rot').style.transform = `rotateX(-8deg) rotateY(${ang}deg)`;
+    P.forEach((_, i) => { const a = ((i * 360 / N + ang) % 360 + 360) % 360, front = Math.cos(a * Math.PI / 180);
+      $('cd' + i).style.filter = `brightness(${0.45 + 0.55 * Math.max(0, front)})`; });
+    const i = Math.min(H.length - 1, Math.floor(lt / HL)), k = lt - i * HL;
+    if (i !== cur) { cur = i; $('head').innerHTML = H[i][0] + '<br>' + H[i][1]; }
+    const e = easeOut(clamp(k / 0.4)), o = clamp((HL - k) / 0.25);
+    $('head').style.opacity = Math.min(e, o); $('head').style.transform = `translateY(${(1 - e) * 50}px)`;
+  };
+  HOOKS.out = (lt) => { if (lt > 2.6) $('cta').style.transform = `scale(${1 + 0.04 * Math.sin((lt - 2.6) * 7)})`; };
+</script>
+</body>
+</html>

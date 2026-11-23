@@ -1,0 +1,4 @@
+{"trim": 2.0, "clip": 16.4, "music": "groove",
+ "caps": [[0.1, 4.6, "Bu sefer", "alışveriş"], [4.6, 9.8, "Onaylı mağazalar,", "fırsat ürünleri"], [9.8, 16.4, "Ürünü incele,", "güvenle al"]],
+ "taps": [4.3, 9.6],
+ "end": {"a": "Onaylı mağazalardan", "b": "kapına kadar", "s": "Ödeme ve iade getirtrend güvencesinde", "u": "getirtrend.com/magazalar"}}
